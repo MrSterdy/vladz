@@ -1,0 +1,110 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model WeekdayTimetable {
+  weekday Int @unique
+
+  offset Int
+
+  subjectLength Int
+  subjectBreak  Int
+
+  subjects WeekdaySubject[]
+}
+
+model WeekdaySubject {
+  name String @db.VarChar(128)
+
+  length Int
+  break  Int
+
+  position Int
+
+  teacher   Teacher @relation(fields: [teacherId], references: [id])
+  teacherId Int
+
+  classroom String @db.VarChar(128)
+
+  timetable        WeekdayTimetable @relation(fields: [timetableWeekday], references: [weekday])
+  timetableWeekday Int
+
+  @@unique([timetableWeekday, position])
+}
+
+model DateTimetable {
+  date DateTime @unique @db.Date
+
+  offset Int
+
+  note String @db.VarChar(256)
+
+  subjects DateSubject[]
+}
+
+model DateSubject {
+  name String @db.VarChar(128)
+
+  length Int
+  break  Int
+
+  position Int
+
+  teacher     Teacher? @relation(fields: [teacherId], references: [id])
+  teacherId   Int?
+  teacherName String   @db.VarChar(256)
+
+  classroom String @db.VarChar(128)
+
+  timetable     DateTimetable @relation(fields: [timetableDate], references: [date])
+  timetableDate DateTime      @db.Date
+
+  @@unique([timetableDate, position])
+}
+
+model Subject {
+  name String @unique @db.VarChar(128)
+
+  length Int
+  break  Int
+
+  teacher     Teacher? @relation(fields: [teacherId], references: [id])
+  teacherId   Int?
+  teacherName String   @db.VarChar(256)
+
+  classroom String @db.VarChar(128)
+}
+
+model Teacher {
+  id Int @id @default(autoincrement())
+
+  firstName  String  @db.VarChar(128)
+  lastName   String  @db.VarChar(128)
+  middleName String? @db.VarChar(128)
+
+  subjects        Subject[]
+  dateSubjects    DateSubject[]
+  weekdaySubjects WeekdaySubject[]
+}
+
+model Student {
+  id BigInt @id
+
+  firstName String @db.VarChar(128)
+  lastName  String @db.VarChar(128)
+
+  accepted Boolean
+
+  role Role
+}
+
+enum Role {
+  ADMIN
+  REDACTOR
+  STUDENT
+}
