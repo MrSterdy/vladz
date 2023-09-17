@@ -9,6 +9,8 @@ import {
 import * as telegramService from "$lib/server/services/telegramService";
 import * as userService from "$lib/server/services/userService";
 import type { TelegramUser, User } from "$lib/types";
+import { createUser, updateUser } from "$lib/server/services/userService";
+import { ADMIN_ID } from "$env/static/private";
 
 export const handle: Handle = async ({ event, resolve }) => {
     if (
@@ -117,3 +119,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 
     return resolve(event);
 };
+
+createUser({
+    id: BigInt(ADMIN_ID),
+    firstName: "Влад",
+    lastName: "Король",
+    role: "ADMIN"
+}).catch(() => updateUser({ id: BigInt(ADMIN_ID), role: "ADMIN" }));

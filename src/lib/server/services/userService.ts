@@ -22,6 +22,10 @@ export async function createUser(user: User) {
     await prisma.user.create({ data: user });
 }
 
+export async function updateUser(user: Partial<User> & Pick<User, "id">) {
+    await prisma.user.update({ where: { id: user.id }, data: user });
+}
+
 export async function getUserSecretById(
     userId: bigint
 ): Promise<string | null> {
