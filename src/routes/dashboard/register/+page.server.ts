@@ -1,35 +1,40 @@
 import { redirect, type RequestEvent, type Actions, fail } from "@sveltejs/kit";
+
+import { z } from "zod";
+
 import { createUser } from "$lib/server/services/userService";
-import { AUTH_TELEGRAM_COOKIE_NAME } from "$lib/consts";
-import { parseJwt } from "$lib/server/services/telegramService";
+import { superValidate } from "sveltekit-superforms/server";
+
+const formSchema = z.object({
+    first_name: z.string().max(64),
+    last_name: z.string().max(64)
+});
 
 export async function load(event: RequestEvent) {
     if (event.locals.user) {
         throw redirect(303, "/dashboard");
     }
+
+    const form = await superValidate(formSchema);
+
+    return { form };
 }
 
 export const actions = {
     default: async (event) => {
-        const telegramUser = parseJwt(event.cookies.get(AUTH_TELEGRAM_COOKIE_NAME) ?? "");
-        if (!telegramUser) {
-            return fail(401);
-        }
+        const form = await superValidate(event.request, formSchema);
 
-        const form = await event.request.formData();
-
-        const firstName = form.get("first_name");
-        const lastName = form.get("last_name");
-
-        if (typeof firstName !== "string" || typeof lastName !== "string" || !firstName || !lastName) {
-            return fail(400);
+        if (!form.valid) {
+            return fail(400, { form });
         }
 
         await createUser({
-            id: telegramUser.id,
-            firstName,
-            lastName,
+            id: event.locals.telegramUser!.id,
+            firstName: form.data.first_name,
+            lastName: form.data.last_name,
             role: "USER"
         });
+
+        throw redirect(303, "/dashboard");
     }
 } satisfies Actions;

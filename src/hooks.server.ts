@@ -1,4 +1,5 @@
-import type { Handle } from "@sveltejs/kit";
+import { redirect, type Handle } from "@sveltejs/kit";
+
 import {
     AUTH_ACCESS_COOKIE_NAME,
     AUTH_REFRESH_COOKIE_NAME,
@@ -6,7 +7,6 @@ import {
     REDIRECT_PARAM_NAME
 } from "$lib/consts";
 import * as telegramService from "$lib/server/services/telegramService";
-import { redirect } from "@sveltejs/kit";
 import * as userService from "$lib/server/services/userService";
 import type { TelegramUser, User } from "$lib/types";
 
@@ -51,10 +51,15 @@ export const handle: Handle = async ({ event, resolve }) => {
         updateTokens = true;
     }
 
-    if (!tokens.secret && !updateTokens) {
+    if (!updateTokens) {
         tokens.secret = await userService.getUserSecretById(telegramUser.id);
         if (!tokens.secret) {
-            return resolve(event);
+            user = await userService.getUserById(telegramUser.id);
+            if (!user) {
+                return resolve(event);
+            }
+
+            updateTokens = true;
         }
     }
 

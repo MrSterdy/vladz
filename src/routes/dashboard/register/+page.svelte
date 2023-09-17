@@ -1,27 +1,30 @@
 <script lang="ts">
-    import { enhance } from "$app/forms";
+    import type { PageData } from "./$types";
+    import { superForm } from "sveltekit-superforms/client";
 
-    import type { ActionResult } from "@sveltejs/kit";
-    import { goto } from "$app/navigation";
-    import { REDIRECT_PARAM_NAME } from "$lib/consts";
-    import { page } from "$app/stores";
+    export let data: PageData;
 
-    function submit() {
-        return ({ result }: { result: ActionResult, update: () => void }) => {
-            if (result.type === "success") {
-                const loginUrl = new URL("/login", $page.url.origin);
-                const dashboardUrl = new URL("/dashboard", $page.url.origin);
-                loginUrl.searchParams.set(REDIRECT_PARAM_NAME, dashboardUrl.toString());
-
-                return goto(loginUrl, { replaceState: true })
-            }
-        }
-    }
+    const { form, errors, constraints, enhance } = superForm(data.form);
 </script>
 
-<form method="post" use:enhance={submit}>
-    <input name="first_name" type="text" placeholder="Имя" />
-    <input name="last_name" type="text" placeholder="Фамилия" />
+<form method="post" use:enhance>
+    <input
+        name="first_name"
+        aria-invalid={$errors.first_name ? "true" : undefined}
+        type="text"
+        placeholder="Имя"
+        bind:value={$form.first_name}
+        {...$constraints.first_name}
+    />
+
+    <input
+        name="last_name"
+        aria-invalid={$errors.last_name ? "true" : undefined}
+        type="text"
+        placeholder="Фамилия"
+        bind:value={$form.last_name}
+        {...$constraints.last_name}
+    />
 
     <input type="submit" />
 </form>
