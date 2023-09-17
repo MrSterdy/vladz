@@ -45,6 +45,8 @@ model DateTimetable {
   note String @db.VarChar(256)
 
   subjects DateSubject[]
+
+  homeworks Homework[]
 }
 
 model DateSubject {
@@ -57,14 +59,28 @@ model DateSubject {
 
   teacher     Teacher? @relation(fields: [teacherId], references: [id])
   teacherId   Int?
-  teacherName String   @db.VarChar(256)
+  teacherName String?  @db.VarChar(256)
 
   classroom String @db.VarChar(128)
 
   timetable     DateTimetable @relation(fields: [timetableDate], references: [date])
   timetableDate DateTime      @db.Date
 
+  homework Homework?
+
   @@unique([timetableDate, position])
+}
+
+model Homework {
+  timetable     DateTimetable @relation(fields: [timetableDate], references: [date])
+  timetableDate DateTime      @db.Date
+
+  subject         DateSubject @relation(fields: [timetableDate, subjectPosition], references: [timetableDate, position])
+  subjectPosition Int
+
+  content String @db.Text
+
+  @@unique([timetableDate, subjectPosition])
 }
 
 model Subject {
@@ -92,19 +108,55 @@ model Teacher {
   weekdaySubjects WeekdaySubject[]
 }
 
-model Student {
+model Group {
+  id Int @id @default(autoincrement())
+
+  name String @db.VarChar(64)
+
+  inviteCode String
+
+  userGroups UserGroup[]
+}
+
+model User {
   id BigInt @id
 
   firstName String @db.VarChar(128)
   lastName  String @db.VarChar(128)
 
-  accepted Boolean
+  role UserRole @default(USER)
 
-  role Role
+  userGroups UserGroup[]
+  userSecret UserSecret[]
 }
 
-enum Role {
+model UserGroup {
+  user   User   @relation(fields: [userId], references: [id])
+  userId BigInt
+
+  group   Group @relation(fields: [groupId], references: [id])
+  groupId Int
+
+  role GroupRole @default(STUDENT)
+
+  @@id([userId, groupId])
+}
+
+model UserSecret {
+  user   User   @relation(fields: [userId], references: [id])
+  userId BigInt @unique
+
+  secret String
+}
+
+enum UserRole {
   ADMIN
+  HELPER
+  USER
+}
+
+enum GroupRole {
+  CURATOR
   REDACTOR
   STUDENT
 }
