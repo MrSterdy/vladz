@@ -18,6 +18,10 @@ export async function getUserById(id: bigint): Promise<User | null> {
         : null;
 }
 
+export async function createUser(user: User) {
+    await prisma.user.create({ data: user });
+}
+
 export async function getUserSecretById(
     userId: bigint
 ): Promise<string | null> {
@@ -36,7 +40,11 @@ export async function setUserSecretById(userId: bigint, secret: string) {
 
 export function parseJwt(token: string, secret: string): User | null {
     try {
-        return jwt.verify(token, secret) as User;
+        const payload = jwt.verify(token, secret) as { userInfo: string };
+        const user = JSON.parse(payload.userInfo) as User;
+        user.id = BigInt(user.id);
+
+        return user;
     } catch (e) {
         return null;
     }
@@ -47,9 +55,15 @@ export function generateJwt(user: User): {
     refreshToken: string;
     secret: string;
 } {
+    const userInfo = {
+        userInfo: JSON.stringify(user, (_, v) =>
+            typeof v === "bigint" ? v.toString() : v
+        )
+    };
+
     const secret = crypto.randomBytes(48).toString("hex");
-    const accessToken = jwt.sign(user, secret, { expiresIn: "1d" });
-    const refreshToken = jwt.sign(user, secret, { expiresIn: "30d" });
+    const accessToken = jwt.sign(userInfo, secret, { expiresIn: "1d" });
+    const refreshToken = jwt.sign(userInfo, secret, { expiresIn: "30d" });
 
     return { secret, accessToken, refreshToken };
 }

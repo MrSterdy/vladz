@@ -4,7 +4,10 @@ import { TELEGRAM_BOT_TOKEN } from "$env/static/private";
 import type { TelegramUser } from "$lib/types";
 import jwt from "jsonwebtoken";
 
-const secret = crypto.createHmac("sha256", "WebAppData").update(TELEGRAM_BOT_TOKEN).digest();
+const secret = crypto
+    .createHmac("sha256", "WebAppData")
+    .update(TELEGRAM_BOT_TOKEN)
+    .digest();
 
 export function decodeInitData(initData: string) {
     const decoded = decodeURIComponent(initData);
@@ -32,16 +35,28 @@ export function decodeInitData(initData: string) {
 
     const userIndex = arr.findIndex(str => str.startsWith("user="));
 
-    return JSON.parse(arr[userIndex].split("=")[1]) as TelegramWebApp["initDataUnsafe"]["user"];
+    return JSON.parse(
+        arr[userIndex].split("=")[1]
+    ) as TelegramWebApp["initDataUnsafe"]["user"];
 }
 
 export function generateJwt(user: TelegramUser) {
-    return jwt.sign(user, TELEGRAM_BOT_TOKEN, { expiresIn: "5m" });
+    const userInfo = {
+        userInfo: JSON.stringify(user, (_, v) =>
+            typeof v === "bigint" ? v.toString() : v
+        )
+    };
+
+    return jwt.sign(userInfo, TELEGRAM_BOT_TOKEN, { expiresIn: "5m" });
 }
 
 export function parseJwt(token: string) {
     try {
-        return jwt.verify(token, TELEGRAM_BOT_TOKEN) as TelegramUser;
+        const payload = jwt.verify(token, TELEGRAM_BOT_TOKEN) as { userInfo: string };
+        const user = JSON.parse(payload.userInfo) as TelegramUser;
+        user.id = BigInt(user.id);
+
+        return user;
     } catch (e) {
         return null;
     }
