@@ -1,4 +1,10 @@
-import { redirect, type RequestEvent, type Actions, fail } from "@sveltejs/kit";
+import {
+    redirect,
+    type RequestEvent,
+    type Actions,
+    fail,
+    error
+} from "@sveltejs/kit";
 
 import { z } from "zod";
 
@@ -11,6 +17,10 @@ const formSchema = z.object({
 });
 
 export async function load(event: RequestEvent) {
+    if (!event.locals.telegramUser) {
+        throw error(401);
+    }
+
     if (event.locals.user) {
         throw redirect(303, "/dashboard");
     }
@@ -21,7 +31,7 @@ export async function load(event: RequestEvent) {
 }
 
 export const actions = {
-    default: async (event) => {
+    default: async event => {
         const form = await superValidate(event.request, formSchema);
 
         if (!form.valid) {

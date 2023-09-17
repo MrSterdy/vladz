@@ -14,7 +14,7 @@ import { ADMIN_ID } from "$env/static/private";
 
 export const handle: Handle = async ({ event, resolve }) => {
     if (
-        event.url.pathname.startsWith("/login") ||
+        event.url.pathname.startsWith("/auth/login") ||
         event.url.pathname.startsWith("/api")
     ) {
         return resolve(event);
@@ -29,7 +29,7 @@ export const handle: Handle = async ({ event, resolve }) => {
         !telegramCookie ||
         !(telegramUser = telegramService.parseJwt(telegramCookie))
     ) {
-        const loginUrl = new URL("/login", event.url.origin);
+        const loginUrl = new URL("/auth/login", event.url.origin);
         loginUrl.searchParams.set(REDIRECT_PARAM_NAME, event.url.toString());
 
         throw redirect(303, loginUrl);
