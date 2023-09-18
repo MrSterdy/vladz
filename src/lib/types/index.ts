@@ -1,18 +1,15 @@
-export type User = {
+type BaseUser = {
     id: bigint;
 
     firstName: string;
     lastName: string;
+};
 
+export type User = BaseUser & {
     role: "ADMIN" | "HELPER" | "USER";
 };
 
-export type GroupUser = {
-    id: bigint;
-
-    firstName: string;
-    lastName: string;
-
+export type GroupUser = BaseUser & {
     role: "CURATOR" | "REDACTOR" | "STUDENT" | "APPLICATION";
 };
 

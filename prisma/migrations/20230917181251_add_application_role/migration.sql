@@ -1,5 +1,0 @@
--- AlterEnum
-ALTER TYPE "GroupRole" ADD VALUE 'APPLICATION';
-
--- AlterTable
-ALTER TABLE "UserGroup" ALTER COLUMN "role" SET DEFAULT 'APPLICATION';

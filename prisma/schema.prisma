@@ -15,6 +15,9 @@ model WeekdayTimetable {
   subjectLength Int
   subjectBreak  Int
 
+  group   Group @relation(fields: [groupId], references: [id])
+  groupId Int
+
   subjects WeekdaySubject[]
 }
 
@@ -26,15 +29,17 @@ model WeekdaySubject {
 
   position Int
 
-  teacher   Teacher @relation(fields: [teacherId], references: [id])
-  teacherId Int
+  teacher String? @db.VarChar(256)
 
   classroom String @db.VarChar(128)
+
+  group   Group @relation(fields: [groupId], references: [id])
+  groupId Int
 
   timetable        WeekdayTimetable @relation(fields: [timetableWeekday], references: [weekday])
   timetableWeekday Int
 
-  @@unique([timetableWeekday, position])
+  @@unique([groupId, timetableWeekday, position])
 }
 
 model DateTimetable {
@@ -43,6 +48,9 @@ model DateTimetable {
   offset Int
 
   note String @db.VarChar(256)
+
+  group   Group @relation(fields: [groupId], references: [id])
+  groupId Int
 
   subjects DateSubject[]
 
@@ -57,30 +65,34 @@ model DateSubject {
 
   position Int
 
-  teacher     Teacher? @relation(fields: [teacherId], references: [id])
-  teacherId   Int?
-  teacherName String?  @db.VarChar(256)
+  teacher String? @db.VarChar(256)
 
   classroom String @db.VarChar(128)
+
+  group   Group @relation(fields: [groupId], references: [id])
+  groupId Int
 
   timetable     DateTimetable @relation(fields: [timetableDate], references: [date])
   timetableDate DateTime      @db.Date
 
   homework Homework?
 
-  @@unique([timetableDate, position])
+  @@unique([groupId, timetableDate, position])
 }
 
 model Homework {
+  group   Group @relation(fields: [groupId], references: [id])
+  groupId Int
+
   timetable     DateTimetable @relation(fields: [timetableDate], references: [date])
   timetableDate DateTime      @db.Date
 
-  subject         DateSubject @relation(fields: [timetableDate, subjectPosition], references: [timetableDate, position])
+  subject         DateSubject @relation(fields: [groupId, timetableDate, subjectPosition], references: [groupId, timetableDate, position])
   subjectPosition Int
 
   content String @db.Text
 
-  @@unique([timetableDate, subjectPosition])
+  @@unique([groupId, timetableDate, subjectPosition])
 }
 
 model Subject {
@@ -89,23 +101,9 @@ model Subject {
   length Int
   break  Int
 
-  teacher     Teacher? @relation(fields: [teacherId], references: [id])
-  teacherId   Int?
-  teacherName String   @db.VarChar(256)
+  teacher String? @db.VarChar(256)
 
   classroom String @db.VarChar(128)
-}
-
-model Teacher {
-  id Int @id @default(autoincrement())
-
-  firstName  String  @db.VarChar(128)
-  lastName   String  @db.VarChar(128)
-  middleName String? @db.VarChar(128)
-
-  subjects        Subject[]
-  dateSubjects    DateSubject[]
-  weekdaySubjects WeekdaySubject[]
 }
 
 model Group {
@@ -115,7 +113,12 @@ model Group {
 
   inviteCode String
 
-  userGroups UserGroup[]
+  userGroups        UserGroup[]
+  weekdayTimetables WeekdayTimetable[]
+  weekdaySubjects   WeekdaySubject[]
+  dateTimetables    DateTimetable[]
+  dateSubjects      DateSubject[]
+  homeworks         Homework[]
 }
 
 model User {
@@ -127,7 +130,7 @@ model User {
   role UserRole @default(USER)
 
   userGroups UserGroup[]
-  userSecret UserSecret[]
+  userSecret UserSecret?
 }
 
 model UserGroup {
