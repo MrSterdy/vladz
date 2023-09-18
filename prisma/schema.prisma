@@ -137,7 +137,7 @@ model UserGroup {
   group   Group @relation(fields: [groupId], references: [id])
   groupId Int
 
-  role GroupRole @default(STUDENT)
+  role GroupRole @default(APPLICATION)
 
   @@id([userId, groupId])
 }
@@ -159,4 +159,5 @@ enum GroupRole {
   CURATOR
   REDACTOR
   STUDENT
+  APPLICATION
 }
