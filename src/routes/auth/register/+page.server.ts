@@ -17,10 +17,6 @@ const formSchema = z.object({
 });
 
 export async function load(event: RequestEvent) {
-    if (!event.locals.telegramUser) {
-        throw error(401);
-    }
-
     if (event.locals.user) {
         throw redirect(303, "/dashboard");
     }
