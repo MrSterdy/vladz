@@ -7,7 +7,12 @@ export type User = {
     role: "ADMIN" | "HELPER" | "USER";
 };
 
-export type GroupUser = User & {
+export type GroupUser = {
+    id: bigint;
+
+    firstName: string;
+    lastName: string;
+
     role: "CURATOR" | "REDACTOR" | "STUDENT" | "APPLICATION";
 };
 
@@ -27,5 +32,5 @@ export type Group = {
 
     inviteCode: string;
 
-    users: User[];
+    users: GroupUser[];
 };

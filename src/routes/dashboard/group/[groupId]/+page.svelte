@@ -5,3 +5,4 @@
 </script>
 
 <h1>{data.group.name}</h1>
+<a href="composition">Состав группы</a>

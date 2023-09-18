@@ -14,7 +14,12 @@ export async function getGroupByInviteCode(
               id: result.id,
               inviteCode,
               name: result.name,
-              users: result.userGroups.map(ug => ug.user)
+              users: result.userGroups.map(ug => ({
+                  id: ug.userId,
+                  firstName: ug.user.firstName,
+                  lastName: ug.user.lastName,
+                  role: ug.role
+              }))
           }
         : null;
 }
@@ -30,7 +35,12 @@ export async function getGroupById(groupId: number): Promise<Group | null> {
             id: result.id,
             inviteCode: result.inviteCode,
             name: result.name,
-            users: result.userGroups.map(ug => ug.user)
+            users: result.userGroups.map(ug => ({
+                id: ug.userId,
+                firstName: ug.user.firstName,
+                lastName: ug.user.lastName,
+                role: ug.role
+            }))
         }
         : null;
 }
