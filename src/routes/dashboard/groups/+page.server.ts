@@ -1,9 +1,9 @@
-import { type RequestEvent, type Actions, fail } from "@sveltejs/kit";
+import { type RequestEvent, type Actions, fail, error } from "@sveltejs/kit";
 import { z } from "zod";
 import { superValidate, message } from "sveltekit-superforms/server";
 
 import { addUserToGroup, getUserGroups } from "$lib/server/services/userGroupService";
-import { getGroupByInviteCode } from "$lib/server/services/groupService";
+import { createGroup, getGroupByInviteCode, getGroups } from "$lib/server/services/groupService";
 
 const inviteScheme = z.object({
     invite_code: z.string().length(16)
@@ -12,13 +12,15 @@ const inviteScheme = z.object({
 export async function load(event: RequestEvent) {
     const inviteForm = await superValidate(inviteScheme);
 
-    const groups = await getUserGroups(event.locals.user!.id);
+    const getAll = event.locals.user?.role === "ADMIN" || event.locals.user?.role === "HELPER";
+
+    const groups = getAll ? await getGroups() : await getUserGroups(event.locals.user!.id);
 
     return { groups, inviteForm };
 }
 
 export const actions = {
-    default: async (event) => {
+    join: async (event) => {
         const inviteForm = await superValidate(event.request, inviteScheme);
         if (!inviteForm.valid) {
             return fail(400, { inviteForm });
@@ -36,5 +38,12 @@ export const actions = {
         await addUserToGroup(event.locals.user!.id, group.id);
 
         return { inviteForm };
+    },
+    create: async (event) => {
+        if (event.locals.user?.role !== "ADMIN" && event.locals.user?.role !== "HELPER") {
+            throw error(403);
+        }
+
+        await createGroup("Новая группа");
     }
 } satisfies Actions;
