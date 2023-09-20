@@ -13,6 +13,42 @@ export type GroupUser = BaseUser & {
     role: "CURATOR" | "REDACTOR" | "STUDENT" | "APPLICATION";
 };
 
+export type Timetable = {
+    offset: number;
+
+    note: string | null;
+
+    subjects: Subject[];
+};
+
+export type WeekdayTimetable = Timetable & {
+    weekday: number;
+
+    subjectLength: number;
+    subjectBreak: number;
+};
+
+export type DateTimetable = Timetable & {
+    date: string;
+
+    subjects: Subject[];
+};
+
+export type Subject = {
+    name: string;
+
+    length: number;
+    break: number;
+
+    position: number;
+
+    teacher: string | null;
+
+    classroom: string | null;
+
+    homework?: string;
+};
+
 export type TelegramUser = {
     id: bigint;
 

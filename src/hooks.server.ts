@@ -12,6 +12,10 @@ import type { TelegramUser, User } from "$lib/types";
 import { createUser, updateUser } from "$lib/server/services/userService";
 import { ADMIN_ID } from "$env/static/private";
 
+import dayjs from "dayjs";
+
+import "dayjs/locale/ru";
+
 export const handle: Handle = async ({ event, resolve }) => {
     if (
         event.url.pathname.startsWith("/auth/login") ||
@@ -126,3 +130,5 @@ createUser({
     lastName: "Король",
     role: "ADMIN"
 }).catch(() => updateUser({ id: BigInt(ADMIN_ID), role: "ADMIN" }));
+
+dayjs.locale("ru");

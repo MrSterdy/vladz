@@ -5,4 +5,5 @@
 </script>
 
 <h1>{data.group.name}</h1>
-<a href="composition">Состав группы</a>
+<a href="composition">Участники</a>
+<a href="timetable">Расписание</a>
