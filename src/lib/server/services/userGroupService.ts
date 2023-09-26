@@ -36,6 +36,42 @@ export async function getGroupUsers(groupId: number): Promise<GroupUser[]> {
     }));
 }
 
+export async function getGroupUser(
+    userId: bigint,
+    groupId: number
+): Promise<GroupUser | null> {
+    const result = await prisma.userGroup.findFirst({
+        where: { userId, groupId },
+        include: { user: true }
+    });
+
+    return result
+        ? {
+              id: userId,
+              firstName: result.user.firstName,
+              lastName: result.user.lastName,
+              role: result.role
+          }
+        : null;
+}
+
+export async function removeGroupUser(userId: bigint, groupId: number) {
+    await prisma.userGroup.delete({
+        where: { userId_groupId: { userId, groupId } }
+    });
+}
+
+export async function updateGroupUserRole(
+    userId: bigint,
+    groupId: number,
+    role: GroupUser["role"]
+) {
+    await prisma.userGroup.update({
+        where: { userId_groupId: { userId, groupId } },
+        data: { role }
+    });
+}
+
 export async function addUserToGroup(userId: bigint, groupId: number) {
     await prisma.userGroup.create({ data: { userId, groupId } });
 }

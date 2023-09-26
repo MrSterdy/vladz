@@ -13,6 +13,10 @@
             </li>
         {/each}
     </ul>
+
+    {#if data.user.role !== "USER" || data.groupUser?.role === "CURATOR"}
+        <a href="edit">Редактировать</a>
+    {/if}
 {:else}
     <h2>Класс пустует</h2>
 {/if}
