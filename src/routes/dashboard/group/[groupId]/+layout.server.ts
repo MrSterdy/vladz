@@ -12,5 +12,10 @@ export const load: LayoutServerLoad = async (event) => {
         throw error(400, { message: "Группа не найдена" });
     }
 
-    return { group };
+    const groupUser = group.users.find(gu => gu.id === event.locals.user?.id);
+    if (!groupUser && event.locals.user?.role === "USER") {
+        throw error(403);
+    }
+
+    return { group, groupUser };
 };

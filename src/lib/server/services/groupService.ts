@@ -64,6 +64,13 @@ export async function getGroupById(groupId: number): Promise<Group | null> {
         : null;
 }
 
+export async function updateGroupName(groupId: number, groupName: string) {
+    await prisma.group.update({
+        where: { id: groupId },
+        data: { name: groupName }
+    });
+}
+
 export async function createGroup(name: string): Promise<Group> {
     const result = await prisma.group.create({
         data: { name, inviteCode: crypto.randomBytes(8).toString("hex") }

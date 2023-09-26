@@ -7,3 +7,7 @@
 <h1>{data.group.name}</h1>
 <a href="composition">Участники</a>
 <a href="timetable">Расписание</a>
+
+{#if data.user.role === "ADMIN" || data.user.role === "HELPER"}
+    <a href="edit">Редактировать</a>
+{/if}
