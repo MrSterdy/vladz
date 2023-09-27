@@ -8,13 +8,13 @@ const timetableSchema = z.object({
     offset: z.number().min(0).max(1440),
     subjectLength: z.number().min(0).max(1024),
     subjectBreak: z.number().min(0).max(1024),
-    note: z.string().max(1024).nullish(),
+    note: z.string().max(1024).nullable(),
     subjects: z.array(z.object({
         name: z.string().max(64),
         length: z.number().min(0).max(1024),
         break: z.number().min(0).max(1024),
-        teacher: z.string().max(128).nullish(),
-        classroom: z.string().max(64).nullish(),
+        teacher: z.string().max(128).nullable(),
+        classroom: z.string().max(64).nullable(),
         position: z.number().max(64)
     })).max(64)
 });
