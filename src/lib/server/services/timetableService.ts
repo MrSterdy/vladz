@@ -101,3 +101,70 @@ export async function updateWeekdayTimetable(
         }
     });
 }
+
+export async function updateDateTimetable(
+    groupId: number,
+    timetable: DateTimetable
+) {
+    await prisma.dateTimetable.upsert({
+        where: { date: timetable.date },
+        update: {
+            offset: timetable.offset,
+            note: timetable.note,
+            subjects: {
+                deleteMany: { timetableDate: timetable.date },
+                create: timetable.subjects.map(subject => ({
+                    name: subject.name,
+                    length: subject.length,
+                    break: subject.break,
+                    position: subject.position,
+                    teacher: subject.teacher,
+                    classroom: subject.classroom,
+                    ...(subject.homework
+                        ? {
+                              homework: {
+                                  connectOrCreate: {
+                                      where: {
+                                          groupId_timetableDate_subjectPosition:
+                                              {
+                                                  groupId,
+                                                  timetableDate: timetable.date,
+                                                  subjectPosition:
+                                                      subject.position
+                                              }
+                                      },
+                                      create: { content: subject.homework! }
+                                  }
+                              }
+                          }
+                        : {}),
+                    groupId
+                }))
+            }
+        },
+        create: {
+            date: timetable.date,
+            offset: timetable.offset,
+            note: timetable.note,
+            subjects: {
+                create: timetable.subjects.map(subject => ({
+                    name: subject.name,
+                    length: subject.length,
+                    break: subject.break,
+                    position: subject.position,
+                    teacher: subject.teacher,
+                    classroom: subject.classroom,
+                    ...(subject.homework
+                        ? {
+                              homework: {
+                                  create: { content: subject.homework }
+                              }
+                          }
+                        : {}),
+                    groupId
+                }))
+            },
+            groupId
+        }
+    });
+}
