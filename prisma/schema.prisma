@@ -100,9 +100,6 @@ model Homework {
 model Subject {
   name String @unique @db.VarChar(128)
 
-  length Int
-  break  Int
-
   teacher String? @db.VarChar(256)
 
   classroom String? @db.VarChar(128)

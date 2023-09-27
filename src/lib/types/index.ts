@@ -37,15 +37,14 @@ export type DateTimetable = Timetable<DateSubject> & {
 export type Subject = {
     name: string;
 
-    length: number;
-    break: number;
-
     teacher: string | null;
 
     classroom: string | null;
 };
 
-export type WeekdaySubject = Subject & { position: number };
+export type DaySubject = Subject & { length: number; break: number; };
+
+export type WeekdaySubject = DaySubject & { position: number };
 
 export type DateSubject = WeekdaySubject & { homework: string | null };
 
