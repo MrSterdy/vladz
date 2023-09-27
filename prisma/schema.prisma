@@ -106,6 +106,9 @@ model Subject {
   teacher String? @db.VarChar(256)
 
   classroom String? @db.VarChar(128)
+
+  group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  groupId Int
 }
 
 model Group {
@@ -120,6 +123,7 @@ model Group {
   weekdaySubjects   WeekdaySubject[]
   dateTimetables    DateTimetable[]
   dateSubjects      DateSubject[]
+  subject           Subject[]
   homeworks         Homework[]
 }
 
