@@ -17,7 +17,7 @@ model WeekdayTimetable {
   subjectLength Int
   subjectBreak  Int
 
-  group   Group @relation(fields: [groupId], references: [id])
+  group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
   groupId Int
 
   subjects WeekdaySubject[]
@@ -35,10 +35,10 @@ model WeekdaySubject {
 
   classroom String? @db.VarChar(128)
 
-  group   Group @relation(fields: [groupId], references: [id])
+  group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
   groupId Int
 
-  timetable        WeekdayTimetable @relation(fields: [timetableWeekday], references: [weekday])
+  timetable        WeekdayTimetable @relation(fields: [timetableWeekday], references: [weekday], onDelete: Cascade)
   timetableWeekday Int
 
   @@unique([groupId, timetableWeekday, position])
@@ -51,7 +51,7 @@ model DateTimetable {
 
   note String? @db.VarChar(256)
 
-  group   Group @relation(fields: [groupId], references: [id])
+  group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
   groupId Int
 
   subjects DateSubject[]
@@ -71,10 +71,10 @@ model DateSubject {
 
   classroom String? @db.VarChar(128)
 
-  group   Group @relation(fields: [groupId], references: [id])
+  group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
   groupId Int
 
-  timetable     DateTimetable @relation(fields: [timetableDate], references: [date])
+  timetable     DateTimetable @relation(fields: [timetableDate], references: [date], onDelete: Cascade)
   timetableDate DateTime      @db.Date
 
   homework Homework?
@@ -83,13 +83,13 @@ model DateSubject {
 }
 
 model Homework {
-  group   Group @relation(fields: [groupId], references: [id])
+  group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
   groupId Int
 
-  timetable     DateTimetable @relation(fields: [timetableDate], references: [date])
+  timetable     DateTimetable @relation(fields: [timetableDate], references: [date], onDelete: Cascade)
   timetableDate DateTime      @db.Date
 
-  subject         DateSubject @relation(fields: [groupId, timetableDate, subjectPosition], references: [groupId, timetableDate, position])
+  subject         DateSubject @relation(fields: [groupId, timetableDate, subjectPosition], references: [groupId, timetableDate, position], onDelete: Cascade)
   subjectPosition Int
 
   content String @db.Text
@@ -136,10 +136,10 @@ model User {
 }
 
 model UserGroup {
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId BigInt
 
-  group   Group @relation(fields: [groupId], references: [id])
+  group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
   groupId Int
 
   role GroupRole @default(APPLICATION)
@@ -148,7 +148,7 @@ model UserGroup {
 }
 
 model UserSecret {
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId BigInt @unique
 
   secret String
