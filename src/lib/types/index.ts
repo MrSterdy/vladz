@@ -13,7 +13,7 @@ export type GroupUser = BaseUser & {
     role: "CURATOR" | "REDACTOR" | "STUDENT" | "APPLICATION";
 };
 
-export type Timetable<TSubject extends Subject = Subject> = {
+export type Timetable<TSubject extends DaySubject = DaySubject> = {
     offset: number;
 
     note: string | null;
@@ -35,6 +35,8 @@ export type DateTimetable = Timetable<DateSubject> & {
 };
 
 export type Subject = {
+    id: number;
+
     name: string;
 
     teacher: string | null;
@@ -42,7 +44,7 @@ export type Subject = {
     classroom: string | null;
 };
 
-export type DaySubject = Subject & { length: number; break: number; };
+export type DaySubject = Omit<Subject, "id"> & { length: number; break: number; };
 
 export type WeekdaySubject = DaySubject & { position: number };
 
