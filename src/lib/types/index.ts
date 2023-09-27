@@ -13,22 +13,22 @@ export type GroupUser = BaseUser & {
     role: "CURATOR" | "REDACTOR" | "STUDENT" | "APPLICATION";
 };
 
-export type Timetable = {
+export type Timetable<TSubject extends Subject = Subject> = {
     offset: number;
 
     note: string | null;
 
-    subjects: Subject[];
+    subjects: TSubject[];
 };
 
-export type WeekdayTimetable = Timetable & {
+export type WeekdayTimetable = Timetable<WeekdaySubject> & {
     weekday: number;
 
     subjectLength: number;
     subjectBreak: number;
 };
 
-export type DateTimetable = Timetable & {
+export type DateTimetable = Timetable<DateSubject> & {
     date: string;
 
     subjects: Subject[];
@@ -40,14 +40,14 @@ export type Subject = {
     length: number;
     break: number;
 
-    position: number;
-
     teacher: string | null;
 
     classroom: string | null;
-
-    homework?: string;
 };
+
+export type WeekdaySubject = Subject & { position: number };
+
+export type DateSubject = WeekdaySubject & { homework: string | null };
 
 export type TelegramUser = {
     id: bigint;

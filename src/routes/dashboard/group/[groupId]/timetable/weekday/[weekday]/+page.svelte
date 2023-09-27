@@ -6,7 +6,7 @@
     export let data: PageData;
 </script>
 
-<h1>{capitalize(["воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота"][parseInt($page.params["date"])])}</h1>
+<h1>{capitalize(["воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота"][parseInt($page.params["weekday"])])}</h1>
 <p>{data.timetable.note || "Нет примечания"}</p>
 <p>Начало занятий: спустя {data.timetable.offset} минут после полуночи</p>
 
@@ -16,10 +16,13 @@
             <li>
                 {subject.name} [{subject.classroom || "Нет кабинета"}] [{subject.teacher || "Нет учителя"}]
                 <p>{subject.length} длина, {subject.break} перемена</p>
-                <p>{subject.homework || "Нет дз"}</p>
             </li>
         {/each}
     </ul>
 {:else}
     <h2>Нет предметов</h2>
+{/if}
+
+{#if data.user.role !== "USER" || data.groupUser?.role === "CURATOR" || data.groupUser?.role === "REDACTOR"}
+    <a href="edit">Редактировать</a>
 {/if}

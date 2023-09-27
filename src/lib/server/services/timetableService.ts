@@ -20,7 +20,7 @@ export async function getDateTimetable(
                   length: subject.length,
                   break: subject.break,
                   position: subject.position,
-                  homework: subject.homework?.content,
+                  homework: subject.homework?.content ?? null,
                   teacher: subject.teacher,
                   classroom: subject.classroom
               }))
@@ -39,19 +39,65 @@ export async function getWeekdayTimetable(
 
     return timetable
         ? {
-            weekday,
-            offset: timetable.offset,
-            note: timetable.note,
-            subjects: timetable.subjects.map(subject => ({
-                name: subject.name,
-                length: subject.length,
-                break: subject.break,
-                position: subject.position,
-                teacher: subject.teacher,
-                classroom: subject.classroom
-            })),
-            subjectLength: timetable.subjectLength,
-            subjectBreak: timetable.subjectBreak
-        }
+              weekday,
+              offset: timetable.offset,
+              note: timetable.note,
+              subjects: timetable.subjects.map(subject => ({
+                  name: subject.name,
+                  length: subject.length,
+                  break: subject.break,
+                  position: subject.position,
+                  teacher: subject.teacher,
+                  classroom: subject.classroom
+              })),
+              subjectLength: timetable.subjectLength,
+              subjectBreak: timetable.subjectBreak
+          }
         : null;
+}
+
+export async function updateWeekdayTimetable(
+    groupId: number,
+    timetable: WeekdayTimetable
+) {
+    await prisma.weekdayTimetable.upsert({
+        where: { weekday: timetable.weekday },
+        update: {
+            offset: timetable.offset,
+            subjectLength: timetable.subjectLength,
+            subjectBreak: timetable.subjectBreak,
+            note: timetable.note,
+            subjects: {
+                deleteMany: { timetableWeekday: timetable.weekday },
+                create: timetable.subjects.map(subject => ({
+                    name: subject.name,
+                    length: subject.length,
+                    break: subject.break,
+                    position: subject.position,
+                    teacher: subject.teacher,
+                    classroom: subject.classroom,
+                    groupId
+                }))
+            }
+        },
+        create: {
+            weekday: timetable.weekday,
+            offset: timetable.offset,
+            subjectLength: timetable.subjectLength,
+            subjectBreak: timetable.subjectBreak,
+            note: timetable.note,
+            subjects: {
+                create: timetable.subjects.map(subject => ({
+                    name: subject.name,
+                    length: subject.length,
+                    break: subject.break,
+                    position: subject.position,
+                    teacher: subject.teacher,
+                    classroom: subject.classroom,
+                    groupId
+                }))
+            },
+            groupId
+        }
+    });
 }
