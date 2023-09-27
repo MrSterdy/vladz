@@ -35,8 +35,6 @@ export type DateTimetable = Timetable<DateSubject> & {
 };
 
 export type Subject = {
-    id: number;
-
     name: string;
 
     teacher: string | null;
@@ -44,7 +42,7 @@ export type Subject = {
     classroom: string | null;
 };
 
-export type DaySubject = Omit<Subject, "id"> & { length: number; break: number; };
+export type DaySubject = Subject & { length: number; break: number; };
 
 export type WeekdaySubject = DaySubject & { position: number };
 

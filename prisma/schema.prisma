@@ -98,8 +98,6 @@ model Homework {
 }
 
 model Subject {
-  id Int @id @default(autoincrement())
-
   name String @db.VarChar(128)
 
   teacher String? @db.VarChar(256)
@@ -108,6 +106,8 @@ model Subject {
 
   group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
   groupId Int
+
+  @@unique([name, groupId])
 }
 
 model Group {
