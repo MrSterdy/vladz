@@ -12,3 +12,12 @@ export async function getHolidays(groupId: number) {
             } satisfies Holiday)
     );
 }
+
+export async function updateHolidays(groupId: number, holidays: Holiday[]) {
+    const deleteOperation = prisma.holiday.deleteMany({ where: { groupId } });
+    const createOperation = prisma.holiday.createMany({
+        data: holidays.map(holiday => ({ ...holiday, groupId }))
+    });
+
+    await prisma.$transaction([deleteOperation, createOperation]);
+}

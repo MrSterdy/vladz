@@ -15,3 +15,7 @@
 {:else}
     <h2>Нет каникул :(</h2>
 {/if}
+
+{#if data.user.role !== "USER" || data.groupUser?.role === "CURATOR" || data.groupUser?.role === "REDACTOR"}
+    <a href="edit">Редактировать</a>
+{/if}
