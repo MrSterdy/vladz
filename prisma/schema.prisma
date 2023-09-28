@@ -110,6 +110,16 @@ model Subject {
   @@unique([name, groupId])
 }
 
+model Holiday {
+  startDate DateTime
+  endDate   DateTime
+
+  group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  groupId Int
+
+  @@unique([startDate, endDate, groupId])
+}
+
 model Group {
   id Int @id @default(autoincrement())
 
@@ -124,6 +134,7 @@ model Group {
   dateSubjects      DateSubject[]
   subject           Subject[]
   homeworks         Homework[]
+  holidays          Holiday[]
 }
 
 model User {

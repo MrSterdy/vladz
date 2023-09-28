@@ -48,6 +48,11 @@ export type WeekdaySubject = DaySubject & { position: number };
 
 export type DateSubject = WeekdaySubject & { homework: string | null };
 
+export type Holiday = {
+    startDate: string;
+    endDate: string;
+};
+
 export type TelegramUser = {
     id: bigint;
 
