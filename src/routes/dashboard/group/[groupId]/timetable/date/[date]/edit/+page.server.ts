@@ -1,11 +1,8 @@
 import type { Actions, PageServerLoad } from "./$types";
-import { error, fail, redirect } from "@sveltejs/kit";
+import { fail, redirect } from "@sveltejs/kit";
 import { z } from "zod";
 import { superValidate } from "sveltekit-superforms/server";
-import {
-    updateDateTimetable,
-    updateWeekdayTimetable
-} from "$lib/server/services/timetableService";
+import { updateDateTimetable } from "$lib/server/services/timetableService";
 
 const timetableSchema = z.object({
     offset: z.number().min(0).max(1440),
@@ -26,29 +23,20 @@ const timetableSchema = z.object({
 });
 
 export const load: PageServerLoad = async event => {
-    const { groupUser, dateTimetable, weekdayTimetable } = await event.parent();
+    const { dateTimetable, weekdayTimetable } = await event.parent();
 
-    if (
-        event.locals.user!.role !== "USER" ||
-        (groupUser &&
-            groupUser.role !== "STUDENT" &&
-            groupUser.role !== "APPLICATION")
-    ) {
-        const form = await superValidate(timetableSchema);
+    const form = await superValidate(timetableSchema);
 
-        form.data = dateTimetable ?? {
-            ...weekdayTimetable!,
-            subjects: weekdayTimetable!.subjects.map(subject => ({
-                ...subject,
-                homework:
-                    "homework" in subject ? (subject.homework as string) : null
-            }))
-        };
+    form.data = dateTimetable ?? {
+        ...weekdayTimetable!,
+        subjects: weekdayTimetable!.subjects.map(subject => ({
+            ...subject,
+            homework:
+                "homework" in subject ? (subject.homework as string) : null
+        }))
+    };
 
-        return { form };
-    }
-
-    throw error(403);
+    return { form };
 };
 
 export const actions: Actions = {
@@ -58,10 +46,9 @@ export const actions: Actions = {
             return fail(400, { form });
         }
 
-        const groupId = parseInt(event.params.groupId);
         const date = new Date(event.params.date).toISOString();
 
-        await updateDateTimetable(groupId, { date, ...form.data });
+        await updateDateTimetable(event.locals.group!.id, { date, ...form.data });
 
         throw redirect(303, "../");
     }

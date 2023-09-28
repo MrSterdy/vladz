@@ -12,16 +12,10 @@ const updateGroupUserSchema = z.object({
     id: z.bigint()
 });
 
-export const load: PageServerLoad = async event => {
-    const { groupUser } = await event.parent();
+export const load: PageServerLoad = async () => {
+    const form = await superValidate(updateGroupUserSchema);
 
-    if (event.locals.user!.role !== "USER" || groupUser?.role === "CURATOR") {
-        const form = await superValidate(updateGroupUserSchema);
-
-        return { form };
-    }
-
-    throw error(403);
+    return { form };
 };
 
 export const actions: Actions = {
@@ -31,8 +25,7 @@ export const actions: Actions = {
             return fail(400, { form });
         }
 
-        const groupId = parseInt(event.params["groupId"]!);
-        const user = await getGroupUser(form.data.id, groupId);
+        const user = await getGroupUser(form.data.id, event.locals.group!.id);
         if (!user) {
             throw error(400);
         }
@@ -47,7 +40,7 @@ export const actions: Actions = {
 
         await updateGroupUserRole(
             user.id,
-            groupId,
+            event.locals.group!.id,
             user.role === "REDACTOR"
                 ? "CURATOR"
                 : user.role === "STUDENT"
@@ -63,8 +56,7 @@ export const actions: Actions = {
             return fail(400, { form });
         }
 
-        const groupId = parseInt(event.params["groupId"]!);
-        const user = await getGroupUser(form.data.id, groupId);
+        const user = await getGroupUser(form.data.id, event.locals.group!.id);
         if (!user) {
             throw error(400);
         }
@@ -79,7 +71,7 @@ export const actions: Actions = {
 
         await updateGroupUserRole(
             user.id,
-            groupId,
+            event.locals.group!.id,
             user.role === "CURATOR"
                 ? "REDACTOR"
                 : user.role === "REDACTOR"
@@ -95,7 +87,7 @@ export const actions: Actions = {
             return fail(400, { form });
         }
 
-        await removeGroupUser(form.data.id, parseInt(event.params["groupId"]!));
+        await removeGroupUser(form.data.id, event.locals.group!.id);
 
         return { form };
     }

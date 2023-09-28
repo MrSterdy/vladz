@@ -12,13 +12,11 @@ export const load: LayoutServerLoad = async event => {
         throw error(400, { message: "Неправильный формат даты" });
     }
 
-    const groupId = parseInt(event.params.groupId);
-
     const date = new Date(timestamp);
 
     const [dateTimetable, weekdayTimetable] = await Promise.all([
-        getDateTimetable(date.toISOString(), groupId),
-        getWeekdayTimetable(date.getDay(), groupId)
+        getDateTimetable(date.toISOString(), event.locals.group!.id),
+        getWeekdayTimetable(date.getDay(), event.locals.group!.id)
     ]);
 
     if (!dateTimetable && !weekdayTimetable) {

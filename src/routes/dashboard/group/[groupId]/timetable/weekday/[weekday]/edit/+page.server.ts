@@ -1,5 +1,5 @@
 import type { Actions, PageServerLoad } from "./$types";
-import { error, fail, redirect } from "@sveltejs/kit";
+import { fail, redirect } from "@sveltejs/kit";
 import { z } from "zod";
 import { superValidate } from "sveltekit-superforms/server";
 import { updateWeekdayTimetable } from "$lib/server/services/timetableService";
@@ -20,22 +20,13 @@ const timetableSchema = z.object({
 });
 
 export const load: PageServerLoad = async event => {
-    const { groupUser, timetable } = await event.parent();
+    const { timetable } = await event.parent();
 
-    if (
-        event.locals.user!.role !== "USER" ||
-        (groupUser &&
-            groupUser.role !== "STUDENT" &&
-            groupUser.role !== "APPLICATION")
-    ) {
-        const form = await superValidate(timetableSchema);
+    const form = await superValidate(timetableSchema);
 
-        form.data = timetable;
+    form.data = timetable;
 
-        return { form };
-    }
-
-    throw error(403);
+    return { form };
 };
 
 export const actions: Actions = {
@@ -45,10 +36,9 @@ export const actions: Actions = {
             return fail(400, { form });
         }
 
-        const groupId = parseInt(event.params.groupId);
         const weekday = parseInt(event.params.weekday);
 
-        await updateWeekdayTimetable(groupId, {
+        await updateWeekdayTimetable(event.locals.group!.id, {
             weekday,
             note: form.data.note ?? null,
             offset: form.data.offset,

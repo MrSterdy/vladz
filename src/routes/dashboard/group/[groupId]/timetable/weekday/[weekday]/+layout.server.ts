@@ -9,9 +9,10 @@ export const load: LayoutServerLoad = async event => {
         throw error(400);
     }
 
-    const groupId = parseInt(event.params.groupId);
-
-    const timetable = (await getWeekdayTimetable(weekday, groupId)) ?? {
+    const timetable = (await getWeekdayTimetable(
+        weekday,
+        event.locals.group!.id
+    )) ?? {
         offset: 0,
         subjectBreak: 0,
         subjectLength: 0,

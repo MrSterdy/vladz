@@ -1,10 +1,6 @@
-import {
-    redirect,
-    type RequestEvent,
-    type Actions,
-    fail,
-    error
-} from "@sveltejs/kit";
+import { redirect, fail } from "@sveltejs/kit";
+
+import type { PageServerLoad, Actions } from "./$types";
 
 import { z } from "zod";
 
@@ -16,7 +12,7 @@ const formSchema = z.object({
     last_name: z.string().max(64)
 });
 
-export async function load(event: RequestEvent) {
+export const load: PageServerLoad = async event => {
     if (event.locals.user) {
         throw redirect(303, "/dashboard");
     }
@@ -26,8 +22,12 @@ export async function load(event: RequestEvent) {
     return { form };
 }
 
-export const actions = {
+export const actions: Actions = {
     default: async event => {
+        if (event.locals.user) {
+            throw redirect(303, "/dashboard");
+        }
+
         const form = await superValidate(event.request, formSchema);
 
         if (!form.valid) {
@@ -43,4 +43,4 @@ export const actions = {
 
         throw redirect(303, "/dashboard");
     }
-} satisfies Actions;
+};

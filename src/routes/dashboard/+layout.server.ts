@@ -1,11 +1,5 @@
-import { error, type RequestEvent } from "@sveltejs/kit";
+import type { LayoutServerLoad } from "./$types";
 
 export const trailingSlash = "always";
 
-export async function load(event: RequestEvent) {
-    if (!event.locals.user) {
-        throw error(401);
-    }
-
-    return { user: event.locals.user };
-}
+export const load: LayoutServerLoad = event => ({ user: event.locals.user });

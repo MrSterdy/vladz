@@ -1,4 +1,5 @@
-import { type RequestEvent, type Actions, fail, error } from "@sveltejs/kit";
+import { fail, error } from "@sveltejs/kit";
+import type { PageServerLoad, Actions } from "./$types";
 import { z } from "zod";
 import { superValidate, message } from "sveltekit-superforms/server";
 
@@ -9,17 +10,17 @@ const inviteScheme = z.object({
     invite_code: z.string().length(16)
 });
 
-export async function load(event: RequestEvent) {
+export const load: PageServerLoad = async event => {
     const inviteForm = await superValidate(inviteScheme);
 
-    const getAll = event.locals.user?.role === "ADMIN" || event.locals.user?.role === "HELPER";
+    const getAll = event.locals.user!.role === "ADMIN" || event.locals.user!.role === "HELPER";
 
     const groups = getAll ? await getGroups() : await getUserGroups(event.locals.user!.id);
 
     return { groups, inviteForm };
 }
 
-export const actions = {
+export const actions: Actions = {
     join: async (event) => {
         const inviteForm = await superValidate(event.request, inviteScheme);
         if (!inviteForm.valid) {
@@ -40,10 +41,10 @@ export const actions = {
         return { inviteForm };
     },
     create: async (event) => {
-        if (event.locals.user?.role !== "ADMIN" && event.locals.user?.role !== "HELPER") {
+        if (event.locals.user!.role !== "ADMIN" && event.locals.user!.role !== "HELPER") {
             throw error(403);
         }
 
         await createGroup("Новая группа");
     }
-} satisfies Actions;
+};

@@ -1,7 +1,7 @@
 import type { Actions, PageServerLoad } from "./$types";
 import { z } from "zod";
 import { superValidate } from "sveltekit-superforms/server";
-import { error, fail, redirect } from "@sveltejs/kit";
+import { fail, redirect } from "@sveltejs/kit";
 import { updateSubjects } from "$lib/server/services/subjectService";
 
 const updateSubjectSchema = z.object({
@@ -13,22 +13,13 @@ const updateSubjectSchema = z.object({
 });
 
 export const load: PageServerLoad = async event => {
-    const { groupUser, subjects } = await event.parent();
+    const { subjects } = await event.parent();
 
-    if (
-        event.locals.user!.role !== "USER" ||
-        (groupUser &&
-            groupUser.role !== "STUDENT" &&
-            groupUser.role !== "APPLICATION")
-    ) {
-        const form = await superValidate(updateSubjectSchema);
+    const form = await superValidate(updateSubjectSchema);
 
-        form.data.subjects = subjects;
+    form.data.subjects = subjects;
 
-        return { form };
-    }
-
-    throw error(403);
+    return { form };
 };
 
 export const actions: Actions = {
@@ -38,7 +29,7 @@ export const actions: Actions = {
             return fail(400, { form });
         }
 
-        await updateSubjects(parseInt(event.params.groupId), form.data.subjects);
+        await updateSubjects(event.locals.group!.id, form.data.subjects);
 
         throw redirect(303, "../");
     }
