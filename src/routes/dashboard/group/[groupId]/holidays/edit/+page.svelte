@@ -9,7 +9,7 @@
     });
 
     function addHoliday() {
-        const today = new Date().toISOString();
+        const today = new Date().toISOString().split("T")[0];
 
         $form.holidays = [
             ...$form.holidays,
@@ -22,7 +22,7 @@
     }
 </script>
 
-<h1>Редактирование каникул</h1>
+<h1>Редактирование выходных</h1>
 
 <form method="post" use:enhance>
     <ul>
@@ -47,5 +47,5 @@
     </ul>
 
     <input type="submit" value="Сохранить" />
-    <button type="button" on:click={addHoliday}>Создать предмет</button>
+    <button type="button" on:click={addHoliday}>Создать выходной</button>
 </form>

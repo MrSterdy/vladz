@@ -8,6 +8,7 @@
 <a href="composition">Участники</a>
 <a href="timetable">Расписание</a>
 <a href="subjects">Предметы</a>
+<a href="holidays">Выходные</a>
 
 {#if data.user.role === "ADMIN" || data.user.role === "HELPER"}
     <a href="edit">Редактировать</a>

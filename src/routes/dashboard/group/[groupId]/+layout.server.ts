@@ -3,5 +3,5 @@ import type { LayoutServerLoad } from "./$types";
 export const load: LayoutServerLoad = event => {
     const { group, groupUser } = event.locals;
 
-    return { group, groupUser };
+    return { group: group!, groupUser: groupUser! };
 };

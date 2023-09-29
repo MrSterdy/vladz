@@ -2,8 +2,9 @@ import type { Actions, PageServerLoad } from "./$types";
 
 import { z } from "zod";
 import { fail, redirect } from "@sveltejs/kit";
-import { superValidate } from "sveltekit-superforms/server";
+import { message, superValidate } from "sveltekit-superforms/server";
 import { updateHolidays } from "$lib/server/services/holidayService";
+import dayjs from "dayjs";
 
 const updateHolidaysSchema = z.object({
     holidays: z.array(
@@ -33,6 +34,15 @@ export const actions: Actions = {
         const form = await superValidate(event.request, updateHolidaysSchema);
         if (!form.valid) {
             return fail(400, { form });
+        }
+
+        for (const holiday of form.data.holidays) {
+            const startDate = dayjs(holiday.startDate);
+            const endDate = dayjs(holiday.endDate);
+
+            if (startDate.isAfter(endDate)) {
+                return message(form, "Конец каникул должен быть позже или равен началу каникул");
+            }
         }
 
         await updateHolidays(
