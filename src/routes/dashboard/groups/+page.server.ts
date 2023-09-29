@@ -7,7 +7,10 @@ import { addUserToGroup, getUserGroups } from "$lib/server/services/userGroupSer
 import { createGroup, getGroupByInviteCode, getGroups } from "$lib/server/services/groupService";
 
 const inviteScheme = z.object({
-    invite_code: z.string().length(16)
+    invite_code: z.string({
+        required_error: "Код приглашения не должен быть пустым",
+        invalid_type_error: "Код приглашения должен быть строкой"
+    }).length(16, "Код приглашения должен состоять из 16 символов")
 });
 
 export const load: PageServerLoad = async event => {

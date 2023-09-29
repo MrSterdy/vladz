@@ -6,21 +6,86 @@ import { updateDateTimetable } from "$lib/server/services/timetableService";
 import { parseDate } from "$lib/utils";
 
 const timetableSchema = z.object({
-    offset: z.number().min(0).max(1440),
-    note: z.string().max(1024).nullable(),
+    offset: z
+        .number({
+            invalid_type_error: "Начало занятий должно быть числом",
+            required_error: "Начало занятий должно быть числом"
+        })
+        .min(0, "Начало занятий не должно быть отрицательным")
+        .max(1440, "Начало занятий не должно превышать сутки (1440)"),
+    note: z
+        .string({ invalid_type_error: "Примечание должно быть строкой" })
+        .max(1024, "Примечание не должно превышать 1024 символов")
+        .nullable(),
     subjects: z
         .array(
             z.object({
-                name: z.string().max(64),
-                length: z.number().min(0).max(1024),
-                break: z.number().min(0).max(1024),
-                teacher: z.string().max(128).nullable(),
-                classroom: z.string().max(64).nullable(),
-                position: z.number().max(64),
-                homework: z.string().nullable()
-            })
+                name: z
+                    .string({
+                        required_error:
+                            "Название предмета не должно быть пустым",
+                        invalid_type_error:
+                            "Название предмета должно быть строкой"
+                    })
+                    .max(
+                        64,
+                        "Название предмета не должно превышать 64 символа"
+                    ),
+                length: z
+                    .number({
+                        required_error: "Длина предмета должна быть числом",
+                        invalid_type_error: "Длина предмета должна быть числом"
+                    })
+                    .min(0, "Длина предмета не должна быть отрицательной")
+                    .max(1024, "Длина предмета не должна превышать 1024 минут"),
+                break: z
+                    .number({
+                        required_error: "Перемена предмета должна быть числом",
+                        invalid_type_error:
+                            "Перемена предмета должна быть числом"
+                    })
+                    .min(0, "Перемена предмета не должна быть отрицательной")
+                    .max(
+                        1024,
+                        "Перемена предмета не должна превышать 1024 минут"
+                    ),
+                teacher: z
+                    .string({
+                        invalid_type_error: "Имя учителя должно быть строкой"
+                    })
+                    .max(128, "Имя учителя не должно превышать 128 символов")
+                    .nullable(),
+                classroom: z
+                    .string({
+                        invalid_type_error: "Помещение должно быть строкой"
+                    })
+                    .max(64, "Помещение не должно превышать 64 символа")
+                    .nullable(),
+                position: z
+                    .number({
+                        invalid_type_error:
+                            "Позиция предмета должна быть числом",
+                        required_error: "Позиция предмета должна быть числом"
+                    })
+                    .min(0, "Позиция предмета не должна быть отрицательной")
+                    .max(64, "Позиция предмета не должна быть больше 64"),
+                homework: z
+                    .string({
+                        invalid_type_error:
+                            "Домашнее задание должно быть строкой"
+                    })
+                    .max(
+                        2048,
+                        "Домашнее задание не должно превышать 2048 символов"
+                    )
+                    .nullable()
+            }),
+            {
+                invalid_type_error: "Предметы должны быть массивом",
+                required_error: "Предметы должны быть массивом"
+            }
         )
-        .max(64)
+        .max(64, "Предметов не должно быть более 64 штук")
 });
 
 export const load: PageServerLoad = async event => {
@@ -49,7 +114,7 @@ export const actions: Actions = {
 
         const date = parseDate(event.params.date);
         if (!date.isValid()) {
-            throw error(400);
+            throw error(400, { message: "Неправильный формат даты" });
         }
 
         await updateDateTimetable(event.locals.group!.id, {

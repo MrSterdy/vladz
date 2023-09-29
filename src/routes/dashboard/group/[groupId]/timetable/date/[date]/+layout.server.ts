@@ -11,7 +11,7 @@ import { parseDate } from "$lib/utils";
 export const load: LayoutServerLoad = async event => {
     const date = parseDate(event.params.date);
     if (!date.isValid()) {
-        throw error(400);
+        throw error(400, { message: "Неправильный формат даты" });
     }
 
     const [holidays, dateTimetable, weekdayTimetable] = await Promise.all([
@@ -32,7 +32,7 @@ export const load: LayoutServerLoad = async event => {
     });
 
     if (!dateTimetable && !weekdayTimetable) {
-        throw error(400);
+        throw error(400, { message: "Раписание не найдено" });
     }
 
     return { dayOff, dateTimetable, weekdayTimetable };

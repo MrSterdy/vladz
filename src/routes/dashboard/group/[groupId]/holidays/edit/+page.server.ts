@@ -11,12 +11,28 @@ const updateHolidaysSchema = z.object({
     holidays: z.array(
         z.object({
             startDate: z
-                .string()
-                .regex(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/),
+                .string({
+                    invalid_type_error: "Выходной должен быть строкой",
+                    required_error: "Выходной не должен быть пустым"
+                })
+                .regex(
+                    /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/,
+                    'Выходной должен соответствовать шаблону "YYYY-MM-DD"'
+                ),
             endDate: z
-                .string()
-                .regex(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/)
-        })
+                .string({
+                    invalid_type_error: "Выходной должен быть строкой",
+                    required_error: "Выходной не должен быть пустым"
+                })
+                .regex(
+                    /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/,
+                    'Выходной должен соответствовать шаблону "YYYY-MM-DD"'
+                )
+        }),
+        {
+            required_error: "Каникулы отсутствуют",
+            invalid_type_error: "Каникулы должны быть массивом"
+        }
     )
 });
 
@@ -42,12 +58,20 @@ export const actions: Actions = {
         for (const [index, holiday] of form.data.holidays.entries()) {
             const startDate = parseDate(holiday.startDate);
             if (!startDate.isValid()) {
-                return setError(form, `holidays[${index}].startDate`);
+                return setError(
+                    form,
+                    `holidays[${index}].startDate`,
+                    "Неправильный формат выходного"
+                );
             }
 
             const endDate = parseDate(holiday.endDate);
             if (!endDate.isValid()) {
-                return setError(form, `holidays[${index}].endDate`);
+                return setError(
+                    form,
+                    `holidays[${index}].endDate`,
+                    "Неправильный формат выходного"
+                );
             }
 
             if (startDate.isAfter(endDate)) {

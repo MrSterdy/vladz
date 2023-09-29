@@ -9,7 +9,10 @@ import {
 } from "$lib/server/services/userGroupService";
 
 const updateGroupUserSchema = z.object({
-    id: z.bigint()
+    id: z.bigint({
+        required_error: "ID пользователя не должно быть пустым",
+        invalid_type_error: "ID пользователя должно быть числом"
+    })
 });
 
 export const load: PageServerLoad = async () => {
@@ -27,15 +30,15 @@ export const actions: Actions = {
 
         const user = await getGroupUser(form.data.id, event.locals.group!.id);
         if (!user) {
-            throw error(400);
+            throw error(400, { message: "Пользователь не найден" });
         }
 
         if (user.role === "CURATOR") {
-            return message(form, "Не удалось повысить в роли пользователя");
+            return message(form, "Не удалось повысить пользователя в роли");
         }
 
         if (user.role === "REDACTOR" && event.locals.user!.role === "USER") {
-            return message(form, "Недостаточно прав", { status: 403 });
+            throw error(403, { message: "Недостаточно прав" });
         }
 
         await updateGroupUserRole(
@@ -58,15 +61,15 @@ export const actions: Actions = {
 
         const user = await getGroupUser(form.data.id, event.locals.group!.id);
         if (!user) {
-            throw error(400);
+            throw error(400, { message: "Пользователь не найден" });
         }
 
         if (user.role === "APPLICATION") {
-            return message(form, "Не удалось понизить в роли пользователя");
+            return message(form, "Не удалось понизить пользователя в роли");
         }
 
         if (user.role === "CURATOR" && event.locals.user!.role === "USER") {
-            return message(form, "Недостаточно прав", { status: 403 });
+            throw error(403, { message: "Недостаточно прав" });
         }
 
         await updateGroupUserRole(
@@ -85,6 +88,15 @@ export const actions: Actions = {
         const form = await superValidate(event.request, updateGroupUserSchema);
         if (!form.valid) {
             return fail(400, { form });
+        }
+
+        const user = await getGroupUser(form.data.id, event.locals.group!.id);
+        if (!user) {
+            throw error(400, { message: "Пользователь не найден" });
+        }
+
+        if (user.role === "CURATOR" && event.locals.user!.role === "USER") {
+            throw error(403, { message: "Недостаточно прав" });
         }
 
         await removeGroupUser(form.data.id, event.locals.group!.id);

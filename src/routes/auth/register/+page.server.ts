@@ -8,8 +8,16 @@ import { createUser } from "$lib/server/services/userService";
 import { superValidate } from "sveltekit-superforms/server";
 
 const formSchema = z.object({
-    first_name: z.string().max(64),
-    last_name: z.string().max(64)
+    first_name: z
+        .string({
+            required_error: "Имя не должно быть пустым",
+            invalid_type_error: "Имя должно быть строкой"
+        })
+        .max(64, "Имя не должно превышать 64 символов"),
+    last_name: z.string({
+        required_error: "Фамилия не должна быть пустой",
+        invalid_type_error: "Фамилия должно быть строкой"
+    }).max(64, "Фамилия не должна превышать 64 символов")
 });
 
 export const load: PageServerLoad = async event => {
@@ -20,7 +28,7 @@ export const load: PageServerLoad = async event => {
     const form = await superValidate(formSchema);
 
     return { form };
-}
+};
 
 export const actions: Actions = {
     default: async event => {
@@ -29,7 +37,6 @@ export const actions: Actions = {
         }
 
         const form = await superValidate(event.request, formSchema);
-
         if (!form.valid) {
             return fail(400, { form });
         }

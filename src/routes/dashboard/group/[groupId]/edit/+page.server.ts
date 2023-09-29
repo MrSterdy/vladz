@@ -5,7 +5,12 @@ import { superValidate } from "sveltekit-superforms/server";
 import { updateGroupName } from "$lib/server/services/groupService";
 
 const editSchema = z.object({
-    name: z.string().max(32)
+    name: z
+        .string({
+            invalid_type_error: "Имя группы должно быть строкой",
+            required_error: "Имя группы не должно быть пустым"
+        })
+        .max(32, "Имя группы не должно превышать 32 символов")
 });
 
 export const load: PageServerLoad = async event => {

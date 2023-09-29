@@ -6,7 +6,7 @@ import { getWeekdayTimetable } from "$lib/server/services/timetableService";
 export const load: LayoutServerLoad = async event => {
     const weekday = parseInt(event.params.weekday);
     if (isNaN(weekday) || weekday < 0 || weekday > 6) {
-        throw error(400);
+        throw error(400, { message: "Неправильный день недели" });
     }
 
     const timetable = (await getWeekdayTimetable(
