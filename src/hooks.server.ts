@@ -1,4 +1,4 @@
-import { redirect, type Handle, error } from "@sveltejs/kit";
+import { redirect, type Handle, error, type HandleServerError } from "@sveltejs/kit";
 
 import {
     AUTH_ACCESS_COOKIE_NAME,
@@ -170,6 +170,12 @@ export const authorizationHandler: Handle = async ({ event, resolve }) => {
 };
 
 export const handle = sequence(authenticationHandler, authorizationHandler);
+
+export const handleError: HandleServerError = ({ error }) => {
+    console.error(error);
+
+    return { message: "Произошла непредвиденная ошибка" };
+};
 
 createUser({
     id: BigInt(ADMIN_ID),
