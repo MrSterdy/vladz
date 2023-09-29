@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { PageData } from "./$types";
     import { superForm } from "sveltekit-superforms/client";
+    import { formatISOString } from "$lib/utils";
 
     export let data: PageData;
 
@@ -9,7 +10,7 @@
     });
 
     function addHoliday() {
-        const today = new Date().toISOString().split("T")[0];
+        const today = formatISOString(new Date());
 
         $form.holidays = [
             ...$form.holidays,

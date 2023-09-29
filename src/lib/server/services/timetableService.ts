@@ -1,5 +1,6 @@
 import type { DateTimetable, WeekdayTimetable } from "$lib/types";
 import prisma from "$lib/server/db/prisma";
+import { formatISOString } from "$lib/utils";
 
 export async function getDateTimetable(
     date: string,
@@ -12,7 +13,7 @@ export async function getDateTimetable(
 
     return timetable
         ? {
-              date: timetable.date.toISOString().split("T")[0],
+              date: formatISOString(timetable.date),
               offset: timetable.offset,
               note: timetable.note,
               subjects: timetable.subjects.map(subject => ({

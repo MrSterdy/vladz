@@ -1,5 +1,6 @@
 import prisma from "$lib/server/db/prisma";
 import type { Holiday } from "$lib/types";
+import { formatISOString } from "$lib/utils";
 
 export async function getHolidays(groupId: number) {
     const result = await prisma.holiday.findMany({ where: { groupId } });
@@ -7,8 +8,8 @@ export async function getHolidays(groupId: number) {
     return result.map(
         holiday =>
             ({
-                startDate: holiday.startDate.toISOString().split("T")[0],
-                endDate: holiday.endDate.toISOString().split("T")[0]
+                startDate: formatISOString(holiday.startDate),
+                endDate: formatISOString(holiday.endDate)
             } satisfies Holiday)
     );
 }

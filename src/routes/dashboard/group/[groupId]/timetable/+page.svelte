@@ -1,5 +1,6 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
+    import { formatISOString } from "$lib/utils";
 
     function getTimetable() {
         const input = document.getElementById("date-select") as HTMLInputElement;
@@ -8,6 +9,6 @@
     }
 </script>
 
-<input type="date" id="date-select" value="{new Date().toISOString().split('T')[0]}" />
+<input type="date" id="date-select" value={formatISOString(new Date)} />
 
 <button on:click={getTimetable}>Узнать расписание</button>
