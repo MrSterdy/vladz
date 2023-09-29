@@ -2,9 +2,10 @@ import type { Actions, PageServerLoad } from "./$types";
 
 import { z } from "zod";
 import { fail, redirect } from "@sveltejs/kit";
-import { message, superValidate } from "sveltekit-superforms/server";
+import { setError, superValidate } from "sveltekit-superforms/server";
 import { updateHolidays } from "$lib/server/services/holidayService";
-import dayjs from "dayjs";
+import { parseDate } from "$lib/utils";
+import type { Holiday } from "$lib/types";
 
 const updateHolidaysSchema = z.object({
     holidays: z.array(
@@ -36,22 +37,34 @@ export const actions: Actions = {
             return fail(400, { form });
         }
 
-        for (const holiday of form.data.holidays) {
-            const startDate = dayjs(holiday.startDate);
-            const endDate = dayjs(holiday.endDate);
+        const holidays: Holiday[] = [];
+
+        for (const [index, holiday] of form.data.holidays.entries()) {
+            const startDate = parseDate(holiday.startDate);
+            if (!startDate.isValid()) {
+                return setError(form, `holidays[${index}].startDate`);
+            }
+
+            const endDate = parseDate(holiday.endDate);
+            if (!endDate.isValid()) {
+                return setError(form, `holidays[${index}].endDate`);
+            }
 
             if (startDate.isAfter(endDate)) {
-                return message(form, "Конец каникул должен быть позже или равен началу каникул");
+                return setError(
+                    form,
+                    `holidays[${index}].startDate`,
+                    "Начало каникул должен быть раньше или равно началу каникул"
+                );
             }
+
+            holidays.push({
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString()
+            });
         }
 
-        await updateHolidays(
-            event.locals.group!.id,
-            form.data.holidays.map(holiday => ({
-                startDate: new Date(holiday.startDate).toISOString(),
-                endDate: new Date(holiday.endDate).toISOString()
-            }))
-        );
+        await updateHolidays(event.locals.group!.id, holidays);
 
         throw redirect(303, "../");
     }

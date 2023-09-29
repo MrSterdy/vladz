@@ -1,8 +1,9 @@
 import type { Actions, PageServerLoad } from "./$types";
-import { fail, redirect } from "@sveltejs/kit";
+import { error, fail, redirect } from "@sveltejs/kit";
 import { z } from "zod";
 import { superValidate } from "sveltekit-superforms/server";
 import { updateDateTimetable } from "$lib/server/services/timetableService";
+import { parseDate } from "$lib/utils";
 
 const timetableSchema = z.object({
     offset: z.number().min(0).max(1440),
@@ -46,9 +47,15 @@ export const actions: Actions = {
             return fail(400, { form });
         }
 
-        const date = new Date(event.params.date).toISOString();
+        const date = parseDate(event.params.date);
+        if (!date.isValid()) {
+            throw error(400);
+        }
 
-        await updateDateTimetable(event.locals.group!.id, { date, ...form.data });
+        await updateDateTimetable(event.locals.group!.id, {
+            date: date.toISOString(),
+            ...form.data
+        });
 
         throw redirect(303, "../");
     }
