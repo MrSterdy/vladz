@@ -35,10 +35,12 @@ export const authenticationHandler: Handle = async ({ event, resolve }) => {
         !telegramCookie ||
         !(telegramUser = telegramService.parseJwt(telegramCookie))
     ) {
-        const loginUrl = new URL("/auth/login", event.url.origin);
-        loginUrl.searchParams.set(REDIRECT_PARAM_NAME, event.url.toString());
-
-        throw redirect(303, loginUrl);
+        throw redirect(
+            303,
+            `/auth/login?${REDIRECT_PARAM_NAME}=${encodeURIComponent(
+                event.url.pathname + event.url.search
+            )}`
+        );
     }
 
     event.locals.telegramUser = telegramUser;
