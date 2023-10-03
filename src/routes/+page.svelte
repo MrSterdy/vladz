@@ -1,2 +1,2 @@
-<h1>Welcome to SvelteKit</h1>
-<a href="/dashboard">Dashboard</a>
+<h1>Добро пожаловать</h1>
+<a href="/dashboard">Личный кабинет</a>
