@@ -1,4 +1,4 @@
-FROM oven/bun:1.0.3 as build
+FROM node:18.16.1-alpine3.17 as build
 
 ARG DATABASE_URL
 ARG TELEGRAM_BOT_TOKEN
@@ -10,28 +10,26 @@ ENV ADMIN_ID=$ADMIN_ID
 
 WORKDIR /app
 
-COPY package.json .
-COPY bun.lockb .
+COPY package*.json ./
 
-RUN bun install
+RUN npm install
 
 COPY . .
 
-RUN bun run check
-RUN bun run build
+RUN npm run check
+RUN npm run build
 
-FROM oven/bun:1.0.3 as prod
+FROM node:18.16.1-alpine3.17 as prod
 
 ENV NODE_ENV=production
 
 WORKDIR /app
 
-COPY --from=build /app/package.json .
-COPY --from=build /app/bun.lockb .
+COPY --from=build /app/package*.json ./
 COPY --from=build /app/build .
 
-RUN bun install
+RUN npm install --omit=dev
 
 EXPOSE 3000
 
-CMD ["bun", "index.js"]
+CMD ["node", "index.js"]
