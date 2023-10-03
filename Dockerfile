@@ -17,8 +17,6 @@ RUN bun install
 
 COPY . .
 
-RUN bun run prisma:generate
-
 RUN bun run check
 RUN bun run build
 
