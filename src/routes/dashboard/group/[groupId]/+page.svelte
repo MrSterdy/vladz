@@ -5,6 +5,7 @@
 </script>
 
 <h1>{data.group.name}</h1>
+<h2>Код группы: {data.group.inviteCode}</h2>
 <a href="composition">Участники</a>
 <a href="timetable">Расписание</a>
 <a href="subjects">Предметы</a>
