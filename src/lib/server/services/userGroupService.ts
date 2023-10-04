@@ -75,3 +75,9 @@ export async function updateGroupUserRole(
 export async function addUserToGroup(userId: bigint, groupId: number) {
     await prisma.userGroup.create({ data: { userId, groupId } });
 }
+
+export async function removeUserFromGroup(userId: bigint, groupId: number) {
+    await prisma.userGroup.delete({
+        where: { userId_groupId: { userId, groupId } }
+    });
+}
