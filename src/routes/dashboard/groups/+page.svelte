@@ -18,7 +18,7 @@
         {...$constraints.invite_code}
     />
     {#if $message}<span>{$message}</span>{/if}
-    <input type="submit" />
+    <input type="submit" value="Присоединиться" />
 </form>
 
 {#if data.groups.length}
