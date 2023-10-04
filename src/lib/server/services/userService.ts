@@ -18,6 +18,19 @@ export async function getUserById(id: bigint): Promise<User | null> {
         : null;
 }
 
+export async function getManagement(): Promise<User[]> {
+    const result = await prisma.user.findMany({
+        where: { OR: [{ role: "ADMIN" }, { role: "HELPER" }] }
+    });
+
+    return result.map(user => ({
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        role: user.role
+    }));
+}
+
 export async function createUser(user: User) {
     await prisma.user.create({ data: user });
 }
