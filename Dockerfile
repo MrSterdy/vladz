@@ -26,6 +26,7 @@ ENV NODE_ENV=production
 WORKDIR /app
 
 COPY --from=build /app/package*.json ./
+COPY --from=build /app/prisma ./prisma
 COPY --from=build /app/build .
 
 RUN npm install --omit=dev
