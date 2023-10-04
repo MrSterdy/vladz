@@ -3,6 +3,7 @@
     import { capitalize, numberToTime, timeToNumber } from "$lib/utils";
     import { page } from "$app/stores";
     import { superForm } from "sveltekit-superforms/client";
+    import { weekdays } from "$lib/consts";
 
     export let data: PageData;
 
@@ -40,17 +41,7 @@
 </script>
 
 <h1>
-    {capitalize(
-        [
-            "воскресенье",
-            "понедельник",
-            "вторник",
-            "среда",
-            "четверг",
-            "пятница",
-            "суббота"
-        ][parseInt($page.params["weekday"])]
-    )}: Редактирование
+    {capitalize(weekdays[$page.params["weekday"]])}: Редактирование
 </h1>
 
 <form method="post" use:enhance>

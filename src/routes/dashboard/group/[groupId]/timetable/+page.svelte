@@ -1,6 +1,7 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
-    import { formatISOString } from "$lib/utils";
+    import { formatISOString, capitalize } from "$lib/utils";
+    import { weekdays } from "$lib/consts";
 
     function getTimetable() {
         const input = document.getElementById("date-select") as HTMLInputElement;
@@ -12,27 +13,11 @@
 <input type="date" id="date-select" value={formatISOString(new Date)} />
 
 <ul>
-    <li>
-        <a href="weekday/0">Воскресенье</a>
-    </li>
-    <li>
-        <a href="weekday/1">Понедельник</a>
-    </li>
-    <li>
-        <a href="weekday/2">Вторник</a>
-    </li>
-    <li>
-        <a href="weekday/3">Среда</a>
-    </li>
-    <li>
-        <a href="weekday/4">Четверг</a>
-    </li>
-    <li>
-        <a href="weekday/5">Пятница</a>
-    </li>
-    <li>
-        <a href="weekday/6">Cуббота</a>
-    </li>
+    {#each weekdays as weekday, i}
+        <li>
+            <a href="weekday/{i}">{capitalize(weekday)}</a>
+        </li>
+    {/each}
 </ul>
 
 <button on:click={getTimetable}>Узнать расписание</button>

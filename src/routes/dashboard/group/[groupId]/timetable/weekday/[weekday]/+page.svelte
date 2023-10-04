@@ -2,11 +2,12 @@
     import type { PageData } from "./$types";
     import { page } from "$app/stores";
     import { capitalize, numberToTime } from "$lib/utils";
+    import { weekdays } from "$lib/consts";
 
     export let data: PageData;
 </script>
 
-<h1>{capitalize(["воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота"][parseInt($page.params["weekday"])])}</h1>
+<h1>{capitalize(weekdays[parseInt($page.params["weekday"])])}</h1>
 <p>{data.timetable.note || "Нет примечания"}</p>
 <p>Начало занятий: {numberToTime(data.timetable.offset)}</p>
 
