@@ -71,6 +71,10 @@ export async function updateGroupName(groupId: number, groupName: string) {
     });
 }
 
+export async function deleteGroup(groupId: number) {
+    await prisma.group.delete({ where: { id: groupId } });
+}
+
 export async function createGroup(name: string): Promise<Group> {
     const result = await prisma.group.create({
         data: { name, inviteCode: crypto.randomBytes(8).toString("hex") }

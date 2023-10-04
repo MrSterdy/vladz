@@ -1,8 +1,8 @@
 import type { PageServerLoad, Actions } from "./$types";
-import { fail } from "@sveltejs/kit";
+import { fail, redirect } from "@sveltejs/kit";
 import { z } from "zod";
 import { superValidate } from "sveltekit-superforms/server";
-import { updateGroupName } from "$lib/server/services/groupService";
+import { deleteGroup, updateGroupName } from "$lib/server/services/groupService";
 
 const editSchema = z.object({
     name: z
@@ -22,7 +22,12 @@ export const load: PageServerLoad = async event => {
 };
 
 export const actions: Actions = {
-    default: async event => {
+    delete: async event => {
+        await deleteGroup(event.locals.group!.id);
+
+        throw redirect(303, "/dashboard/groups");
+    },
+    update: async event => {
         const form = await superValidate(event.request, editSchema);
 
         if (!form.valid) {
