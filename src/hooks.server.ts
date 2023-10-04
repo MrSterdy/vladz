@@ -101,14 +101,14 @@ export const authenticationHandler: Handle = async ({ event, resolve }) => {
         tokens = userService.generateJwt(user!);
 
         event.cookies.set(AUTH_ACCESS_COOKIE_NAME, tokens.accessToken!, {
-            secure: false,
+            secure: true,
             httpOnly: true,
             sameSite: "none",
             path: "/",
             domain: event.url.hostname
         });
         event.cookies.set(AUTH_REFRESH_COOKIE_NAME, tokens.refreshToken!, {
-            secure: false,
+            secure: true,
             httpOnly: true,
             sameSite: "none",
             path: "/",
