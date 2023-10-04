@@ -36,7 +36,10 @@ export async function createUser(user: User) {
 }
 
 export async function updateUser(user: Partial<User> & Pick<User, "id">) {
-    await prisma.user.update({ where: { id: user.id }, data: user });
+    const removeSecret = prisma.userSecret.delete({ where: { userId: user.id } });
+    const updateUser = prisma.user.update({ where: { id: user.id }, data: user });
+
+    await prisma.$transaction([removeSecret, updateUser]);
 }
 
 export async function getUserSecretById(
