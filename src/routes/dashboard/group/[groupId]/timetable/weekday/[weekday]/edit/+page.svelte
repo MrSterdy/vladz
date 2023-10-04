@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { PageData } from "./$types";
-    import { capitalize } from "$lib/utils";
+    import { capitalize, numberToTime, timeToNumber } from "$lib/utils";
     import { page } from "$app/stores";
     import { superForm } from "sveltekit-superforms/client";
 
@@ -9,6 +9,10 @@
     const { form, enhance, constraints } = superForm(data.form, {
         dataType: "json"
     });
+
+    function updateTime(this: HTMLInputElement) {
+        $form.offset = timeToNumber(this.value);
+    }
 
     function addSubject() {
         $form.subjects = [
@@ -51,11 +55,11 @@
 
 <form method="post" use:enhance>
     <input
+        on:change={updateTime}
         name="offset"
-        placeholder="Начало"
-        type="number"
-        bind:value={$form.offset}
-        {...$constraints.offset}
+        type="time"
+        value={numberToTime($form.offset)}
+        required
     />
     <input
         name="note"

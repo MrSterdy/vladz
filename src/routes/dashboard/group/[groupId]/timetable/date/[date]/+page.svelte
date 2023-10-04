@@ -2,7 +2,7 @@
     import type { PageData } from "./$types";
     import { page } from "$app/stores";
     import dayjs from "dayjs";
-    import { capitalize } from "$lib/utils";
+    import { capitalize, numberToTime } from "$lib/utils";
 
     export let data: PageData;
 </script>
@@ -17,8 +17,8 @@
             "Нет примечания"}
     </p>
     <p>
-        Начало занятий: спустя {data.dateTimetable?.offset ||
-            data.weekdayTimetable?.offset} минут после полуночи
+        Начало занятий: {numberToTime(data.dateTimetable?.offset ||
+        data.weekdayTimetable?.offset || 0)}
     </p>
 
     {#if data.dateTimetable?.subjects.length || data.weekdayTimetable?.subjects.length}
