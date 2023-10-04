@@ -103,14 +103,14 @@ export const authenticationHandler: Handle = async ({ event, resolve }) => {
         event.cookies.set(AUTH_ACCESS_COOKIE_NAME, tokens.accessToken!, {
             secure: false,
             httpOnly: true,
-            sameSite: true,
+            sameSite: "none",
             path: "/",
             domain: event.url.hostname
         });
         event.cookies.set(AUTH_REFRESH_COOKIE_NAME, tokens.refreshToken!, {
             secure: false,
             httpOnly: true,
-            sameSite: true,
+            sameSite: "none",
             path: "/",
             domain: event.url.hostname
         });

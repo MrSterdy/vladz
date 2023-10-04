@@ -22,7 +22,7 @@ export async function POST(event: RequestEvent) {
     event.cookies.set(AUTH_TELEGRAM_COOKIE_NAME, generateJwt(telegramInfo), {
         httpOnly: true,
         secure: false,
-        sameSite: true,
+        sameSite: "none",
         path: "/",
         domain: event.url.hostname
     });
