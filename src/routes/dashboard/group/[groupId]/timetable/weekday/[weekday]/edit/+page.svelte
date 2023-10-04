@@ -41,7 +41,7 @@
 </script>
 
 <h1>
-    {capitalize(weekdays[$page.params["weekday"]])}: Редактирование
+    {capitalize(weekdays[parseInt($page.params["weekday"])])}: Редактирование
 </h1>
 
 <form method="post" use:enhance>
