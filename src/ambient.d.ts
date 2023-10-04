@@ -45,6 +45,14 @@ interface TelegramMainButton extends MainButtonParams {
     setParams: (params: MainButtonParams) => void;
 }
 
+interface TelegramBackButton {
+    isVisible: boolean;
+    onClick(callback: () => void): void;
+    offClick(callback: () => void): void;
+    show(): void;
+    hide(): void;
+}
+
 type TelegramWebAppEvent =
     | "themeChanged"
     | "viewportChanged"
@@ -60,6 +68,7 @@ declare global {
         viewportHeight: number;
         viewportStableHeight: number;
         MainButton: TelegramMainButton;
+        BackButton: TelegramBackButton;
         onEvent: (
             eventType: TelegramWebAppEvent,
             eventHandler: () => unknown
