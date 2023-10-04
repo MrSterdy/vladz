@@ -1,4 +1,9 @@
-import { redirect, type Handle, error, type HandleServerError } from "@sveltejs/kit";
+import {
+    redirect,
+    type Handle,
+    error,
+    type HandleServerError
+} from "@sveltejs/kit";
 
 import {
     AUTH_ACCESS_COOKIE_NAME,
@@ -130,6 +135,12 @@ export const authenticationHandler: Handle = async ({ event, resolve }) => {
 
 export const authorizationHandler: Handle = async ({ event, resolve }) => {
     const path = event.url.pathname;
+    const user = event.locals.user!;
+
+    if (path.startsWith("/management/edit") && user.role !== "ADMIN") {
+        throw error(403, { message: "Доступ запрещен" });
+    }
+
     const groupId = Number(event.params["groupId"]);
 
     if (!path.startsWith("/dashboard/group") || isNaN(groupId)) {
@@ -140,8 +151,6 @@ export const authorizationHandler: Handle = async ({ event, resolve }) => {
     if (!group) {
         throw error(400, { message: "Группа не найдена" });
     }
-
-    const user = event.locals.user!;
 
     const groupUser = group.users.find(gu => gu.id === user.id);
     if (!groupUser && user.role === "USER") {
