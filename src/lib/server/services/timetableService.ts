@@ -62,7 +62,7 @@ export async function updateWeekdayTimetable(
     timetable: WeekdayTimetable
 ) {
     await prisma.weekdayTimetable.upsert({
-        where: { weekday: timetable.weekday },
+        where: { weekday_groupId: { weekday: timetable.weekday, groupId } },
         update: {
             offset: timetable.offset,
             subjectLength: timetable.subjectLength,
@@ -108,7 +108,7 @@ export async function updateDateTimetable(
     timetable: DateTimetable
 ) {
     await prisma.dateTimetable.upsert({
-        where: { date: timetable.date },
+        where: { groupId_date: { date: timetable.date, groupId } },
         update: {
             offset: timetable.offset,
             note: timetable.note,

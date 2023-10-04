@@ -8,7 +8,7 @@ datasource db {
 }
 
 model WeekdayTimetable {
-  weekday Int @unique
+  weekday Int
 
   offset Int
 
@@ -21,6 +21,8 @@ model WeekdayTimetable {
   groupId Int
 
   subjects WeekdaySubject[]
+
+  @@unique([weekday, groupId])
 }
 
 model WeekdaySubject {
@@ -38,14 +40,14 @@ model WeekdaySubject {
   group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
   groupId Int
 
-  timetable        WeekdayTimetable @relation(fields: [timetableWeekday], references: [weekday], onDelete: Cascade)
+  timetable        WeekdayTimetable @relation(fields: [timetableWeekday, groupId], references: [weekday, groupId], onDelete: Cascade)
   timetableWeekday Int
 
   @@unique([groupId, timetableWeekday, position])
 }
 
 model DateTimetable {
-  date DateTime @unique @db.Date
+  date DateTime @db.Date
 
   offset Int
 
@@ -57,6 +59,8 @@ model DateTimetable {
   subjects DateSubject[]
 
   homeworks Homework[]
+
+  @@unique([groupId, date])
 }
 
 model DateSubject {
@@ -74,7 +78,7 @@ model DateSubject {
   group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
   groupId Int
 
-  timetable     DateTimetable @relation(fields: [timetableDate], references: [date], onDelete: Cascade)
+  timetable     DateTimetable @relation(fields: [timetableDate, groupId], references: [date, groupId], onDelete: Cascade)
   timetableDate DateTime      @db.Date
 
   homework Homework?
@@ -86,7 +90,7 @@ model Homework {
   group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
   groupId Int
 
-  timetable     DateTimetable @relation(fields: [timetableDate], references: [date], onDelete: Cascade)
+  timetable     DateTimetable @relation(fields: [timetableDate, groupId], references: [date, groupId], onDelete: Cascade)
   timetableDate DateTime      @db.Date
 
   subject         DateSubject @relation(fields: [groupId, timetableDate, subjectPosition], references: [groupId, timetableDate, position], onDelete: Cascade)
