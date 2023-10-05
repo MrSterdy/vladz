@@ -23,11 +23,16 @@
 {#if data.timetable.subjects.length}
     <ul>
         {#each data.timetable.subjects as subject, i}
-            {@const offset = offsets[i]}
-            <li>
-                [{numberToTime(offset[0])} - {numberToTime(offset[1])}]
-                <h2>{subject.name} [{subject.classroom || "Нет кабинета"}] [{subject.teacher || "Нет учителя"}]</h2>
-            </li>
+            {#if subject.name}
+                {@const offset = offsets[i]}
+                <li>
+                    [{numberToTime(offset[0])} - {numberToTime(offset[1])}]
+                    <h2>
+                        {subject.name} [{subject.classroom || "Нет кабинета"}] [{subject.teacher ||
+                            "Нет учителя"}]
+                    </h2>
+                </li>
+            {/if}
         {/each}
     </ul>
 {:else}

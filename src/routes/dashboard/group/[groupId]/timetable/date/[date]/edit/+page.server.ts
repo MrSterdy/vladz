@@ -28,10 +28,8 @@ const timetableSchema = z.object({
                         invalid_type_error:
                             "Название предмета должно быть строкой"
                     })
-                    .max(
-                        64,
-                        "Название предмета не должно превышать 64 символа"
-                    ),
+                    .max(64, "Название предмета не должно превышать 64 символа")
+                    .nullable(),
                 length: z
                     .number({
                         required_error: "Длина предмета должна быть числом",
@@ -122,7 +120,17 @@ export const actions: Actions = {
 
         await updateDateTimetable(event.locals.group!.id, {
             date: date.toISOString(),
-            ...form.data
+            offset: form.data.offset,
+            note: form.data.note,
+            subjects: form.data.subjects.map(subject => ({
+                name: subject.name ?? "",
+                length: subject.length,
+                break: subject.break,
+                teacher: subject.teacher,
+                classroom: subject.classroom,
+                position: subject.position,
+                homework: subject.homework
+            }))
         });
 
         throw redirect(303, "../");

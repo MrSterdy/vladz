@@ -41,10 +41,8 @@ const timetableSchema = z.object({
                         invalid_type_error:
                             "Название предмета должно быть строкой"
                     })
-                    .max(
-                        64,
-                        "Название предмета не должно превышать 64 символа"
-                    ),
+                    .max(64, "Название предмета не должно превышать 64 символа")
+                    .nullable(),
                 length: z
                     .number({
                         required_error: "Длина предмета должна быть числом",
@@ -120,7 +118,7 @@ export const actions: Actions = {
             subjectBreak: form.data.subjectBreak,
             subjectLength: form.data.subjectLength,
             subjects: form.data.subjects.map(subject => ({
-                name: subject.name,
+                name: subject.name ?? "",
                 length: subject.length,
                 break: subject.break,
                 teacher: subject.teacher ?? null,

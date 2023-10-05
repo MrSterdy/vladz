@@ -9,7 +9,9 @@
     let totalOffset =
         data.dateTimetable?.offset ?? data.weekdayTimetable?.offset ?? 0;
     const offsets = (
-        data.dateTimetable?.subjects ?? data.weekdayTimetable?.subjects ?? []
+        data.dateTimetable?.subjects ??
+        data.weekdayTimetable?.subjects ??
+        []
     ).map(subject => {
         const result = [totalOffset, totalOffset + subject.length];
 
@@ -37,15 +39,17 @@
     {#if data.dateTimetable?.subjects.length || data.weekdayTimetable?.subjects.length}
         <ul>
             {#each data.dateTimetable?.subjects ?? data.weekdayTimetable?.subjects ?? [] as subject, i}
-                {@const offset = offsets[i]}
-                <li>
-                    [{numberToTime(offset[0])} - {numberToTime(offset[1])}]
-                    {subject.name} [{subject.classroom || "Нет кабинета"}] [{subject.teacher ||
-                        "Нет учителя"}]
-                    {#if "homework" in subject && subject.homework}
-                        <p>{subject.homework}</p>
-                    {/if}
-                </li>
+                {#if subject.name}
+                    {@const offset = offsets[i]}
+                    <li>
+                        [{numberToTime(offset[0])} - {numberToTime(offset[1])}]
+                        {subject.name} [{subject.classroom || "Нет кабинета"}] [{subject.teacher ||
+                            "Нет учителя"}]
+                        {#if "homework" in subject && subject.homework}
+                            <p>{subject.homework}</p>
+                        {/if}
+                    </li>
+                {/if}
             {/each}
         </ul>
     {:else}
