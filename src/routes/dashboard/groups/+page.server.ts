@@ -1,4 +1,4 @@
-import { fail, error } from "@sveltejs/kit";
+import { fail, error, redirect } from "@sveltejs/kit";
 import type { PageServerLoad, Actions } from "./$types";
 import { z } from "zod";
 import { superValidate, message } from "sveltekit-superforms/server";
@@ -41,7 +41,7 @@ export const actions: Actions = {
 
         await addUserToGroup(event.locals.user!.id, group.id);
 
-        return { inviteForm };
+        throw redirect(303, `/dashboard/group/${group.id}`);
     },
     create: async (event) => {
         if (event.locals.user!.role !== "ADMIN" && event.locals.user!.role !== "HELPER") {
