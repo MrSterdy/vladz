@@ -47,7 +47,7 @@ export function generateJwt(user: TelegramUser) {
         )
     };
 
-    return jwt.sign(userInfo, TELEGRAM_BOT_TOKEN, { expiresIn: "5m" });
+    return jwt.sign(userInfo, TELEGRAM_BOT_TOKEN, { expiresIn: "1d" });
 }
 
 export function parseJwt(token: string) {
