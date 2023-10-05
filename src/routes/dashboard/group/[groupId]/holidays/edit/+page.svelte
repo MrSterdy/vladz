@@ -2,11 +2,27 @@
     import type { PageData } from "./$types";
     import { superForm } from "sveltekit-superforms/client";
     import { formatISOString } from "$lib/utils";
+    import { onDestroy, onMount } from "svelte";
 
     export let data: PageData;
 
     const { form, constraints, enhance } = superForm(data.form, {
         dataType: "json"
+    });
+
+    let formEl: HTMLFormElement;
+
+    const submitForm = () => formEl.requestSubmit();
+
+    onMount(() => {
+        window.Telegram.WebApp.MainButton.setText("СОХРАНИТЬ");
+        window.Telegram.WebApp.MainButton.show();
+        window.Telegram.WebApp.MainButton.onClick(submitForm);
+    });
+
+    onDestroy(() => {
+        window.Telegram.WebApp.MainButton.hide();
+        window.Telegram.WebApp.MainButton.offClick(submitForm);
     });
 
     function addHoliday() {
@@ -25,7 +41,7 @@
 
 <h1>Редактирование выходных</h1>
 
-<form method="post" use:enhance>
+<form method="post" bind:this={formEl} use:enhance>
     <ul>
         {#each $form.holidays as _, i}
             <li>
@@ -47,6 +63,5 @@
         {/each}
     </ul>
 
-    <input type="submit" value="Сохранить" />
     <button type="button" on:click={addHoliday}>Создать выходной</button>
 </form>

@@ -5,11 +5,27 @@
     import { superForm } from "sveltekit-superforms/client";
     import dayjs from "dayjs";
     import { numberToTime } from "$lib/utils/index.js";
+    import { onDestroy, onMount } from "svelte";
 
     export let data: PageData;
 
     const { form, enhance, constraints } = superForm(data.form, {
         dataType: "json"
+    });
+
+    let formEl: HTMLFormElement;
+
+    const submitForm = () => formEl.requestSubmit();
+
+    onMount(() => {
+        window.Telegram.WebApp.MainButton.setText("СОХРАНИТЬ");
+        window.Telegram.WebApp.MainButton.show();
+        window.Telegram.WebApp.MainButton.onClick(submitForm);
+    });
+
+    onDestroy(() => {
+        window.Telegram.WebApp.MainButton.hide();
+        window.Telegram.WebApp.MainButton.offClick(submitForm);
     });
 
     function updateTime(this: HTMLInputElement) {
@@ -46,7 +62,7 @@
     {capitalize(dayjs($page.params["date"]).format("MMMM D, YYYY"))}: Редактирование
 </h1>
 
-<form method="post" use:enhance>
+<form method="post" bind:this={formEl} use:enhance>
     <input
         on:change={updateTime}
         name="offset"
@@ -119,6 +135,4 @@
     </ul>
 
     <button type="button" on:click={addSubject}>Добавить предмет</button>
-
-    <input type="submit" value="Сохранить" />
 </form>

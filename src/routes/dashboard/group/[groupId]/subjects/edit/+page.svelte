@@ -1,11 +1,27 @@
 <script lang="ts">
     import type { PageData } from "./$types";
     import { superForm } from "sveltekit-superforms/client";
+    import { onDestroy, onMount } from "svelte";
 
     export let data: PageData;
 
     const { form, constraints, enhance } = superForm(data.form, {
         dataType: "json"
+    });
+
+    let formEl: HTMLFormElement;
+
+    const submitForm = () => formEl.requestSubmit();
+
+    onMount(() => {
+        window.Telegram.WebApp.MainButton.setText("СОХРАНИТЬ");
+        window.Telegram.WebApp.MainButton.show();
+        window.Telegram.WebApp.MainButton.onClick(submitForm);
+    });
+
+    onDestroy(() => {
+        window.Telegram.WebApp.MainButton.hide();
+        window.Telegram.WebApp.MainButton.offClick(submitForm);
     });
 
     function addSubject() {
@@ -22,7 +38,7 @@
 
 <h1>Редактирование предметов</h1>
 
-<form method="post" use:enhance>
+<form method="post" bind:this={formEl} use:enhance>
     <ul>
         {#each $form.subjects as _, i}
             <li>
@@ -52,6 +68,5 @@
         {/each}
     </ul>
 
-    <input type="submit" value="Сохранить" />
     <button type="button" on:click={addSubject}>Создать предмет</button>
 </form>
