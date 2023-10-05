@@ -8,12 +8,17 @@
 
 <h1>{data.group.name}</h1>
 <h2>Код группы: {data.group.inviteCode}</h2>
-<a href="composition">Участники</a>
-<a href="timetable">Расписание</a>
-<a href="subjects">Предметы</a>
-<a href="holidays">Выходные</a>
 
 {#if data.groupUser}
+    {#if data.groupUser.role === "APPLICATION" && data.user.role === "USER"}
+        <h2>Ваша заявка рассматривается</h2>
+    {:else}
+        <a href="composition">Участники</a>
+        <a href="timetable">Расписание</a>
+        <a href="subjects">Предметы</a>
+        <a href="holidays">Выходные</a>
+    {/if}
+
     <form method="post" use:enhance>
         <input type="submit" value="Покинуть группу" />
     </form>
