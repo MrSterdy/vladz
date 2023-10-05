@@ -2,28 +2,18 @@
     import type { PageData } from "./$types";
     import { superForm } from "sveltekit-superforms/client";
     import { onDestroy, onMount } from "svelte";
+    import MainButton from "$lib/components/MainButton.svelte";
 
     export let data: PageData;
 
     const { form, errors, constraints, enhance } = superForm(data.form);
 
-    let formEl: HTMLFormElement;
+    let inputEl: HTMLInputElement;
 
-    const submitForm = () => formEl.requestSubmit();
-
-    onMount(() => {
-        window.Telegram.WebApp.MainButton.setText("ЗАРЕГИСТРИРОВАТЬСЯ");
-        window.Telegram.WebApp.MainButton.show();
-        window.Telegram.WebApp.MainButton.onClick(submitForm);
-    });
-
-    onDestroy(() => {
-        window.Telegram.WebApp.MainButton.hide();
-        window.Telegram.WebApp.MainButton.offClick(submitForm);
-    });
+    const submitForm = () => inputEl.click();
 </script>
 
-<form method="post" bind:this={formEl} use:enhance>
+<form method="post" use:enhance>
     <input
         name="first_name"
         aria-invalid={$errors.first_name ? "true" : undefined}
@@ -41,4 +31,7 @@
         bind:value={$form.last_name}
         {...$constraints.last_name}
     />
+
+    <input type="submit" bind:this={inputEl} class="hidden" />
+    <MainButton onClick={submitForm} text="ЗАРЕГИСТРИРОВАТЬСЯ" />
 </form>

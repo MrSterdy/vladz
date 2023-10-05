@@ -4,7 +4,7 @@
     import { page } from "$app/stores";
     import { superForm } from "sveltekit-superforms/client";
     import { weekdays } from "$lib/consts";
-    import { onDestroy, onMount } from "svelte";
+    import MainButton from "$lib/components/MainButton.svelte";
 
     export let data: PageData;
 
@@ -12,20 +12,9 @@
         dataType: "json"
     });
 
-    let formEl: HTMLFormElement;
+    let inputEl: HTMLInputElement;
 
-    const submitForm = () => formEl.requestSubmit();
-
-    onMount(() => {
-        window.Telegram.WebApp.MainButton.setText("СОХРАНИТЬ");
-        window.Telegram.WebApp.MainButton.show();
-        window.Telegram.WebApp.MainButton.onClick(submitForm);
-    });
-
-    onDestroy(() => {
-        window.Telegram.WebApp.MainButton.hide();
-        window.Telegram.WebApp.MainButton.offClick(submitForm);
-    });
+    const submitForm = () => inputEl.click();
 
     function updateTime(this: HTMLInputElement) {
         $form.offset = timeToNumber(this.value);
@@ -60,7 +49,7 @@
     {capitalize(weekdays[parseInt($page.params["weekday"])])}: Редактирование
 </h1>
 
-<form method="post" bind:this={formEl} use:enhance>
+<form method="post" use:enhance>
     <input
         on:change={updateTime}
         name="offset"
@@ -141,4 +130,7 @@
     </ul>
 
     <button type="button" on:click={addSubject}>Добавить предмет</button>
+
+    <input type="submit" bind:this={inputEl} class="hidden" />
+    <MainButton onClick={submitForm} text="СОХРАНИТЬ" />
 </form>
