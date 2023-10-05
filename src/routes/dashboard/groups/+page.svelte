@@ -5,10 +5,10 @@
 
     export let data: PageData;
 
-    const { form, errors, constraints, enhance, message } = superForm(data.inviteForm);
+    const { form, errors, constraints, message } = superForm(data.inviteForm);
 </script>
 
-<form method="POST" action="?/join" use:enhance>
+<form method="POST" action="?/join">
     <input
         type="text"
         aria-invalid={$errors.invite_code ? "true" : undefined}
