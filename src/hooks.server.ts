@@ -160,6 +160,9 @@ export const authorizationHandler: Handle = async ({ event, resolve }) => {
     const groupPath = path.split(/^\/dashboard\/group\/\d+/)[1];
 
     if (
+        (groupPath !== "/" &&
+            user.role === "USER" &&
+            groupUser!.role === "APPLICATION") ||
         (groupPath.startsWith("/edit") && user.role === "USER") ||
         (groupPath.startsWith("/composition/edit") &&
             user.role === "USER" &&
