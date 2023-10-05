@@ -16,15 +16,17 @@ export async function getDateTimetable(
               date: formatISOString(timetable.date),
               offset: timetable.offset,
               note: timetable.note,
-              subjects: timetable.subjects.map(subject => ({
-                  name: subject.name,
-                  length: subject.length,
-                  break: subject.break,
-                  position: subject.position,
-                  homework: subject.homework?.content ?? null,
-                  teacher: subject.teacher,
-                  classroom: subject.classroom
-              }))
+              subjects: timetable.subjects
+                  .sort((a, b) => a.position - b.position)
+                  .map(subject => ({
+                      name: subject.name,
+                      length: subject.length,
+                      break: subject.break,
+                      position: subject.position,
+                      homework: subject.homework?.content ?? null,
+                      teacher: subject.teacher,
+                      classroom: subject.classroom
+                  }))
           }
         : null;
 }
@@ -43,14 +45,16 @@ export async function getWeekdayTimetable(
               weekday,
               offset: timetable.offset,
               note: timetable.note,
-              subjects: timetable.subjects.map(subject => ({
-                  name: subject.name,
-                  length: subject.length,
-                  break: subject.break,
-                  position: subject.position,
-                  teacher: subject.teacher,
-                  classroom: subject.classroom
-              })),
+              subjects: timetable.subjects
+                  .sort((a, b) => a.position - b.position)
+                  .map(subject => ({
+                      name: subject.name,
+                      length: subject.length,
+                      break: subject.break,
+                      position: subject.position,
+                      teacher: subject.teacher,
+                      classroom: subject.classroom
+                  })),
               subjectLength: timetable.subjectLength,
               subjectBreak: timetable.subjectBreak
           }
@@ -69,15 +73,14 @@ export async function updateWeekdayTimetable(
             subjectBreak: timetable.subjectBreak,
             note: timetable.note,
             subjects: {
-                deleteMany: { timetableWeekday: timetable.weekday },
+                deleteMany: { timetableWeekday: timetable.weekday, groupId },
                 create: timetable.subjects.map(subject => ({
                     name: subject.name,
                     length: subject.length,
                     break: subject.break,
                     position: subject.position,
                     teacher: subject.teacher,
-                    classroom: subject.classroom,
-                    groupId
+                    classroom: subject.classroom
                 }))
             }
         },
@@ -94,8 +97,7 @@ export async function updateWeekdayTimetable(
                     break: subject.break,
                     position: subject.position,
                     teacher: subject.teacher,
-                    classroom: subject.classroom,
-                    groupId
+                    classroom: subject.classroom
                 }))
             },
             groupId
@@ -113,7 +115,7 @@ export async function updateDateTimetable(
             offset: timetable.offset,
             note: timetable.note,
             subjects: {
-                deleteMany: { timetableDate: timetable.date },
+                deleteMany: { timetableDate: timetable.date, groupId },
                 create: timetable.subjects.map(subject => ({
                     name: subject.name,
                     length: subject.length,
@@ -138,8 +140,7 @@ export async function updateDateTimetable(
                                   }
                               }
                           }
-                        : {}),
-                    groupId
+                        : {})
                 }))
             }
         },
@@ -161,8 +162,7 @@ export async function updateDateTimetable(
                                   create: { content: subject.homework }
                               }
                           }
-                        : {}),
-                    groupId
+                        : {})
                 }))
             },
             groupId
