@@ -36,10 +36,11 @@ interface TelegramMainButton extends MainButtonParams {
     isProgressVisible: boolean;
     setText: (text: string) => void;
     onClick(callback: () => unknown): void;
-    show: () => voild;
-    hide: () => voild;
-    enable: () => voild;
-    disable: () => voild;
+    offClick(callback: () => unknown): void;
+    show: () => void;
+    hide: () => void;
+    enable: () => void;
+    disable: () => void;
     showProgress: (leaveActive: boolean) => void;
     hideProgress: () => void;
     setParams: (params: MainButtonParams) => void;
