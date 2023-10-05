@@ -4,7 +4,7 @@
 
     import "../app.css";
 
-    if (browser && $page.url.pathname === "/") {
+    $: if (browser && $page.url.pathname === "/") {
         window.Telegram.WebApp.BackButton.hide();
     } else if (browser) {
         window.Telegram.WebApp.BackButton.show();
