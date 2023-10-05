@@ -2,7 +2,7 @@ import prisma from "$lib/server/db/prisma";
 import type { Subject } from "$lib/types";
 
 export async function getSubjects(groupId: number): Promise<Subject[]> {
-    const result = await prisma.subject.findMany();
+    const result = await prisma.subject.findMany({ where: { groupId } });
 
     return result.map(subject => ({
         name: subject.name,
