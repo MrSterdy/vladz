@@ -5,6 +5,15 @@
     import { weekdays } from "$lib/consts";
 
     export let data: PageData;
+
+    let totalOffset = data.timetable.offset;
+    const offsets = data.timetable.subjects.map(subject => {
+        const result = [totalOffset, totalOffset + subject.length];
+
+        totalOffset += subject.length + subject.break;
+
+        return result;
+    });
 </script>
 
 <h1>{capitalize(weekdays[parseInt($page.params["weekday"])])}</h1>
@@ -13,10 +22,11 @@
 
 {#if data.timetable.subjects.length}
     <ul>
-        {#each data.timetable.subjects as subject}
+        {#each data.timetable.subjects as subject, i}
+            {@const offset = offsets[i]}
             <li>
-                {subject.name} [{subject.classroom || "Нет кабинета"}] [{subject.teacher || "Нет учителя"}]
-                <p>{subject.length} длина, {subject.break} перемена</p>
+                [{numberToTime(offset[0])} - {numberToTime(offset[1])}]
+                <h2>{subject.name} [{subject.classroom || "Нет кабинета"}] [{subject.teacher || "Нет учителя"}]</h2>
             </li>
         {/each}
     </ul>

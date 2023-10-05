@@ -5,6 +5,18 @@
     import { capitalize, numberToTime } from "$lib/utils";
 
     export let data: PageData;
+
+    let totalOffset =
+        data.dateTimetable?.offset ?? data.weekdayTimetable?.offset ?? 0;
+    const offsets = (
+        data.dateTimetable?.subjects ?? data.weekdayTimetable?.subjects ?? []
+    ).map(subject => {
+        const result = [totalOffset, totalOffset + subject.length];
+
+        totalOffset += subject.length + subject.break;
+
+        return result;
+    });
 </script>
 
 {#if data.dayOff}
@@ -17,17 +29,19 @@
             "Нет примечания"}
     </p>
     <p>
-        Начало занятий: {numberToTime(data.dateTimetable?.offset ||
-        data.weekdayTimetable?.offset || 0)}
+        Начало занятий: {numberToTime(
+            data.dateTimetable?.offset || data.weekdayTimetable?.offset || 0
+        )}
     </p>
 
     {#if data.dateTimetable?.subjects.length || data.weekdayTimetable?.subjects.length}
         <ul>
-            {#each data.dateTimetable?.subjects ?? data.weekdayTimetable?.subjects ?? [] as subject}
+            {#each data.dateTimetable?.subjects ?? data.weekdayTimetable?.subjects ?? [] as subject, i}
+                {@const offset = offsets[i]}
                 <li>
+                    [{numberToTime(offset[0])} - {numberToTime(offset[1])}]
                     {subject.name} [{subject.classroom || "Нет кабинета"}] [{subject.teacher ||
                         "Нет учителя"}]
-                    <p>{subject.length} длина, {subject.break} перемена</p>
                     {#if "homework" in subject && subject.homework}
                         <p>{subject.homework}</p>
                     {/if}
