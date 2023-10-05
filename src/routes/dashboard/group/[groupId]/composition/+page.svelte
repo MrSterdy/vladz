@@ -1,5 +1,7 @@
 <script lang="ts">
     import type { PageData } from "./$types";
+    import { capitalize } from "$lib/utils";
+    import { groupUserRoles } from "$lib/consts";
 
     export let data: PageData;
 </script>
@@ -9,7 +11,7 @@
     <ul>
         {#each data.group.users as user}
             <li>
-                <h2>{user.lastName} {user.firstName} [{user.role}]</h2>
+                <h2>{user.lastName} {user.firstName} [{capitalize(groupUserRoles[user.role])}]</h2>
             </li>
         {/each}
     </ul>

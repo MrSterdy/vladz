@@ -1,3 +1,5 @@
+import type { userRoles, groupUserRoles } from "$lib/consts";
+
 type BaseUser = {
     id: bigint;
 
@@ -6,11 +8,11 @@ type BaseUser = {
 };
 
 export type User = BaseUser & {
-    role: "ADMIN" | "HELPER" | "USER";
+    role: keyof typeof userRoles;
 };
 
 export type GroupUser = BaseUser & {
-    role: "CURATOR" | "REDACTOR" | "STUDENT" | "APPLICATION";
+    role: keyof typeof groupUserRoles
 };
 
 export type Timetable<TSubject extends DaySubject = DaySubject> = {

@@ -12,4 +12,17 @@ export const weekdays = [
     "четверг",
     "пятница",
     "суббота"
-];
+] as const;
+
+export const userRoles = {
+    "ADMIN": "администратор",
+    "HELPER": "помощник",
+    "USER": "пользователь"
+} as const;
+
+export const groupUserRoles = {
+    "CURATOR": "куратор",
+    "REDACTOR": "редактор",
+    "STUDENT": "студент",
+    "APPLICATION": "заявка"
+} as const;

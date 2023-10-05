@@ -3,6 +3,8 @@
 
     import { enhance as kitEnhance } from "$app/forms";
     import { superForm } from "sveltekit-superforms/client";
+    import { capitalize } from "$lib/utils";
+    import { userRoles } from "$lib/consts";
 
     export let data: PageData;
 
@@ -29,9 +31,7 @@
             <li>
                 <h2>
                     {user.lastName}
-                    {user.firstName} [{user.role === "ADMIN"
-                        ? "Администратор"
-                        : "Помощник администратора"}]
+                    {user.firstName} [{capitalize(userRoles[user.role])}]
                 </h2>
 
                 {#if user.role === "HELPER"}

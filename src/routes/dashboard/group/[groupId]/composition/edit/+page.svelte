@@ -1,6 +1,8 @@
 <script lang="ts">
     import type { PageData } from "./$types";
     import { superForm } from "sveltekit-superforms/client";
+    import { capitalize } from "$lib/utils";
+    import { groupUserRoles } from "$lib/consts";
 
     export let data: PageData;
 
@@ -15,7 +17,7 @@
             <li>
                 <h2>
                     {groupUser.lastName}
-                    {groupUser.firstName} [{groupUser.role}]
+                    {groupUser.firstName} [{capitalize(groupUserRoles[groupUser.role])}]
                 </h2>
                 {#if groupUser.id !== data.groupUser?.id && (data.user.role !== "USER" || data.groupUser?.role === "CURATOR")}
                     {#if groupUser.role !== "CURATOR"}

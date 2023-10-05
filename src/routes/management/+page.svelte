@@ -1,5 +1,7 @@
 <script lang="ts">
     import type { PageData } from "./$types";
+    import { userRoles } from "$lib/consts";
+    import { capitalize } from "$lib/utils";
 
     export let data: PageData;
 </script>
@@ -14,9 +16,7 @@
             <li>
                 <h2>
                     {user.lastName}
-                    {user.firstName} [{user.role === "ADMIN"
-                        ? "Администратор"
-                        : "Помощник администратора"}]
+                    {user.firstName} [{capitalize(userRoles[user.role])}]
                 </h2>
             </li>
         {/each}
