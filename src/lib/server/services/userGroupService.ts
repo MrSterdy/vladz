@@ -22,20 +22,6 @@ export async function getUserGroups(userId: bigint): Promise<Group[]> {
     }));
 }
 
-export async function getGroupUsers(groupId: number): Promise<GroupUser[]> {
-    const result = await prisma.userGroup.findMany({
-        where: { groupId },
-        include: { user: true }
-    });
-
-    return result.map(ug => ({
-        id: ug.userId,
-        firstName: ug.user.firstName,
-        lastName: ug.user.lastName,
-        role: ug.role
-    }));
-}
-
 export async function getGroupUser(
     userId: bigint,
     groupId: number
