@@ -1,5 +1,6 @@
 <script lang="ts">
     import { onDestroy, onMount } from "svelte";
+    import { browser } from "$app/environment";
 
     interface $$Props {
         onClick: () => void;
@@ -22,7 +23,9 @@
     });
 
     onDestroy(() => {
-        window.Telegram.WebApp.MainButton.offClick(callback);
-        window.Telegram.WebApp.MainButton.hide();
+        if (browser) {
+            window.Telegram.WebApp.MainButton.offClick(callback);
+            window.Telegram.WebApp.MainButton.hide();
+        }
     });
 </script>
