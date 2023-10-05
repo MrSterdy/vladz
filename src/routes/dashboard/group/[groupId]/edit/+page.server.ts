@@ -36,6 +36,6 @@ export const actions: Actions = {
 
         await updateGroupName(event.locals.group!.id, form.data.name);
 
-        return { form };
+        throw redirect(303, "../");
     }
 };
