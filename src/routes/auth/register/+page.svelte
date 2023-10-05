@@ -1,19 +1,18 @@
 <script lang="ts">
     import type { PageData } from "./$types";
     import { superForm } from "sveltekit-superforms/client";
-    import { onDestroy, onMount } from "svelte";
     import MainButton from "$lib/components/MainButton.svelte";
 
     export let data: PageData;
 
     const { form, errors, constraints, enhance } = superForm(data.form);
 
-    let inputEl: HTMLInputElement;
+    let formEl: HTMLFormElement;
 
-    const submitForm = () => inputEl.click();
+    const submitForm = () => formEl.requestSubmit();
 </script>
 
-<form method="post" use:enhance>
+<form method="post" bind:this={formEl} use:enhance>
     <input
         name="first_name"
         aria-invalid={$errors.first_name ? "true" : undefined}
@@ -32,6 +31,5 @@
         {...$constraints.last_name}
     />
 
-    <input type="submit" bind:this={inputEl} class="hidden" />
     <MainButton onClick={submitForm} text="ЗАРЕГИСТРИРОВАТЬСЯ" />
 </form>

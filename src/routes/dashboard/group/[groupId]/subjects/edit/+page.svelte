@@ -9,9 +9,9 @@
         dataType: "json"
     });
 
-    let inputEl: HTMLInputElement;
+    let formEl: HTMLFormElement;
 
-    const submitForm = () => inputEl.click();
+    const submitForm = () => formEl.requestSubmit();
 
     function addSubject() {
         $form.subjects = [
@@ -27,7 +27,7 @@
 
 <h1>Редактирование предметов</h1>
 
-<form method="post" use:enhance>
+<form method="post" bind:this={formEl} use:enhance>
     <ul>
         {#each $form.subjects as _, i}
             <li>
@@ -59,6 +59,5 @@
 
     <button type="button" on:click={addSubject}>Создать предмет</button>
 
-    <input type="submit" bind:this={inputEl} class="hidden" />
     <MainButton onClick={submitForm} text="СОХРАНИТЬ" />
 </form>

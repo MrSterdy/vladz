@@ -7,14 +7,14 @@
 
     const { form, enhance, constraints } = superForm(data.form);
 
-    let inputEl: HTMLInputElement;
+    let formEl: HTMLFormElement;
 
-    const submitForm = () => inputEl.click();
+    const submitForm = () => formEl.requestSubmit();
 </script>
 
 <h1>Настройки аккаунта</h1>
 
-<form method="post" use:enhance>
+<form method="post" bind:this={formEl} use:enhance>
     <input
         name="first_name"
         placeholder="Имя"
@@ -29,6 +29,5 @@
         {...$constraints.last_name}
     />
 
-    <input type="submit" bind:this={inputEl} class="hidden" />
     <MainButton onClick={submitForm} text="СОХРАНИТЬ" />
 </form>

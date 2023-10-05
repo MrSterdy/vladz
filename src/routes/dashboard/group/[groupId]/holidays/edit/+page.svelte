@@ -10,9 +10,9 @@
         dataType: "json"
     });
 
-    let inputEl: HTMLInputElement;
+    let formEl: HTMLFormElement;
 
-    const submitForm = () => inputEl.click();
+    const submitForm = () => formEl.requestSubmit();
 
     function addHoliday() {
         const today = formatISOString(new Date());
@@ -30,7 +30,7 @@
 
 <h1>Редактирование выходных</h1>
 
-<form method="post" use:enhance>
+<form method="post" bind:this={formEl} use:enhance>
     <ul>
         {#each $form.holidays as _, i}
             <li>
@@ -54,6 +54,5 @@
 
     <button type="button" on:click={addHoliday}>Создать выходной</button>
 
-    <input type="submit" bind:this={inputEl} class="hidden" />
     <MainButton onClick={submitForm} text="СОХРАНИТЬ" />
 </form>

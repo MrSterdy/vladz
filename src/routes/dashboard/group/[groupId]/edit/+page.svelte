@@ -9,18 +9,17 @@
 
     const { form, constraints, enhance } = superForm(data.form);
 
-    let inputEl: HTMLInputElement;
+    let formEl: HTMLFormElement;
 
-    const submitForm = () => inputEl.click();
+    const submitForm = () => formEl.requestSubmit();
 </script>
 
-<form method="post" action="?/update" use:enhance>
+<form method="post" action="?/update" bind:this={formEl} use:enhance>
     <h1>Редактирование информации группы {data.group.name}</h1>
 
     <span>Название:</span>
     <input name="name" bind:value={$form.name} {...$constraints.name} />
 
-    <input type="submit" class="hidden" bind:this={inputEl} />
     <MainButton onClick={submitForm} text="СОХРАНИТЬ" />
 </form>
 

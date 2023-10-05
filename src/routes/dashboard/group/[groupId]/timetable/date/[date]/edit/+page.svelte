@@ -13,9 +13,9 @@
         dataType: "json"
     });
 
-    let inputEl: HTMLInputElement;
+    let formEl: HTMLFormElement;
 
-    const submitForm = () => inputEl.click();
+    const submitForm = () => formEl.requestSubmit();
 
     function updateTime(this: HTMLInputElement) {
         $form.offset = timeToNumber(this.value);
@@ -32,8 +32,8 @@
                 teacher: null,
                 position: $form.subjects.length
                     ? Math.max(
-                    ...$form.subjects.map(subject => subject.position)
-                ) + 1
+                          ...$form.subjects.map(subject => subject.position)
+                      ) + 1
                     : 1,
                 homework: null
             }
@@ -48,10 +48,11 @@
 </script>
 
 <h1>
-    {capitalize(dayjs($page.params["date"]).format("MMMM D, YYYY"))}: Редактирование
+    {capitalize(dayjs($page.params["date"]).format("MMMM D, YYYY"))}:
+    Редактирование
 </h1>
 
-<form method="post" use:enhance>
+<form method="post" bind:this={formEl} use:enhance>
     <input
         on:change={updateTime}
         name="offset"
@@ -125,6 +126,5 @@
 
     <button type="button" on:click={addSubject}>Добавить предмет</button>
 
-    <input type="submit" bind:this={inputEl} class="hidden" />
     <MainButton onClick={submitForm} text="СОХРАНИТЬ" />
 </form>
