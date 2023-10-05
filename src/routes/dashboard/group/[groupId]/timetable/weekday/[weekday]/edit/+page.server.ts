@@ -3,6 +3,7 @@ import { fail, redirect } from "@sveltejs/kit";
 import { z } from "zod";
 import { superValidate } from "sveltekit-superforms/server";
 import { updateWeekdayTimetable } from "$lib/server/services/timetableService";
+import { getSubjects } from "$lib/server/services/subjectService";
 
 const timetableSchema = z.object({
     offset: z
@@ -96,9 +97,11 @@ export const load: PageServerLoad = async event => {
 
     const form = await superValidate(timetableSchema);
 
+    const subjects = await getSubjects(event.locals.group!.id);
+
     form.data = timetable;
 
-    return { form };
+    return { form, subjects };
 };
 
 export const actions: Actions = {

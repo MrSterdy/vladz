@@ -4,6 +4,7 @@ import { z } from "zod";
 import { superValidate } from "sveltekit-superforms/server";
 import { updateDateTimetable } from "$lib/server/services/timetableService";
 import { parseDate } from "$lib/utils";
+import { getSubjects } from "$lib/server/services/subjectService";
 
 const timetableSchema = z.object({
     offset: z
@@ -102,7 +103,9 @@ export const load: PageServerLoad = async event => {
         }))
     };
 
-    return { form };
+    const subjects = await getSubjects(event.locals.group!.id);
+
+    return { form, subjects };
 };
 
 export const actions: Actions = {

@@ -45,6 +45,19 @@
             subject => subject.position !== position
         );
     }
+
+    function onSubjectUpdate(this: HTMLInputElement) {
+        const subject = data.subjects.find(s => s.name === this.value);
+        if (!subject) {
+            return;
+        }
+
+        const ul = this.closest("ul")!;
+        const teacherInput = ul.querySelector(".teacher") as HTMLInputElement;
+        const classroomInput = ul.querySelector(".classroom") as HTMLInputElement;
+        teacherInput.value = subject.teacher || "";
+        classroomInput.value = subject.classroom || "";
+    }
 </script>
 
 <h1>
@@ -53,6 +66,12 @@
 </h1>
 
 <form method="post" bind:this={formEl} use:enhance>
+    <datalist id="subjects">
+        {#each data.subjects as subject}
+            <option value={subject.name} />
+        {/each}
+    </datalist>
+
     <input
         on:change={updateTime}
         name="offset"
@@ -74,6 +93,8 @@
                 <input
                     placeholder="Название предмета"
                     type="text"
+                    list="subjects"
+                    on:change={onSubjectUpdate}
                     bind:value={$form.subjects[i].name}
                     {...$constraints.subjects?.name}
                 />
@@ -91,12 +112,14 @@
                 />
                 <input
                     placeholder="Учитель"
+                    class="teacher"
                     type="text"
                     bind:value={$form.subjects[i].teacher}
                     {...$constraints.subjects?.teacher}
                 />
                 <input
                     placeholder="Класс"
+                    class="classroom"
                     type="text"
                     bind:value={$form.subjects[i].classroom}
                     {...$constraints.subjects?.classroom}
