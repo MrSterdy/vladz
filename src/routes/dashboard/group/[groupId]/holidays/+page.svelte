@@ -1,5 +1,7 @@
 <script lang="ts">
     import type { PageData } from "./$types";
+    import { goto } from "$app/navigation";
+    import MainButton from "$lib/components/MainButton.svelte";
 
     export let data: PageData;
 </script>
@@ -17,5 +19,5 @@
 {/if}
 
 {#if data.user.role !== "USER" || data.groupUser?.role === "CURATOR" || data.groupUser?.role === "REDACTOR"}
-    <a href="edit">Редактировать</a>
+    <MainButton onClick={() => goto("edit")} text="РЕДАКТИРОВАТЬ" />
 {/if}

@@ -2,6 +2,8 @@
     import type { PageData } from "./$types";
 
     import { enhance } from "$app/forms";
+    import { goto } from "$app/navigation";
+    import MainButton from "$lib/components/MainButton.svelte";
 
     export let data: PageData;
 </script>
@@ -23,5 +25,5 @@
 {/if}
 
 {#if data.user.role === "ADMIN" || data.user.role === "HELPER"}
-    <a href="edit">Редактировать</a>
+    <MainButton onClick={() => goto("edit")} text="РЕДАКТИРОВАТЬ" />
 {/if}

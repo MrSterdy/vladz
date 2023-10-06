@@ -3,6 +3,8 @@
     import { page } from "$app/stores";
     import dayjs from "dayjs";
     import { capitalize, numberToTime } from "$lib/utils";
+    import { goto } from "$app/navigation";
+    import MainButton from "$lib/components/MainButton.svelte";
 
     export let data: PageData;
 
@@ -58,5 +60,5 @@
 {/if}
 
 {#if data.user.role !== "USER" || data.groupUser?.role === "CURATOR" || data.groupUser?.role === "REDACTOR"}
-    <a href="edit">Редактировать</a>
+    <MainButton onClick={() => goto("edit")} text="РЕДАКТИРОВАТЬ" />
 {/if}

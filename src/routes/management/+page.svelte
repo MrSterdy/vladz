@@ -2,6 +2,8 @@
     import type { PageData } from "./$types";
     import { userRoles } from "$lib/consts";
     import { capitalize } from "$lib/utils";
+    import { goto } from "$app/navigation";
+    import MainButton from "$lib/components/MainButton.svelte";
 
     export let data: PageData;
 </script>
@@ -26,5 +28,5 @@
 {/if}
 
 {#if data.user?.role === "ADMIN"}
-    <a href="/management/edit">Редактировать</a>
+    <MainButton onClick={() => goto("/management/edit")} text="РЕДАКТИРОВАТЬ" />
 {/if}
