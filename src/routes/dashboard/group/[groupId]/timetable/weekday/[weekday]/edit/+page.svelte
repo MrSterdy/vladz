@@ -44,17 +44,16 @@
         );
     }
 
-    function onSubjectUpdate(this: HTMLInputElement) {
-        const subject = data.subjects.find(s => s.name === this.value);
+    function updateSubject(subjectIndex: number) {
+        const newName = $form.subjects[subjectIndex]!.name;
+
+        const subject = data.subjects.find(s => s.name === newName);
         if (!subject) {
             return;
         }
 
-        const ul = this.closest("ul")!;
-        const teacherInput = ul.querySelector(".teacher") as HTMLInputElement;
-        const classroomInput = ul.querySelector(".classroom") as HTMLInputElement;
-        teacherInput.value = subject.teacher || "";
-        classroomInput.value = subject.classroom || "";
+        $form.subjects[subjectIndex]!.classroom = subject.classroom;
+        $form.subjects[subjectIndex]!.teacher = subject.teacher;
     }
 </script>
 
@@ -105,7 +104,7 @@
                     placeholder="Название предмета"
                     type="text"
                     list="subjects"
-                    on:change={onSubjectUpdate}
+                    on:change={() => updateSubject(i)}
                     bind:value={$form.subjects[i].name}
                     {...$constraints.subjects?.name}
                 />
