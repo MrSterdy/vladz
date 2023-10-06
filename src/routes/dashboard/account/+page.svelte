@@ -3,6 +3,8 @@
 
     import { userRoles } from "$lib/consts";
     import { capitalize } from "$lib/utils";
+    import { goto } from "$app/navigation";
+    import MainButton from "$lib/components/MainButton.svelte";
 
     export let data: PageData;
 </script>
@@ -14,4 +16,4 @@
 <span>Роль: {capitalize(userRoles[data.user.role])}</span>
 <span>ID: {data.user.id}</span>
 
-<a href="/dashboard/account/settings">Настройки</a>
+<MainButton onClick={() => goto("/dashboard/account/settings")} text="РЕДАКТИРОВАТЬ" />
