@@ -3,6 +3,9 @@ import { z } from "zod";
 import { message, superValidate } from "sveltekit-superforms/server";
 import { error, fail } from "@sveltejs/kit";
 import { getUserById, updateUser } from "$lib/server/services/userService";
+import { sendPromotionNotification } from "$lib/server/services/notificationService";
+import { userRoles } from "$lib/consts";
+import { capitalize } from "$lib/utils";
 
 const updateUserRoleSchema = z.object({
     id: z.bigint({
@@ -37,6 +40,8 @@ export const actions: Actions = {
 
         await updateUser(user);
 
+        await sendPromotionNotification(user.id, capitalize(userRoles[user.role]));
+
         return { form };
     },
     demote: async event => {
@@ -57,6 +62,8 @@ export const actions: Actions = {
         user.role = "USER";
 
         await updateUser(user);
+
+        await sendPromotionNotification(user.id, capitalize(userRoles[user.role]));
 
         return { form };
     }

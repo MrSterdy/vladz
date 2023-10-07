@@ -7,6 +7,13 @@ import {
     removeGroupUser,
     updateGroupUserRole
 } from "$lib/server/services/userGroupService";
+import {
+    sendApplicationStateNotification,
+    sendKickNotification,
+    sendPromotionNotification
+} from "$lib/server/services/notificationService";
+import { groupUserRoles } from "$lib/consts";
+import { capitalize } from "$lib/utils";
 
 const updateGroupUserSchema = z.object({
     id: z.bigint({
@@ -28,7 +35,9 @@ export const actions: Actions = {
             return fail(400, { form });
         }
 
-        const user = await getGroupUser(form.data.id, event.locals.group!.id);
+        const group = event.locals.group!;
+
+        const user = await getGroupUser(form.data.id, group.id);
         if (!user) {
             throw error(400, { message: "Пользователь не найден" });
         }
@@ -41,15 +50,24 @@ export const actions: Actions = {
             throw error(403, { message: "Недостаточно прав" });
         }
 
-        await updateGroupUserRole(
-            user.id,
-            event.locals.group!.id,
+        const newRole =
             user.role === "REDACTOR"
                 ? "CURATOR"
                 : user.role === "STUDENT"
                 ? "REDACTOR"
-                : "STUDENT"
-        );
+                : "STUDENT";
+
+        await updateGroupUserRole(user.id, group.id, newRole);
+
+        if (newRole === "STUDENT") {
+            await sendApplicationStateNotification(user.id, "accepted", group.name);
+        } else {
+            await sendPromotionNotification(
+                user.id,
+                capitalize(groupUserRoles[newRole]),
+                group.name
+            );
+        }
 
         return { form };
     },
@@ -59,12 +77,14 @@ export const actions: Actions = {
             return fail(400, { form });
         }
 
-        const user = await getGroupUser(form.data.id, event.locals.group!.id);
+        const group = event.locals.group!;
+
+        const user = await getGroupUser(form.data.id, group.id);
         if (!user) {
             throw error(400, { message: "Пользователь не найден" });
         }
 
-        if (user.role === "APPLICATION") {
+        if (user.role === "STUDENT") {
             return message(form, "Не удалось понизить пользователя в роли");
         }
 
@@ -72,14 +92,14 @@ export const actions: Actions = {
             throw error(403, { message: "Недостаточно прав" });
         }
 
-        await updateGroupUserRole(
+        const newRole = user.role === "CURATOR" ? "REDACTOR" : "STUDENT";
+
+        await updateGroupUserRole(user.id, group.id, newRole);
+
+        await sendPromotionNotification(
             user.id,
-            event.locals.group!.id,
-            user.role === "CURATOR"
-                ? "REDACTOR"
-                : user.role === "REDACTOR"
-                ? "STUDENT"
-                : "APPLICATION"
+            capitalize(groupUserRoles[newRole]),
+            group.name
         );
 
         return { form };
@@ -90,7 +110,9 @@ export const actions: Actions = {
             return fail(400, { form });
         }
 
-        const user = await getGroupUser(form.data.id, event.locals.group!.id);
+        const group = event.locals.group!;
+
+        const user = await getGroupUser(form.data.id, group.id);
         if (!user) {
             throw error(400, { message: "Пользователь не найден" });
         }
@@ -99,7 +121,17 @@ export const actions: Actions = {
             throw error(403, { message: "Недостаточно прав" });
         }
 
-        await removeGroupUser(form.data.id, event.locals.group!.id);
+        await removeGroupUser(user.id, group.id);
+
+        if (user.role === "APPLICATION") {
+            await sendApplicationStateNotification(
+                user.id,
+                "denied",
+                group.name
+            );
+        } else {
+            await sendKickNotification(user.id, group.name);
+        }
 
         return { form };
     }

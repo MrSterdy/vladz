@@ -5,6 +5,10 @@ import { superValidate, message } from "sveltekit-superforms/server";
 
 import { addUserToGroup, getUserGroups } from "$lib/server/services/userGroupService";
 import { createGroup, getGroupByInviteCode, getGroups } from "$lib/server/services/groupService";
+import {
+    sendApplicationNotifications,
+    sendApplicationStateNotification
+} from "$lib/server/services/notificationService";
 
 const inviteScheme = z.object({
     invite_code: z.string({
@@ -35,11 +39,18 @@ export const actions: Actions = {
             return message(inviteForm, "Группа с таким кодом приглашения не найдена");
         }
 
-        if (group.users.some(u => u.id === event.locals.user!.id)) {
+        const userId = event.locals.user!.id;
+
+        if (group.users.some(u => u.id === userId)) {
             return message(inviteForm, "Вы уже состоите в группе с таким кодом");
         }
 
-        await addUserToGroup(event.locals.user!.id, group.id);
+        await addUserToGroup(userId, group.id);
+
+        await Promise.all([
+            sendApplicationStateNotification(userId, "sent", group.name),
+            sendApplicationNotifications(group.id, group.name)
+        ]);
 
         throw redirect(303, `/dashboard/group/${group.id}`);
     },

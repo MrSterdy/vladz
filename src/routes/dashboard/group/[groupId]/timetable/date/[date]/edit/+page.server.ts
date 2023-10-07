@@ -5,6 +5,7 @@ import { superValidate } from "sveltekit-superforms/server";
 import { updateDateTimetable } from "$lib/server/services/timetableService";
 import { parseDate } from "$lib/utils";
 import { getSubjects } from "$lib/server/services/subjectService";
+import { sendTimetableNotifications } from "$lib/server/services/notificationService";
 
 const timetableSchema = z.object({
     offset: z
@@ -118,7 +119,9 @@ export const actions: Actions = {
             throw error(400, { message: "Неправильный формат даты" });
         }
 
-        await updateDateTimetable(event.locals.group!.id, {
+        const group = event.locals.group!;
+
+        await updateDateTimetable(group.id, {
             date: date.toISOString(),
             offset: form.data.offset,
             note: form.data.note,
@@ -132,6 +135,8 @@ export const actions: Actions = {
                 homework: subject.homework
             }))
         });
+
+        await sendTimetableNotifications(group.id, group.name, date);
 
         throw redirect(303, "../");
     }
