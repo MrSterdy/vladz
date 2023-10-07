@@ -6,6 +6,7 @@ import { z } from "zod";
 
 import { createUser } from "$lib/server/services/userService";
 import { superValidate } from "sveltekit-superforms/server";
+import { defaultSettings } from "$lib/defaults";
 
 const formSchema = z.object({
     first_name: z
@@ -45,7 +46,8 @@ export const actions: Actions = {
             id: event.locals.telegramUser!.id,
             firstName: form.data.first_name,
             lastName: form.data.last_name,
-            role: "USER"
+            role: "USER",
+            settings: defaultSettings
         });
 
         throw redirect(303, "/dashboard");

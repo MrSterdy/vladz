@@ -9,6 +9,13 @@ type BaseUser = {
 
 export type User = BaseUser & {
     role: keyof typeof userRoles;
+    settings: UserSettings;
+};
+
+export type UserSettings = {
+    notifications: {
+        timetable: boolean;
+    };
 };
 
 export type GroupUser = BaseUser & {

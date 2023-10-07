@@ -22,6 +22,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/ru";
 import { sequence } from "@sveltejs/kit/hooks";
 import { getGroupById } from "$lib/server/services/groupService";
+import { defaultSettings } from "$lib/defaults";
 import bot from "$lib/server/bot";
 
 export const authenticationHandler: Handle = async ({ event, resolve }) => {
@@ -194,7 +195,8 @@ createUser({
     id: BigInt(ADMIN_ID),
     firstName: "Влад",
     lastName: "Король",
-    role: "ADMIN"
+    role: "ADMIN",
+    settings: defaultSettings
 }).catch(() => updateUser({ id: BigInt(ADMIN_ID), role: "ADMIN" }));
 
 bot.launch();

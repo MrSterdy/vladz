@@ -11,10 +11,16 @@ const updateAccountSchema = z.object({
             invalid_type_error: "Имя должно быть строкой"
         })
         .max(64, "Имя не должно превышать 64 символов"),
-    last_name: z.string({
-        required_error: "Фамилия не должна быть пустой",
-        invalid_type_error: "Фамилия должно быть строкой"
-    }).max(64, "Фамилия не должна превышать 64 символов")
+    last_name: z
+        .string({
+            required_error: "Фамилия не должна быть пустой",
+            invalid_type_error: "Фамилия должно быть строкой"
+        })
+        .max(64, "Фамилия не должна превышать 64 символов"),
+    timetable_notifications: z.boolean({
+        invalid_type_error: "Настройка должная быть булевом",
+        required_error: "Настройка обязательна"
+    })
 });
 
 export const load: PageServerLoad = async event => {
@@ -23,6 +29,7 @@ export const load: PageServerLoad = async event => {
 
     form.data.first_name = user.firstName;
     form.data.last_name = user.lastName;
+    form.data.timetable_notifications = user.settings.notifications.timetable;
 
     return { form };
 };
@@ -37,6 +44,7 @@ export const actions: Actions = {
         const user = await getUserById(event.locals.user!.id);
         user!.firstName = form.data.first_name;
         user!.lastName = form.data.last_name;
+        user!.settings.notifications.timetable = form.data.timetable_notifications;
 
         await updateUser(user!);
 

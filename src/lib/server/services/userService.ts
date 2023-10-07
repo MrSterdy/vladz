@@ -3,17 +3,21 @@ import * as crypto from "crypto";
 
 import prisma from "$lib/server/db/prisma";
 
-import type { User } from "$lib/types";
+import type { User, UserSettings } from "$lib/types";
 
 export async function getUserById(id: bigint): Promise<User | null> {
-    const result = await prisma.user.findFirst({ where: { id } });
+    const result = await prisma.user.findFirst({
+        where: { id },
+        include: { userSettings: true }
+    });
 
     return result
         ? {
               id: result.id,
               firstName: result.firstName,
               lastName: result.lastName,
-              role: result.role
+              role: result.role,
+              settings: result.userSettings!.settings as UserSettings
           }
         : null;
 }
@@ -27,17 +31,39 @@ export async function getManagement(): Promise<User[]> {
         id: user.id,
         firstName: user.firstName,
         lastName: user.lastName,
-        role: user.role
+        role: user.role,
+        settings: null!
     }));
 }
 
 export async function createUser(user: User) {
-    await prisma.user.create({ data: user });
+    await prisma.user.create({
+        data: {
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            role: user.role,
+            userSettings: { create: { settings: user.settings } }
+        }
+    });
 }
 
 export async function updateUser(user: Partial<User> & Pick<User, "id">) {
-    const removeSecret = prisma.userSecret.deleteMany({ where: { userId: user.id } });
-    const updateUser = prisma.user.update({ where: { id: user.id }, data: user });
+    const removeSecret = prisma.userSecret.delete({
+        where: { userId: user.id }
+    });
+    const updateUser = prisma.user.update({
+        where: { id: user.id },
+        data: {
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            role: user.role,
+            userSettings: user.settings
+                ? { update: { settings: user.settings } }
+                : undefined
+        }
+    });
 
     await prisma.$transaction([removeSecret, updateUser]);
 }

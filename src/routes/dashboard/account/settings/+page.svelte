@@ -10,6 +10,18 @@
     let formEl: HTMLFormElement;
 
     const submitForm = () => formEl.requestSubmit();
+
+    function updateCheckboxSetting(
+        setting: {
+            [K in keyof typeof $form]-?: typeof $form[K] extends boolean
+                ? K
+                : never;
+        }[keyof typeof $form]
+    ) {
+        const input = document.querySelector(`input[name=${setting}]`) as HTMLInputElement;
+
+        $form[setting] = input.checked;
+    }
 </script>
 
 <h1>Настройки аккаунта</h1>
@@ -27,6 +39,15 @@
         placeholder="Фамилия"
         bind:value={$form.last_name}
         {...$constraints.last_name}
+    />
+
+    <span>Уведомлять об изменениях в расписаниях?</span>
+
+    <input
+        type="checkbox"
+        name="timetable_notifications"
+        checked={$form.timetable_notifications}
+        on:change={() => updateCheckboxSetting("timetable_notifications")}
     />
 
     <MainButton onClick={submitForm} text="СОХРАНИТЬ" />
