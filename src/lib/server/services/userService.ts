@@ -37,14 +37,16 @@ export async function getManagement(): Promise<User[]> {
 }
 
 export async function createUser(user: User) {
-    await prisma.user.create({
-        data: {
+    await prisma.user.upsert({
+        create: {
             id: user.id,
             firstName: user.firstName,
             lastName: user.lastName,
             role: user.role,
             userSettings: { create: { settings: user.settings } }
-        }
+        },
+        update: { role: user.role },
+        where: { id: user.id }
     });
 }
 

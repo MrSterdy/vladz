@@ -197,7 +197,7 @@ createUser({
     lastName: "Король",
     role: "ADMIN",
     settings: defaultSettings
-}).catch(() => updateUser({ id: BigInt(ADMIN_ID), role: "ADMIN" }));
+});
 
 bot.launch();
 
