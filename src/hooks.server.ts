@@ -22,6 +22,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/ru";
 import { sequence } from "@sveltejs/kit/hooks";
 import { getGroupById } from "$lib/server/services/groupService";
+import bot from "$lib/server/bot";
 
 export const authenticationHandler: Handle = async ({ event, resolve }) => {
     if (
@@ -195,5 +196,7 @@ createUser({
     lastName: "Король",
     role: "ADMIN"
 }).catch(() => updateUser({ id: BigInt(ADMIN_ID), role: "ADMIN" }));
+
+bot.launch();
 
 dayjs.locale("ru");
