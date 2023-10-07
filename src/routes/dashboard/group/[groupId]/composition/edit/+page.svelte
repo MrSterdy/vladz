@@ -31,7 +31,7 @@
                         </form>
                     {/if}
 
-                    {#if groupUser.role !== "APPLICATION" && (data.user.role !== "USER" || groupUser.role !== "CURATOR")}
+                    {#if groupUser.role !== "APPLICATION" && groupUser.role !== "STUDENT" && (data.user.role !== "USER" || groupUser.role !== "CURATOR")}
                         <form method="post" action="?/demote" use:enhance>
                             <input
                                 type="hidden"
