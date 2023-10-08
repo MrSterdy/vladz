@@ -14,7 +14,7 @@ import {
 import * as telegramService from "$lib/server/services/telegramService";
 import * as userService from "$lib/server/services/userService";
 import type { TelegramUser, User } from "$lib/types";
-import { createUser, updateUser } from "$lib/server/services/userService";
+import { createUser } from "$lib/server/services/userService";
 import { ADMIN_ID } from "$env/static/private";
 
 import dayjs from "dayjs";
@@ -191,7 +191,7 @@ export const handleError: HandleServerError = ({ error }) => {
     return { message: "Произошла непредвиденная ошибка" };
 };
 
-createUser({
+const userPromise = createUser({
     id: BigInt(ADMIN_ID),
     firstName: "Влад",
     lastName: "Король",
@@ -199,6 +199,11 @@ createUser({
     settings: defaultSettings
 });
 
-bot.launch();
+const botPromise = bot.launch();
+
+if (import.meta.env.DEV) {
+    userPromise.catch(console.error);
+    botPromise.catch(console.error);
+}
 
 dayjs.locale("ru");
