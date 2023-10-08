@@ -29,3 +29,7 @@
         }
     });
 </script>
+
+{#if import.meta.env.DEV}
+    <button on:click={onClick}>{text}</button>
+{/if}
