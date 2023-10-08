@@ -8,7 +8,9 @@ export async function getDateTimetable(
 ): Promise<DateTimetable | null> {
     const timetable = await prisma.dateTimetable.findFirst({
         where: { date, groupId },
-        include: { subjects: { include: { homework: true } } }
+        include: {
+            subjects: { include: { homeworkText: true, homeworkFiles: true } }
+        }
     });
 
     return timetable
@@ -19,13 +21,15 @@ export async function getDateTimetable(
               subjects: timetable.subjects
                   .sort((a, b) => a.position - b.position)
                   .map(subject => ({
-                      name: subject.name,
-                      length: subject.length,
-                      break: subject.break,
-                      position: subject.position,
-                      homework: subject.homework?.content ?? null,
-                      teacher: subject.teacher,
-                      classroom: subject.classroom
+                      ...subject,
+                      homework: {
+                          text: subject.homeworkText?.text ?? "",
+                          files: subject.homeworkFiles.map(file => ({
+                              name: file.name,
+                              url: file.url,
+                              type: file.type
+                          }))
+                      }
                   }))
           }
         : null;
@@ -45,6 +49,8 @@ export async function getWeekdayTimetable(
               weekday,
               offset: timetable.offset,
               note: timetable.note,
+              subjectLength: timetable.subjectLength,
+              subjectBreak: timetable.subjectBreak,
               subjects: timetable.subjects
                   .sort((a, b) => a.position - b.position)
                   .map(subject => ({
@@ -54,9 +60,7 @@ export async function getWeekdayTimetable(
                       position: subject.position,
                       teacher: subject.teacher,
                       classroom: subject.classroom
-                  })),
-              subjectLength: timetable.subjectLength,
-              subjectBreak: timetable.subjectBreak
+                  }))
           }
         : null;
 }
@@ -68,37 +72,16 @@ export async function updateWeekdayTimetable(
     await prisma.weekdayTimetable.upsert({
         where: { weekday_groupId: { weekday: timetable.weekday, groupId } },
         update: {
-            offset: timetable.offset,
-            subjectLength: timetable.subjectLength,
-            subjectBreak: timetable.subjectBreak,
-            note: timetable.note,
+            ...timetable,
             subjects: {
                 deleteMany: { timetableWeekday: timetable.weekday, groupId },
-                create: timetable.subjects.map(subject => ({
-                    name: subject.name,
-                    length: subject.length,
-                    break: subject.break,
-                    position: subject.position,
-                    teacher: subject.teacher,
-                    classroom: subject.classroom
-                }))
+                create: timetable.subjects
             }
         },
         create: {
-            weekday: timetable.weekday,
-            offset: timetable.offset,
-            subjectLength: timetable.subjectLength,
-            subjectBreak: timetable.subjectBreak,
-            note: timetable.note,
+            ...timetable,
             subjects: {
-                create: timetable.subjects.map(subject => ({
-                    name: subject.name,
-                    length: subject.length,
-                    break: subject.break,
-                    position: subject.position,
-                    teacher: subject.teacher,
-                    classroom: subject.classroom
-                }))
+                create: timetable.subjects
             },
             groupId
         }
@@ -112,20 +95,29 @@ export async function updateDateTimetable(
     await prisma.dateTimetable.upsert({
         where: { groupId_date: { date: timetable.date, groupId } },
         update: {
-            offset: timetable.offset,
-            note: timetable.note,
+            ...timetable,
             subjects: {
                 deleteMany: { timetableDate: timetable.date, groupId },
                 create: timetable.subjects.map(subject => ({
-                    name: subject.name,
-                    length: subject.length,
-                    break: subject.break,
-                    position: subject.position,
-                    teacher: subject.teacher,
-                    classroom: subject.classroom,
-                    ...(subject.homework
+                    ...subject,
+                    homework: undefined,
+                    homeworkFiles: {
+                        connectOrCreate: subject.homework.files.map(file => ({
+                            where: {
+                                groupId_timetableDate_subjectPosition_url_name_type:
+                                    {
+                                        groupId,
+                                        timetableDate: timetable.date,
+                                        subjectPosition: subject.position,
+                                        ...file
+                                    }
+                            },
+                            create: file
+                        }))
+                    },
+                    ...(subject.homework.text
                         ? {
-                              homework: {
+                              homeworkText: {
                                   connectOrCreate: {
                                       where: {
                                           groupId_timetableDate_subjectPosition:
@@ -136,7 +128,7 @@ export async function updateDateTimetable(
                                                       subject.position
                                               }
                                       },
-                                      create: { content: subject.homework! }
+                                      create: { text: subject.homework.text }
                                   }
                               }
                           }
@@ -145,27 +137,46 @@ export async function updateDateTimetable(
             }
         },
         create: {
-            date: timetable.date,
-            offset: timetable.offset,
-            note: timetable.note,
+            groupId,
+            ...timetable,
             subjects: {
                 create: timetable.subjects.map(subject => ({
-                    name: subject.name,
-                    length: subject.length,
-                    break: subject.break,
-                    position: subject.position,
-                    teacher: subject.teacher,
-                    classroom: subject.classroom,
-                    ...(subject.homework
+                    ...subject,
+                    homework: undefined,
+                    homeworkFiles: {
+                        connectOrCreate: subject.homework.files.map(file => ({
+                            where: {
+                                groupId_timetableDate_subjectPosition_url_name_type:
+                                    {
+                                        groupId,
+                                        timetableDate: timetable.date,
+                                        subjectPosition: subject.position,
+                                        ...file
+                                    }
+                            },
+                            create: file
+                        }))
+                    },
+                    ...(subject.homework.text
                         ? {
-                              homework: {
-                                  create: { content: subject.homework }
+                              homeworkText: {
+                                  connectOrCreate: {
+                                      where: {
+                                          groupId_timetableDate_subjectPosition:
+                                              {
+                                                  groupId,
+                                                  timetableDate: timetable.date,
+                                                  subjectPosition:
+                                                      subject.position
+                                              }
+                                      },
+                                      create: { text: subject.homework.text }
+                                  }
                               }
                           }
                         : {})
                 }))
-            },
-            groupId
+            }
         }
     });
 }

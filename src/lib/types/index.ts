@@ -19,7 +19,7 @@ export type UserSettings = {
 };
 
 export type GroupUser = BaseUser & {
-    role: keyof typeof groupUserRoles
+    role: keyof typeof groupUserRoles;
 };
 
 export type Timetable<TSubject extends DaySubject = DaySubject> = {
@@ -51,11 +51,16 @@ export type Subject = {
     classroom: string | null;
 };
 
-export type DaySubject = Subject & { length: number; break: number; };
+export type DaySubject = Subject & { length: number; break: number };
 
 export type WeekdaySubject = DaySubject & { position: number };
 
-export type DateSubject = WeekdaySubject & { homework: string | null };
+export type DateSubject = WeekdaySubject & {
+    homework: {
+        text: string;
+        files: { url: string; name: string; type: string }[];
+    };
+};
 
 export type Holiday = {
     startDate: string;

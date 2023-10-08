@@ -9,6 +9,7 @@ import {
     sendApplicationNotifications,
     sendApplicationStateNotification
 } from "$lib/server/services/notificationService";
+import { createBucket } from "$lib/server/services/fileService";
 
 const inviteScheme = z.object({
     invite_code: z.string({
@@ -59,6 +60,7 @@ export const actions: Actions = {
             throw error(403);
         }
 
-        await createGroup("Новая группа");
+        const group = await createGroup("Новая группа");
+        await createBucket(group.inviteCode);
     }
 };

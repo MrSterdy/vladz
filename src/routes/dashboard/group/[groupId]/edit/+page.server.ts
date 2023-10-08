@@ -2,7 +2,11 @@ import type { PageServerLoad, Actions } from "./$types";
 import { fail, redirect } from "@sveltejs/kit";
 import { z } from "zod";
 import { superValidate } from "sveltekit-superforms/server";
-import { deleteGroup, updateGroupName } from "$lib/server/services/groupService";
+import {
+    deleteGroup,
+    updateGroupName
+} from "$lib/server/services/groupService";
+import { deleteBucket } from "$lib/server/services/fileService";
 
 const editSchema = z.object({
     name: z
@@ -23,7 +27,10 @@ export const load: PageServerLoad = async event => {
 
 export const actions: Actions = {
     delete: async event => {
-        await deleteGroup(event.locals.group!.id);
+        const group = event.locals.group!;
+
+        await deleteGroup(group.id);
+        await deleteBucket(group.inviteCode);
 
         throw redirect(303, "/dashboard/groups");
     },

@@ -35,7 +35,8 @@
                           ...$form.subjects.map(subject => subject.position)
                       ) + 1
                     : 1,
-                homework: null
+                homeworkText: null,
+                homeworkFiles: null
             }
         ];
     }
@@ -129,12 +130,31 @@
                     bind:value={$form.subjects[i].position}
                     {...$constraints.subjects?.position}
                 />
-                <input
-                    placeholder="Домашнее задание"
-                    type="text"
-                    bind:value={$form.subjects[i].homework}
-                    {...$constraints.subjects?.homework}
-                />
+
+                <div>
+                    <h3>Домашнее задание</h3>
+
+                    <input
+                        type="text"
+                        placeholder="Текст"
+                        bind:value={$form.subjects[i].homeworkText}
+                        {...$constraints.subjects?.homeworkText}
+                    />
+
+                    {#if $form.subjects[i].homeworkFiles?.length}
+                        <ul>
+                            {#each $form.subjects[i].homeworkFiles ?? [] as file}
+                                <li>{file.name}</li>
+                            {/each}
+                        </ul>
+                    {/if}
+
+                    <input
+                        type="file"
+                        multiple
+                        name="files-{$form.subjects[i].position}"
+                    />
+                </div>
 
                 <button
                     type="button"

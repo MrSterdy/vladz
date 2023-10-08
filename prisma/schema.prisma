@@ -58,7 +58,8 @@ model DateTimetable {
 
   subjects DateSubject[]
 
-  homeworks Homework[]
+  homeworkTexts HomeworkText[]
+  homeworkFiles HomeworkFile[]
 
   @@unique([groupId, date])
 }
@@ -81,12 +82,13 @@ model DateSubject {
   timetable     DateTimetable @relation(fields: [timetableDate, groupId], references: [date, groupId], onDelete: Cascade)
   timetableDate DateTime      @db.Date
 
-  homework Homework?
+  homeworkText  HomeworkText?
+  homeworkFiles HomeworkFile[]
 
   @@unique([groupId, timetableDate, position])
 }
 
-model Homework {
+model HomeworkText {
   group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
   groupId Int
 
@@ -96,9 +98,26 @@ model Homework {
   subject         DateSubject @relation(fields: [groupId, timetableDate, subjectPosition], references: [groupId, timetableDate, position], onDelete: Cascade)
   subjectPosition Int
 
-  content String @db.Text
+  text String @db.Text
 
   @@unique([groupId, timetableDate, subjectPosition])
+}
+
+model HomeworkFile {
+  group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  groupId Int
+
+  timetable     DateTimetable @relation(fields: [timetableDate, groupId], references: [date, groupId], onDelete: Cascade)
+  timetableDate DateTime      @db.Date
+
+  subject         DateSubject @relation(fields: [groupId, timetableDate, subjectPosition], references: [groupId, timetableDate, position], onDelete: Cascade)
+  subjectPosition Int
+
+  url  String @db.Text
+  name String @db.VarChar(128)
+  type String @db.VarChar(128)
+
+  @@unique([groupId, timetableDate, subjectPosition, url, name, type])
 }
 
 model Subject {
@@ -137,7 +156,8 @@ model Group {
   dateTimetables    DateTimetable[]
   dateSubjects      DateSubject[]
   subject           Subject[]
-  homeworks         Homework[]
+  homeworkTexts     HomeworkText[]
+  homeworkFiles     HomeworkFile[]
   holidays          Holiday[]
 }
 
