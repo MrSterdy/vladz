@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 export function capitalize(input: string) {
     return input[0].toUpperCase() + input.slice(1);
@@ -14,6 +14,10 @@ export function formatISOString(input: Date | string) {
 
 export function parseDate(input: string) {
     return dayjs(input, "YYYY-MM-DD", true);
+}
+
+export function dateToString(input: Dayjs) {
+    return input.format("YYYY-MM-DD");
 }
 
 export function numberToTime(number: number) {

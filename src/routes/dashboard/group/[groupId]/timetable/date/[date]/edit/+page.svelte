@@ -65,7 +65,7 @@
     Редактирование
 </h1>
 
-<form method="post" bind:this={formEl} use:enhance>
+<form method="post" enctype="multipart/form-data" bind:this={formEl} use:enhance>
     <datalist id="subjects">
         {#each data.subjects as subject}
             <option value={subject.name} />
