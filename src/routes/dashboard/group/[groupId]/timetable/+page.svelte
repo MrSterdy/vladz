@@ -1,6 +1,7 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
-    import { formatISOString, capitalize } from "$lib/utils";
+    import { formatISOString } from "$lib/utils/time";
+    import { capitalize } from "$lib/utils/string";
     import { weekdays } from "$lib/consts";
 
     function getTimetable() {

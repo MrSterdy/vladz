@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { PageData } from "./$types";
-    import { capitalize, numberToTime, timeToNumber } from "$lib/utils";
+    import { capitalize } from "$lib/utils/string";
+    import { numberToTime, timeToNumber } from "$lib/utils/time";
     import { page } from "$app/stores";
     import { superForm } from "sveltekit-superforms/client";
     import { weekdays } from "$lib/consts";

@@ -1,6 +1,5 @@
 import type { PageServerLoad } from "./$types";
 import { type Actions, error, fail } from "@sveltejs/kit";
-import { z } from "zod";
 import { message, superValidate } from "sveltekit-superforms/server";
 import {
     getGroupUser,
@@ -13,24 +12,18 @@ import {
     sendPromotionNotification
 } from "$lib/server/services/notificationService";
 import { groupUserRoles } from "$lib/consts";
-import { capitalize } from "$lib/utils";
-
-const updateGroupUserSchema = z.object({
-    id: z.bigint({
-        required_error: "ID пользователя не должно быть пустым",
-        invalid_type_error: "ID пользователя должно быть числом"
-    })
-});
+import { capitalize } from "$lib/utils/string";
+import idSchema from "$lib/server/schemas/id";
 
 export const load: PageServerLoad = async () => {
-    const form = await superValidate(updateGroupUserSchema);
+    const form = await superValidate(idSchema);
 
     return { form };
 };
 
 export const actions: Actions = {
     promote: async event => {
-        const form = await superValidate(event.request, updateGroupUserSchema);
+        const form = await superValidate(event.request, idSchema);
         if (!form.valid) {
             return fail(400, { form });
         }
@@ -72,7 +65,7 @@ export const actions: Actions = {
         return { form };
     },
     demote: async event => {
-        const form = await superValidate(event.request, updateGroupUserSchema);
+        const form = await superValidate(event.request, idSchema);
         if (!form.valid) {
             return fail(400, { form });
         }
@@ -105,7 +98,7 @@ export const actions: Actions = {
         return { form };
     },
     remove: async event => {
-        const form = await superValidate(event.request, updateGroupUserSchema);
+        const form = await superValidate(event.request, idSchema);
         if (!form.valid) {
             return fail(400, { form });
         }

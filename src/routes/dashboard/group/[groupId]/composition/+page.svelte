@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { PageData } from "./$types";
-    import { capitalize } from "$lib/utils";
+    import { capitalize } from "$lib/utils/string";
     import { groupUserRoles } from "$lib/consts";
     import MainButton from "$lib/components/MainButton.svelte";
     import { goto } from "$app/navigation";

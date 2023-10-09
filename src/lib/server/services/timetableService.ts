@@ -1,6 +1,6 @@
 import type { DateTimetable, Holiday, WeekdayTimetable } from "$lib/types";
 import prisma from "$lib/server/db/prisma";
-import { formatISOString } from "$lib/utils";
+import { formatISOString } from "$lib/utils/time";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 
@@ -110,7 +110,9 @@ export async function updateDateTimetable(
     await prisma.dateTimetable.upsert({
         where: { groupId_date: { date: timetable.date, groupId } },
         update: {
-            ...timetable,
+            date: timetable.date,
+            note: timetable.note,
+            offset: timetable.offset,
             subjects: {
                 deleteMany: { timetableDate: timetable.date, groupId },
                 create: timetable.subjects.map(subject => ({
@@ -164,8 +166,12 @@ export async function updateDateTimetable(
             note: timetable.note,
             subjects: {
                 create: timetable.subjects.map(subject => ({
-                    ...subject,
-                    homework: undefined,
+                    name: subject.name,
+                    length: subject.length,
+                    break: subject.break,
+                    teacher: subject.teacher,
+                    classroom: subject.classroom,
+                    position: subject.position,
                     homeworkFiles: {
                         connectOrCreate: subject.homework.files.map(file => ({
                             where: {

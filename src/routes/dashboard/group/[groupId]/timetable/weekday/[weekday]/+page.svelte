@@ -1,7 +1,8 @@
 <script lang="ts">
     import type { PageData } from "./$types";
     import { page } from "$app/stores";
-    import { capitalize, numberToTime } from "$lib/utils";
+    import { numberToTime } from "$lib/utils/time";
+    import { capitalize } from "$lib/utils/string";
     import { weekdays } from "$lib/consts";
     import { goto } from "$app/navigation";
     import MainButton from "$lib/components/MainButton.svelte";

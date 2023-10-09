@@ -1,6 +1,5 @@
 import { fail, error, redirect } from "@sveltejs/kit";
 import type { PageServerLoad, Actions } from "./$types";
-import { z } from "zod";
 import { superValidate, message } from "sveltekit-superforms/server";
 
 import { addUserToGroup, getUserGroups } from "$lib/server/services/userGroupService";
@@ -10,16 +9,10 @@ import {
     sendApplicationStateNotification
 } from "$lib/server/services/notificationService";
 import { createBucket } from "$lib/server/services/fileService";
-
-const inviteScheme = z.object({
-    invite_code: z.string({
-        required_error: "Код приглашения не должен быть пустым",
-        invalid_type_error: "Код приглашения должен быть строкой"
-    }).length(16, "Код приглашения должен состоять из 16 символов")
-});
+import inviteSchema from "$lib/server/schemas/invite";
 
 export const load: PageServerLoad = async event => {
-    const inviteForm = await superValidate(inviteScheme);
+    const inviteForm = await superValidate(inviteSchema);
 
     const getAll = event.locals.user!.role === "ADMIN" || event.locals.user!.role === "HELPER";
 
@@ -30,7 +23,7 @@ export const load: PageServerLoad = async event => {
 
 export const actions: Actions = {
     join: async (event) => {
-        const inviteForm = await superValidate(event.request, inviteScheme);
+        const inviteForm = await superValidate(event.request, inviteSchema);
         if (!inviteForm.valid) {
             return fail(400, { inviteForm });
         }

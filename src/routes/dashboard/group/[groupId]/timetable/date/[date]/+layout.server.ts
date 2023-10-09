@@ -6,7 +6,7 @@ import {
     getWeekdayTimetable
 } from "$lib/server/services/timetableService";
 import { getHolidays } from "$lib/server/services/holidayService";
-import { parseDate } from "$lib/utils";
+import { parseDate } from "$lib/utils/time";
 
 export const load: LayoutServerLoad = async event => {
     const date = parseDate(event.params.date);

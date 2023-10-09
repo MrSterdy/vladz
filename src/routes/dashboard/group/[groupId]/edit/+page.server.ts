@@ -1,6 +1,5 @@
 import type { PageServerLoad, Actions } from "./$types";
 import { fail, redirect } from "@sveltejs/kit";
-import { z } from "zod";
 import { superValidate } from "sveltekit-superforms/server";
 import {
     deleteGroup,
@@ -8,17 +7,10 @@ import {
 } from "$lib/server/services/groupService";
 import { deleteBucket } from "$lib/server/services/fileService";
 
-const editSchema = z.object({
-    name: z
-        .string({
-            invalid_type_error: "Имя группы должно быть строкой",
-            required_error: "Имя группы не должно быть пустым"
-        })
-        .max(32, "Имя группы не должно превышать 32 символов")
-});
+import groupSchema from "$lib/server/schemas/group";
 
 export const load: PageServerLoad = async event => {
-    const form = await superValidate(editSchema);
+    const form = await superValidate(groupSchema);
 
     form.data.name = event.locals.group!.name;
 
@@ -35,7 +27,7 @@ export const actions: Actions = {
         throw redirect(303, "/dashboard/groups");
     },
     update: async event => {
-        const form = await superValidate(event.request, editSchema);
+        const form = await superValidate(event.request, groupSchema);
 
         if (!form.valid) {
             return fail(400, { form });

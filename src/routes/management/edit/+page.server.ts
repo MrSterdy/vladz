@@ -1,28 +1,21 @@
 import type { Actions, PageServerLoad } from "./$types";
-import { z } from "zod";
 import { message, superValidate } from "sveltekit-superforms/server";
 import { error, fail } from "@sveltejs/kit";
 import { getUserById, updateUser } from "$lib/server/services/userService";
 import { sendPromotionNotification } from "$lib/server/services/notificationService";
 import { userRoles } from "$lib/consts";
-import { capitalize } from "$lib/utils";
-
-const updateUserRoleSchema = z.object({
-    id: z.bigint({
-        required_error: "ID пользователя не должно быть пустым",
-        invalid_type_error: "ID пользователя должно быть числом"
-    })
-});
+import { capitalize } from "$lib/utils/string";
+import idSchema from "$lib/server/schemas/id";
 
 export const load: PageServerLoad = async () => {
-    const form = await superValidate(updateUserRoleSchema);
+    const form = await superValidate(idSchema);
 
     return { form };
 }
 
 export const actions: Actions = {
     promote: async event => {
-        const form = await superValidate(event.request, updateUserRoleSchema);
+        const form = await superValidate(event.request, idSchema);
         if (!form.valid) {
             return fail(400, { form });
         }
@@ -45,7 +38,7 @@ export const actions: Actions = {
         return { form };
     },
     demote: async event => {
-        const form = await superValidate(event.request, updateUserRoleSchema);
+        const form = await superValidate(event.request, idSchema);
         if (!form.valid) {
             return fail(400, { form });
         }

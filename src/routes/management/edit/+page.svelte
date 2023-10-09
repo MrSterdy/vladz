@@ -3,7 +3,7 @@
 
     import { enhance as kitEnhance } from "$app/forms";
     import { superForm } from "sveltekit-superforms/client";
-    import { capitalize } from "$lib/utils";
+    import { capitalize } from "$lib/utils/string";
     import { userRoles } from "$lib/consts";
 
     export let data: PageData;

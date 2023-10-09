@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { PageData } from "./$types";
     import { superForm } from "sveltekit-superforms/client";
-    import { capitalize } from "$lib/utils";
+    import { capitalize } from "$lib/utils/string";
     import { groupUserRoles } from "$lib/consts";
 
     export let data: PageData;

@@ -1,45 +1,16 @@
 import type { Actions, PageServerLoad } from "./$types";
 
-import { z } from "zod";
 import { fail, redirect } from "@sveltejs/kit";
 import { setError, superValidate } from "sveltekit-superforms/server";
 import { updateHolidays } from "$lib/server/services/holidayService";
-import { parseDate } from "$lib/utils";
+import { parseDate } from "$lib/utils/time";
 import type { Holiday } from "$lib/types";
-
-const updateHolidaysSchema = z.object({
-    holidays: z.array(
-        z.object({
-            startDate: z
-                .string({
-                    invalid_type_error: "Выходной должен быть строкой",
-                    required_error: "Выходной не должен быть пустым"
-                })
-                .regex(
-                    /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/,
-                    'Выходной должен соответствовать шаблону "YYYY-MM-DD"'
-                ),
-            endDate: z
-                .string({
-                    invalid_type_error: "Выходной должен быть строкой",
-                    required_error: "Выходной не должен быть пустым"
-                })
-                .regex(
-                    /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/,
-                    'Выходной должен соответствовать шаблону "YYYY-MM-DD"'
-                )
-        }),
-        {
-            required_error: "Каникулы отсутствуют",
-            invalid_type_error: "Каникулы должны быть массивом"
-        }
-    )
-});
+import holidaysSchema from "$lib/server/schemas/holidays";
 
 export const load: PageServerLoad = async event => {
     const { holidays } = await event.parent();
 
-    const form = await superValidate(updateHolidaysSchema);
+    const form = await superValidate(holidaysSchema);
 
     form.data.holidays = holidays;
 
@@ -48,7 +19,7 @@ export const load: PageServerLoad = async event => {
 
 export const actions: Actions = {
     default: async event => {
-        const form = await superValidate(event.request, updateHolidaysSchema);
+        const form = await superValidate(event.request, holidaysSchema);
         if (!form.valid) {
             return fail(400, { form });
         }
