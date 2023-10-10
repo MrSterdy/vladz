@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-    @apply bg-white text-black;
+@layer base {
+    html {
+        @apply flex flex-col h-full;
+    }
+
+    body {
+        @apply h-full bg-base-200;
+    }
 }
