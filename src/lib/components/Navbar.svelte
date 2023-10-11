@@ -1,4 +1,6 @@
 <script lang="ts">
+    import Icon from "$lib/components/Icon.svelte";
+
     interface $$Props {
         transparent: boolean;
     }
@@ -74,49 +76,20 @@
     </div>
     <div class="mini-icons h-full gap-6">
         <a href="/dashboard/account">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                id="Outline"
-                viewBox="0 0 24 24"
-                width="512"
-                height="512"
-            ><path
-                d="M12,12A6,6,0,1,0,6,6,6.006,6.006,0,0,0,12,12ZM12,2A4,4,0,1,1,8,6,4,4,0,0,1,12,2Z"
-            /><path
-                d="M12,14a9.01,9.01,0,0,0-9,9,1,1,0,0,0,2,0,7,7,0,0,1,14,0,1,1,0,0,0,2,0A9.01,9.01,0,0,0,12,14Z"
-            /></svg
-            >
+            <Icon name="user" class="h-7 w-auto fill-accent-content" />
         </a>
         <a href="/dashboard/groups">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                id="Layer_1"
-                data-name="Layer 1"
-                viewBox="0 0 24 24"
-                width="512"
-                height="512"
-            ><path
-                d="M12,16a4,4,0,1,1,4-4A4,4,0,0,1,12,16Zm0-6a2,2,0,1,0,2,2A2,2,0,0,0,12,10Zm6,13A6,6,0,0,0,6,23a1,1,0,0,0,2,0,4,4,0,0,1,8,0,1,1,0,0,0,2,0ZM18,8a4,4,0,1,1,4-4A4,4,0,0,1,18,8Zm0-6a2,2,0,1,0,2,2A2,2,0,0,0,18,2Zm6,13a6.006,6.006,0,0,0-6-6,1,1,0,0,0,0,2,4,4,0,0,1,4,4,1,1,0,0,0,2,0ZM6,8a4,4,0,1,1,4-4A4,4,0,0,1,6,8ZM6,2A2,2,0,1,0,8,4,2,2,0,0,0,6,2ZM2,15a4,4,0,0,1,4-4A1,1,0,0,0,6,9a6.006,6.006,0,0,0-6,6,1,1,0,0,0,2,0Z"
-            /></svg
-            >
+            <Icon name="users" class="h-7 w-auto fill-accent-content" />
         </a>
     </div>
 </div>
 
 <style lang="postcss">
-    svg {
-        @apply w-auto;
-    }
-
     .main-icon svg {
-        @apply h-9;
+        @apply h-9 w-auto;
     }
 
-    .mini-icons svg {
-        @apply h-7;
-    }
-
-    .main-icon svg .cneutral, .mini-icons svg {
+    .main-icon svg .cneutral {
         @apply fill-accent-content;
     }
 </style>
