@@ -13,23 +13,29 @@
 </script>
 
 <form method="post" bind:this={formEl} use:enhance>
-    <input
-        name="first_name"
-        aria-invalid={$errors.first_name ? "true" : undefined}
-        type="text"
-        placeholder="Имя"
-        bind:value={$form.first_name}
-        {...$constraints.first_name}
-    />
+    <h1 class="text-center">Регистрация</h1>
 
-    <input
-        name="last_name"
-        aria-invalid={$errors.last_name ? "true" : undefined}
-        type="text"
-        placeholder="Фамилия"
-        bind:value={$form.last_name}
-        {...$constraints.last_name}
-    />
+    <div class="card card-compact card-body bg-base-100">
+        <input
+            name="first_name"
+            aria-invalid={$errors.first_name ? "true" : undefined}
+            class="input input-primary input-bordered"
+            type="text"
+            placeholder="Имя"
+            bind:value={$form.first_name}
+            {...$constraints.first_name}
+        />
+
+        <input
+            name="last_name"
+            aria-invalid={$errors.last_name ? "true" : undefined}
+            type="text"
+            placeholder="Фамилия"
+            class="input input-primary input-bordered"
+            bind:value={$form.last_name}
+            {...$constraints.last_name}
+        />
+    </div>
 
     <MainButton onClick={submitForm} text="ЗАРЕГИСТРИРОВАТЬСЯ" />
 </form>
