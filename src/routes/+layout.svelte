@@ -29,7 +29,7 @@
 >
     <Navbar transparent={onMainPage} />
 
-    <article class="prose p-4 max-w-full">
+    <article class="prose prose-ul:m-0 prose-ul:p-0 prose-li:m-0 prose-li:p-0 p-4 h-full max-w-full">
         <slot />
     </article>
 </main>
