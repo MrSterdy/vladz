@@ -17,7 +17,9 @@ export async function getUserById(id: bigint): Promise<User | null> {
               firstName: result.firstName,
               lastName: result.lastName,
               role: result.role,
-              settings: result.userSettings!.settings as UserSettings
+              settings: (result.userSettings?.settings as
+                  | UserSettings
+                  | undefined) ?? { notifications: { timetable: false } }
           }
         : null;
 }
