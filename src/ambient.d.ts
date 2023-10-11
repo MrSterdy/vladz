@@ -68,6 +68,7 @@ declare global {
         isExpanded: boolean;
         viewportHeight: number;
         viewportStableHeight: number;
+        setHeaderColor: (color: string) => void;
         MainButton: TelegramMainButton;
         BackButton: TelegramBackButton;
         onEvent: (

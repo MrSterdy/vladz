@@ -21,10 +21,19 @@ const primaryColor = styles
     .split(" ")
     .map(c => parseInt(c));
 
+const baseColor = styles
+    .getPropertyValue("--b1")
+    .split(" ")
+    .map(c => parseInt(c));
+
 window.Telegram.WebApp.MainButton.color = hslToHex(
     primaryColor[0],
     primaryColor[1],
     primaryColor[2]
+);
+
+window.Telegram.WebApp.setHeaderColor(
+    hslToHex(baseColor[0], baseColor[1], baseColor[2])
 );
 
 dayjs.locale("ru");
