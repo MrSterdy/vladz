@@ -16,7 +16,7 @@
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    initData: window.Telegram.WebApp.initData,
+                    initData: window.Telegram.WebApp.initData
                 })
             });
 
@@ -34,7 +34,9 @@
 </script>
 
 {#if error}
-    <h1>Ошибка входа</h1>
+    <h1 class="text-center text-error break-all">Ошибка входа.</h1>
 {:else}
-    <h1>Вход...</h1>
+    <div class="grid place-items-center">
+        <span class="loading loading-spinner loading-lg" />
+    </div>
 {/if}
