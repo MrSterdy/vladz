@@ -12,16 +12,16 @@
 
 <section class="flex flex-col justify-between h-full gap-5">
     <div class="card card-compact card-body bg-base-100 grow-0">
-        <h2 class="card-title m-0 gap-3 justify-between">
+        <h1 class="card-title m-0 gap-3 justify-between">
             {data.group.name}
             {#if data.groupUser}
                 <span class="badge badge-accent badge-outline">
                     {groupUserRoles[data.groupUser.role].toUpperCase()}
                 </span>
             {/if}
-        </h2>
+        </h1>
 
-        <ul class="text-primary flex justify-between gap-3">
+        <ul class="text-accent-content flex justify-between gap-3">
             <li class="flex items-center gap-2">
                 <Icon name="add-user" class="w-5 h-5 fill-base-content" />
                 {data.group.inviteCode}
