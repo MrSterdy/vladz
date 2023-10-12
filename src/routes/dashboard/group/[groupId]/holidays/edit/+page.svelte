@@ -28,31 +28,40 @@
     }
 </script>
 
-<h1>Редактирование выходных</h1>
-
 <form method="post" bind:this={formEl} use:enhance>
-    <ul>
+    <ul class="m-0 p-0 list-none">
         {#each $form.holidays as _, i}
-            <li>
+            <li class="card card-compact card-body bg-base-100 w-full">
                 <input
+                    class="input input-primary input-bordered"
                     type="date"
                     bind:value={$form.holidays[i].startDate}
                     {...$constraints.holidays?.startDate}
                 />
+
+                <div class="divider m-0">ПО</div>
+
                 <input
+                    class="input input-primary input-bordered"
                     type="date"
                     bind:value={$form.holidays[i].endDate}
                     {...$constraints.holidays?.endDate}
                 />
 
-                <button type="button" on:click={() => removeHoliday(i)}>
+                <button
+                    type="button"
+                    class="btn btn-error"
+                    on:click={() => removeHoliday(i)}
+                >
                     Удалить
                 </button>
             </li>
         {/each}
     </ul>
 
-    <button type="button" on:click={addHoliday}>Создать выходной</button>
+    <button type="button" class="btn btn-primary w-full" on:click={addHoliday}
+        >Создать выходной</button
+    >
 
     <MainButton onClick={submitForm} text="СОХРАНИТЬ" />
 </form>
