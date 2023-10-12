@@ -9,11 +9,18 @@
     export let data: PageData;
 </script>
 
-<h1>Аккаунт</h1>
+<section>
+    <h1 class="text-center">Аккаунт</h1>
 
-<span>Имя: {data.user.firstName}</span>
-<span>Фамилия: {data.user.lastName}</span>
-<span>Роль: {capitalize(userRoles[data.user.role])}</span>
-<span>ID: {data.user.id}</span>
+    <div class="card card-compact card-body bg-base-100">
+        <h2 class="card-title m-0">
+            {data.user.lastName} {data.user.firstName}
+            <span class="mt-1 badge badge-accent badge-outline">
+                {capitalize(userRoles[data.user.role])}
+            </span>
+        </h2>
+        <p class="m-0">ID: <span>{data.user.id}</span></p>
+    </div>
 
-<MainButton onClick={() => goto("/dashboard/account/settings")} text="РЕДАКТИРОВАТЬ" />
+    <MainButton onClick={() => goto("/dashboard/account/settings")} text="НАСТРОЙКИ" />
+</section>
