@@ -11,11 +11,10 @@
 </script>
 
 {#if data.group.users.length}
-    <table class="table table-md">
+    <table class="table">
         <thead>
         <tr>
             <th></th>
-            <th>Фамилия</th>
             <th>Имя</th>
             <th>Роль</th>
             <th></th>
@@ -23,13 +22,12 @@
             <th></th>
         </tr>
         </thead>
-        <tbody class="break-all">
+        <tbody>
         {#each data.group.users as user, i}
             <tr>
                 <th>{i + 1}</th>
-                <td>{user.lastName}</td>
-                <td>{user.firstName}</td>
-                <td class="break-normal">
+                <td class="break-word">{user.lastName} {user.firstName}</td>
+                <td>
                 <span class="badge badge-accent badge-outline">
                     {capitalize(groupUserRoles[user.role])}
                 </span>
