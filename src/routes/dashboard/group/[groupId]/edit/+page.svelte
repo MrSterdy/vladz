@@ -14,15 +14,23 @@
     const submitForm = () => formEl.requestSubmit();
 </script>
 
-<form method="post" action="?/update" bind:this={formEl} use:enhance>
-    <h1>Редактирование информации группы {data.group.name}</h1>
+<section class="card card-compact card-body bg-base-100">
+    <form method="post" action="?/update" bind:this={formEl} use:enhance>
+        <div class="w-full">
+            <label class="label label-text" for="name">Название</label>
+            <input
+                class="input input-primary input-bordered w-full"
+                id="name"
+                name="name"
+                bind:value={$form.name}
+                {...$constraints.name}
+            />
+        </div>
+    </form>
 
-    <span>Название:</span>
-    <input name="name" bind:value={$form.name} {...$constraints.name} />
+    <form method="post" action="?/delete" use:kitEnhance>
+        <input class="btn btn-error w-full" type="submit" value="Удалить" />
+    </form>
 
     <MainButton onClick={submitForm} text="СОХРАНИТЬ" />
-</form>
-
-<form method="post" action="?/delete" use:kitEnhance>
-    <input type="submit" value="Удалить" />
-</form>
+</section>
