@@ -15,7 +15,7 @@
         <h1 class="card-title m-0 gap-3 justify-between">
             {data.group.name}
             {#if data.groupUser}
-                <span class="badge badge-accent badge-outline">
+                <span class="mt-1 badge badge-accent badge-outline">
                     {groupUserRoles[data.groupUser.role].toUpperCase()}
                 </span>
             {/if}
