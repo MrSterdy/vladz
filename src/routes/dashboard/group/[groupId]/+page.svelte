@@ -21,16 +21,16 @@
             {/if}
         </h1>
 
-        <ul class="text-accent-content flex justify-between gap-3">
-            <li class="flex items-center gap-2">
+        <div class="text-accent-content flex justify-between gap-3">
+            <div class="flex items-center gap-2">
                 <Icon name="add-user" class="w-5 h-5 fill-base-content" />
                 {data.group.inviteCode}
-            </li>
-            <li class="flex items-center gap-2">
+            </div>
+            <div class="flex items-center gap-2">
                 <Icon name="users" class="w-5 h-5 fill-base-content" />
                 {data.group.users.length}
-            </li>
-        </ul>
+            </div>
+        </div>
 
         {#if data.groupUser}
             <form class="card-actions" method="post" use:enhance>

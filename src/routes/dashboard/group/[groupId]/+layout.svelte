@@ -12,15 +12,15 @@
 
 <section class="flex flex-col h-full">
     <div class="breadcrumbs pt-0">
-        <ul>
-            <li>
+        <ul class="m-0 p-0">
+            <li class="m-0 p-0">
                 <a href="/dashboard/group/{data.group.id}" class:disabled={groupPath === "/"}>
                     <Icon name="home" class="fill-base-content h-4 w-4 mr-2" />
                     {data.group.name}
                 </a>
             </li>
             {#if groupPath.startsWith("/composition")}
-                <li>
+                <li class="m-0 p-0">
                     <a href="/dashboard/group/{data.group.id}/composition" class:disabled={groupPath === "/composition/"}>
                         <Icon name="users" class="fill-base-content h-4 w-4 mr-2" />
                         Участники
@@ -29,14 +29,14 @@
             {/if}
             {#if groupPath.startsWith("/timetable")}
                 {@const timetablePath = groupPath.split("/")}
-                <li>
+                <li class="m-0 p-0">
                     <a href="/dashboard/group/{data.group.id}/timetable" class:disabled={groupPath === "/timetable/"}>
                         <Icon name="calendar" class="fill-base-content h-4 w-4 mr-2" />
                         Расписание
                     </a>
                 </li>
                 {#if timetablePath.length >= 4}
-                    <li>
+                    <li class="m-0 p-0">
                         <a href="/dashboard/group/{data.group.id}/timetable/{timetablePath[2]}/{timetablePath[3]}" class:disabled={timetablePath.length === 5}>
                             <Icon name="day" class="fill-base-content h-4 w-4 mr-2" />
                             {#if timetablePath[2] === "weekday"}
@@ -49,7 +49,7 @@
                 {/if}
             {/if}
             {#if groupPath.startsWith("/holidays")}
-                <li>
+                <li class="m-0 p-0">
                     <a href="/dashboard/group/{data.group.id}/holidays" class:disabled={groupPath === "/holidays/"}>
                         <Icon name="beach" class="fill-base-content h-4 w-4 mr-2" />
                         Выходные
@@ -57,7 +57,7 @@
                 </li>
             {/if}
             {#if groupPath.startsWith("/subjects")}
-                <li>
+                <li class="m-0 p-0">
                     <a href="/dashboard/group/{data.group.id}/subjects" class:disabled={groupPath === "/subjects/"}>
                         <Icon name="users" class="fill-base-content h-4 w-4 mr-2" />
                         Предметы
@@ -65,7 +65,7 @@
                 </li>
             {/if}
             {#if groupPath.includes("/edit")}
-                <li>
+                <li class="m-0 p-0">
                     <Icon name="pencil" class="fill-base-content h-4 w-4 mr-2" />
                     Редактирование
                 </li>

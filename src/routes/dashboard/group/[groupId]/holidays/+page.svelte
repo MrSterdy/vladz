@@ -2,20 +2,31 @@
     import type { PageData } from "./$types";
     import { goto } from "$app/navigation";
     import MainButton from "$lib/components/MainButton.svelte";
+    import Icon from "$lib/components/Icon.svelte";
+    import { capitalize } from "$lib/utils/string";
+    import dayjs from "dayjs";
 
     export let data: PageData;
 </script>
 
-<h1>Каникулы</h1>
-
 {#if data.holidays.length}
     <ul>
         {#each data.holidays as holiday}
-            <li><h2>{holiday.startDate} - {holiday.endDate}</h2></li>
+            <li>
+                <p>
+                    {capitalize(dayjs(holiday.startDate).format("MMMM D, YYYY"))}
+                    {#if holiday.startDate !== holiday.endDate}
+                        по {dayjs(holiday.endDate).format("MMMM D, YYYY")}
+                    {/if}
+                </p>
+            </li>
         {/each}
     </ul>
 {:else}
-    <h2>Нет каникул :(</h2>
+    <div class="flex flex-col items-center">
+        <Icon name="sad" class="h-24 w-24 fill-base-content" />
+        <p class="text-lg text-base-content">Нет выходных</p>
+    </div>
 {/if}
 
 {#if data.user.role !== "USER" || data.groupUser?.role === "CURATOR" || data.groupUser?.role === "REDACTOR"}
