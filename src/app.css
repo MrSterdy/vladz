@@ -11,3 +11,9 @@
         @apply h-full bg-base-200;
     }
 }
+
+@layer components {
+    a.disabled {
+        @apply no-underline pointer-events-none;
+    }
+}
