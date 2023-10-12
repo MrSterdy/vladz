@@ -4,11 +4,11 @@
 
 @layer base {
     html {
-        @apply flex flex-col h-full;
+        @apply h-full;
     }
 
     body {
-        @apply h-full bg-base-200;
+        @apply flex min-h-full bg-base-200;
     }
 }
 
