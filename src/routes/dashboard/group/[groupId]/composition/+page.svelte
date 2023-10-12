@@ -4,23 +4,45 @@
     import { groupUserRoles } from "$lib/consts";
     import MainButton from "$lib/components/MainButton.svelte";
     import { goto } from "$app/navigation";
+    import Icon from "$lib/components/Icon.svelte";
 
     export let data: PageData;
+
+    const users = data.group.users.filter(u => u.role !== "APPLICATION");
 </script>
 
-<h1>Состав {data.group.name}:</h1>
-{#if data.group.users.length}
-    <ul>
-        {#each data.group.users as user}
-            <li>
-                <h2>{user.lastName} {user.firstName} [{capitalize(groupUserRoles[user.role])}]</h2>
-            </li>
+{#if users.length}
+    <table class="table table-md">
+        <thead>
+        <tr>
+            <th></th>
+            <th>Фамилия</th>
+            <th>Имя</th>
+            <th>Роль</th>
+        </tr>
+        </thead>
+        <tbody>
+        {#each users as user, i}
+            <tr>
+                <th>{i + 1}</th>
+                <td>{user.lastName}</td>
+                <td>{user.firstName}</td>
+                <td>
+                <span class="badge badge-accent badge-outline">
+                    {capitalize(groupUserRoles[user.role])}
+                </span>
+                </td>
+            </tr>
         {/each}
-    </ul>
-
-    {#if data.user.role !== "USER" || data.groupUser?.role === "CURATOR"}
-        <MainButton onClick={() => goto("edit")} text="РЕДАКТИРОВАТЬ" />
-    {/if}
+        </tbody>
+    </table>
 {:else}
-    <h2>Класс пустует</h2>
+    <div class="flex flex-col items-center">
+        <Icon name="sad" class="h-24 w-24 fill-base-content" />
+        <p class="text-lg text-base-content">Никого нет</p>
+    </div>
+{/if}
+
+{#if data.user.role !== "USER" || data.groupUser?.role === "CURATOR"}
+    <MainButton onClick={() => goto("edit")} text="РЕДАКТИРОВАТЬ" />
 {/if}
