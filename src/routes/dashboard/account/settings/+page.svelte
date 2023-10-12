@@ -13,42 +13,69 @@
 
     function updateCheckboxSetting(
         setting: {
-            [K in keyof typeof $form]-?: typeof $form[K] extends boolean
+            [K in keyof typeof $form]-?: (typeof $form)[K] extends boolean
                 ? K
                 : never;
         }[keyof typeof $form]
     ) {
-        const input = document.querySelector(`input[name=${setting}]`) as HTMLInputElement;
+        const input = document.querySelector(
+            `input[name=${setting}]`
+        ) as HTMLInputElement;
 
         $form[setting] = input.checked;
     }
 </script>
 
-<h1>Настройки аккаунта</h1>
+<section>
+    <h1 class="text-center">Настройки</h1>
 
-<form method="post" bind:this={formEl} use:enhance>
-    <input
-        name="first_name"
-        placeholder="Имя"
-        bind:value={$form.first_name}
-        {...$constraints.first_name}
-    />
+    <form
+        class="form-control card card-compact card-body card-actions bg-base-100"
+        method="post"
+        bind:this={formEl}
+        use:enhance
+    >
+        <div class="w-full">
+            <label class="label label-text" for="first-name">Ваше имя?</label>
+            <input
+                id="first-name"
+                name="first_name"
+                class="input input-primary input-bordered w-full"
+                placeholder="Имя"
+                bind:value={$form.first_name}
+                {...$constraints.first_name}
+            />
+        </div>
 
-    <input
-        name="last_name"
-        placeholder="Фамилия"
-        bind:value={$form.last_name}
-        {...$constraints.last_name}
-    />
+        <div class="w-full">
+            <label class="label label-text" for="last-name">Ваша фамилия?</label
+            >
+            <input
+                id="last-name"
+                name="last_name"
+                placeholder="Фамилия"
+                class="input input-primary input-bordered w-full"
+                bind:value={$form.last_name}
+                {...$constraints.last_name}
+            />
+        </div>
 
-    <span>Уведомлять об изменениях в расписаниях?</span>
+        <div class="w-full">
+            <label class="label gap-3 justify-between w-full">
+                <span class="label-text"
+                    >Уведомлять о расписаниях?</span
+                >
+                <input
+                    type="checkbox"
+                    checked={$form.timetable_notifications}
+                    on:change={() =>
+                        updateCheckboxSetting("timetable_notifications")}
+                    name="timetable_notifications"
+                    class="checkbox checkbox-primary"
+                />
+            </label>
+        </div>
 
-    <input
-        type="checkbox"
-        name="timetable_notifications"
-        checked={$form.timetable_notifications}
-        on:change={() => updateCheckboxSetting("timetable_notifications")}
-    />
-
-    <MainButton onClick={submitForm} text="СОХРАНИТЬ" />
-</form>
+        <MainButton onClick={submitForm} text="СОХРАНИТЬ" />
+    </form>
+</section>
