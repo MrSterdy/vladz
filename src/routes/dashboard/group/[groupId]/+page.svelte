@@ -44,16 +44,16 @@
     </div>
 
     <div class="flex flex-wrap gap-2">
-        <a
-            role="button"
-            href="subjects"
-            class="btn btn-primary btn-outline grow basis-0">Предметы</a
-        >
         <a role="button" href="composition" class="btn btn-primary grow basis-0"
             >Участники</a
         >
         <a role="button" href="timetable" class="btn btn-primary grow basis-0"
             >Расписание</a
+        >
+        <a
+            role="button"
+            href="subjects"
+            class="btn btn-primary btn-outline grow basis-0">Предметы</a
         >
         <a
             role="button"
