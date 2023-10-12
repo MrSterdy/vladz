@@ -31,15 +31,15 @@
     </form>
 
     {#if data.groups.length}
-        <ul class="list-none flex flex-col gap-4">
+        <ul class="list-none m-0 p-0 flex flex-col gap-4">
             {#each data.groups as group}
                 {@const groupUser = group.users.find(
                     u => u.id === data.user.id
                 )}
-                <li>
+                <li class="m-0 p-0">
                     <a class="no-underline" href="/dashboard/group/{group.id}">
-                        <div class="card p-3 bg-base-100">
-                            <h2 class="m-0 flex gap-2 items-center">
+                        <div class="card card-compact card-body bg-base-100">
+                            <h2 class="card-title m-0 flex gap-2 items-center">
                                 {group.name}
                                 {#if groupUser?.role === "APPLICATION"}
                                     <span

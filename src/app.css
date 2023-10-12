@@ -16,4 +16,8 @@
     a.disabled {
         @apply no-underline pointer-events-none;
     }
+
+    .card-body {
+        @apply p-6;
+    }
 }
