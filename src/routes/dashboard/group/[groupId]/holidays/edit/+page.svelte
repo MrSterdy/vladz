@@ -33,7 +33,7 @@
         {#each $form.holidays as _, i}
             <li class="card card-compact card-body bg-base-100 w-full">
                 <input
-                    class="input input-primary input-bordered"
+                    class="input input-primary input-bordered w-full"
                     type="date"
                     bind:value={$form.holidays[i].startDate}
                     {...$constraints.holidays?.startDate}
@@ -42,7 +42,7 @@
                 <div class="divider m-0">ПО</div>
 
                 <input
-                    class="input input-primary input-bordered"
+                    class="input input-primary input-bordered w-full"
                     type="date"
                     bind:value={$form.holidays[i].endDate}
                     {...$constraints.holidays?.endDate}
