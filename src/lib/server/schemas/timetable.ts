@@ -35,11 +35,7 @@ const baseTimetableSchema = z.object({
             required_error: "Начало занятий должно быть числом"
         })
         .min(0, "Начало занятий не должно быть отрицательным")
-        .max(1440, "Начало занятий не должно превышать сутки (1440)"),
-    note: z
-        .string({ invalid_type_error: "Примечание должно быть строкой" })
-        .max(1024, "Примечание не должно превышать 1024 символов")
-        .nullable()
+        .max(1440, "Начало занятий не должно превышать сутки (1440)")
 });
 
 const weekdayTimetableSchema = z
@@ -67,6 +63,10 @@ const weekdayTimetableSchema = z
 
 const dateTimetableSchema = z
     .object({
+        note: z
+            .string({ invalid_type_error: "Примечание должно быть строкой" })
+            .max(1024, "Примечание не должно превышать 1024 символов")
+            .nullable(),
         subjects: z.array(
             z
                 .object({

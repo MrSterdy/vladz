@@ -12,8 +12,6 @@ model WeekdayTimetable {
 
   offset Int
 
-  note String? @db.VarChar(256)
-
   subjectLength Int
   subjectBreak  Int
 

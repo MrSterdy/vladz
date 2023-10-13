@@ -17,7 +17,6 @@ export const load: LayoutServerLoad = async event => {
         subjectBreak: 0,
         subjectLength: 0,
         subjects: [],
-        note: "",
         weekday
     };
 

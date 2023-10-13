@@ -25,8 +25,6 @@ export type GroupUser = BaseUser & {
 export type Timetable<TSubject extends DaySubject = DaySubject> = {
     offset: number;
 
-    note: string | null;
-
     subjects: TSubject[];
 };
 
@@ -40,7 +38,7 @@ export type WeekdayTimetable = Timetable<WeekdaySubject> & {
 export type DateTimetable = Timetable<DateSubject> & {
     date: string;
 
-    subjects: Subject[];
+    note: string | null;
 };
 
 export type Subject = {

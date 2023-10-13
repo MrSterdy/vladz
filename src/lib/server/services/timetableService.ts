@@ -55,7 +55,6 @@ export async function getWeekdayTimetable(
         ? {
               weekday,
               offset: timetable.offset,
-              note: timetable.note,
               subjectLength: timetable.subjectLength,
               subjectBreak: timetable.subjectBreak,
               subjects: timetable.subjects
@@ -81,7 +80,6 @@ export async function updateWeekdayTimetable(
         update: {
             weekday: timetable.weekday,
             offset: timetable.offset,
-            note: timetable.note,
             subjectLength: timetable.subjectLength,
             subjectBreak: timetable.subjectBreak,
             subjects: {
@@ -92,7 +90,6 @@ export async function updateWeekdayTimetable(
         create: {
             weekday: timetable.weekday,
             offset: timetable.offset,
-            note: timetable.note,
             subjectLength: timetable.subjectLength,
             subjectBreak: timetable.subjectBreak,
             subjects: {
@@ -298,7 +295,6 @@ export async function findNextTimetableWithSubject(
                   subjectLength: weekdayTimetable.subjectLength,
                   subjectBreak: weekdayTimetable.subjectBreak,
                   offset: weekdayTimetable.offset,
-                  note: weekdayTimetable.note,
                   subjects: weekdayTimetable.subjects.map(subject => ({
                       name: subject.name,
                       length: subject.length,

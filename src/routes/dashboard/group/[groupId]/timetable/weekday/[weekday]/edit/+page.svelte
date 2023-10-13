@@ -77,13 +77,6 @@
         required
     />
     <input
-        name="note"
-        type="text"
-        placeholder="Примечание"
-        bind:value={$form.note}
-        {...$constraints.note}
-    />
-    <input
         name="subjectLength"
         type="number"
         placeholder="Длина предметов"

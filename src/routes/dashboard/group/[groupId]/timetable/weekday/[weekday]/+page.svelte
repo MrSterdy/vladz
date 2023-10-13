@@ -20,7 +20,6 @@
 </script>
 
 <h1>{capitalize(weekdays[parseInt($page.params["weekday"])])}</h1>
-<p>{data.timetable.note || "Нет примечания"}</p>
 <p>Начало занятий: {numberToTime(data.timetable.offset)}</p>
 
 {#if data.timetable.subjects.length}

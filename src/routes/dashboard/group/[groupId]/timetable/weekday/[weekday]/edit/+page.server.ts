@@ -28,7 +28,6 @@ export const actions: Actions = {
 
         await updateWeekdayTimetable(event.locals.group!.id, {
             weekday,
-            note: form.data.note ?? null,
             offset: form.data.offset,
             subjectBreak: form.data.subjectBreak,
             subjectLength: form.data.subjectLength,
