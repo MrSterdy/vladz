@@ -26,3 +26,5 @@ export const groupUserRoles = {
     "STUDENT": "студент",
     "APPLICATION": "заявка"
 } as const;
+
+export const imageTypes = ["image/png", "image/jpg", "image/jpeg"];
