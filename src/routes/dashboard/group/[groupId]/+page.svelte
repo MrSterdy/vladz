@@ -5,9 +5,25 @@
     import { goto } from "$app/navigation";
     import MainButton from "$lib/components/MainButton.svelte";
     import Icon from "$lib/components/Icon.svelte";
-    import { groupUserRoles } from "$lib/consts";
+    import { groupUserRoles, weekdays } from "$lib/consts";
+    import { formatISOString } from "$lib/utils/time";
+    import { capitalize } from "$lib/utils/string";
 
     export let data: PageData;
+
+    let timetableModal: HTMLDialogElement;
+
+    function showTimetable() {
+        timetableModal.showModal();
+    }
+
+    let activeTimetableTab: "date" | "weekday" = "date";
+
+    let selectedDate = formatISOString(new Date());
+
+    function getTimetable() {
+        return goto(`timetable/date/${selectedDate}`);
+    }
 </script>
 
 <section class="flex flex-col justify-between h-full gap-5">
@@ -47,9 +63,44 @@
         <a role="button" href="composition" class="btn btn-primary grow basis-0"
             >Участники</a
         >
-        <a role="button" href="timetable" class="btn btn-primary grow basis-0"
-            >Расписание</a
+        <button on:click={showTimetable} class="btn btn-primary grow basis-0"
+            >Расписание</button
         >
+        <dialog bind:this={timetableModal} class="modal">
+            <div class="modal-box flex flex-col gap-3">
+                <div class="tabs w-full flex gap-3 justify-around">
+                    <button
+                        class="tab tab-bordered"
+                        on:click={() => (activeTimetableTab = "date")}
+                        class:tab-active={activeTimetableTab === "date"}
+                    >
+                        Дата
+                    </button>
+                    <button
+                        class="tab tab-bordered"
+                        on:click={() => (activeTimetableTab = "weekday")}
+                        class:tab-active={activeTimetableTab === "weekday"}
+                    >
+                        День
+                    </button>
+                </div>
+
+                {#if activeTimetableTab === "date"}
+                    <input on:change={getTimetable} class="w-full input input-bordered input-primary" type="date" bind:value={selectedDate} />
+                {:else}
+                    <ul class="m-0">
+                        {#each weekdays as weekday, i}
+                            <li>
+                                <a href="timetable/weekday/{i}">{capitalize(weekday)}</a>
+                            </li>
+                        {/each}
+                    </ul>
+                {/if}
+            </div>
+            <form method="dialog" class="modal-backdrop">
+                <button>Закрыть</button>
+            </form>
+        </dialog>
         <a
             role="button"
             href="subjects"
