@@ -25,39 +25,72 @@
     }
 </script>
 
-<h1>Редактирование предметов</h1>
-
-<form method="post" bind:this={formEl} use:enhance>
-    <ul>
+<form
+    method="post"
+    class="flex flex-col gap-2"
+    bind:this={formEl}
+    use:enhance
+>
+    <div class="join join-vertical w-full">
         {#each $form.subjects as _, i}
-            <li>
-                <input
-                    type="text"
-                    placeholder="Название"
-                    bind:value={$form.subjects[i].name}
-                    {...$constraints.subjects?.name}
-                />
-                <input
-                    type="text"
-                    placeholder="Учитель"
-                    bind:value={$form.subjects[i].teacher}
-                    {...$constraints.subjects?.teacher}
-                />
-                <input
-                    type="text"
-                    placeholder="Класс"
-                    bind:value={$form.subjects[i].classroom}
-                    {...$constraints.subjects?.classroom}
-                />
+            <div class="collapse collapse-arrow join-item border bg-base-100">
+                <input type="radio" name="my-accordion-4" />
+                <div class="collapse-title text-xl font-medium">
+                    {$form.subjects[i].name}
+                </div>
+                <div class="collapse-content gap-2 flex flex-col">
+                    <div class="w-full">
+                        <label for="name-{i}" class="label">
+                            <span class="label-text">Название</span>
+                        </label>
 
-                <button type="button" on:click={() => removeSubject(i)}>
-                    Удалить
-                </button>
-            </li>
+                        <input
+                            id="name-{i}"
+                            type="text"
+                            placeholder="Название"
+                            class="w-full input input-bordered input-primary"
+                            bind:value={$form.subjects[i].name}
+                            {...$constraints.subjects?.name}
+                        />
+                    </div>
+                    <div class="w-full">
+                        <label for="teacher-{i}" class="label">
+                            <span class="label-text">Учитель</span>
+                        </label>
+
+                        <input
+                            id="teacher-{i}"
+                            type="text"
+                            placeholder="Учитель"
+                            class="w-full input input-secondary input-bordered"
+                            bind:value={$form.subjects[i].teacher}
+                            {...$constraints.subjects?.teacher}
+                        />
+                    </div>
+                    <div class="w-full">
+                        <label for="classroom-{i}" class="label">
+                            <span class="label-text">Кабинет</span>
+                        </label>
+
+                        <input
+                            id="classroom-{i}"
+                            type="text"
+                            placeholder="Класс"
+                            class="w-full input input-secondary input-bordered"
+                            bind:value={$form.subjects[i].classroom}
+                            {...$constraints.subjects?.classroom}
+                        />
+                    </div>
+
+                    <button type="button" class="btn btn-error" on:click={() => removeSubject(i)}>
+                        Удалить
+                    </button>
+                </div>
+            </div>
         {/each}
-    </ul>
+    </div>
 
-    <button type="button" on:click={addSubject}>Создать предмет</button>
+    <button type="button" class="btn btn-primary w-full" on:click={addSubject}>Создать предмет</button>
 
     <MainButton onClick={submitForm} text="СОХРАНИТЬ" />
 </form>
