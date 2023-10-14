@@ -5,6 +5,7 @@
     import Icon from "$lib/components/Icon.svelte";
     import { capitalize } from "$lib/utils/string";
     import dayjs from "dayjs";
+    import { humanize } from "$lib/utils/time";
 
     export let data: PageData;
 </script>
@@ -14,9 +15,9 @@
         {#each data.holidays as holiday}
             <li>
                 <p>
-                    {capitalize(dayjs(holiday.startDate).format("MMMM D, YYYY"))}
+                    {capitalize(humanize(dayjs(holiday.startDate)))}
                     {#if holiday.startDate !== holiday.endDate}
-                        по {dayjs(holiday.endDate).format("MMMM D, YYYY")}
+                        по {humanize(dayjs(holiday.endDate))}
                     {/if}
                 </p>
             </li>

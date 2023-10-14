@@ -16,6 +16,10 @@ export function dateToString(input: Dayjs) {
     return input.format("YYYY-MM-DD");
 }
 
+export function humanize(input: Dayjs) {
+    return input.format("MMMM D, YYYY");
+}
+
 export function numberToTime(number: number) {
     const hours = Math.floor(number / 60);
     const minutes = number % 60;
