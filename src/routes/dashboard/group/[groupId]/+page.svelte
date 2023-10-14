@@ -20,9 +20,12 @@
     let activeTimetableTab: "date" | "weekday" = "date";
 
     let selectedDate = formatISOString(new Date());
+    let weekdaySelect: HTMLSelectElement;
 
     function getTimetable() {
-        return goto(`timetable/date/${selectedDate}`);
+        return activeTimetableTab === "date"
+            ? goto(`timetable/date/${selectedDate}`)
+            : goto(`timetable/weekday/${weekdaySelect.value}`);
     }
 </script>
 
@@ -86,16 +89,22 @@
                 </div>
 
                 {#if activeTimetableTab === "date"}
-                    <input on:change={getTimetable} class="w-full input input-bordered input-primary" type="date" bind:value={selectedDate} />
+                    <input
+                        class="w-full input input-bordered input-primary"
+                        type="date"
+                        bind:value={selectedDate}
+                    />
                 {:else}
-                    <ul class="m-0">
+                    <select bind:this={weekdaySelect} class="select select-bordered select-primary">
                         {#each weekdays as weekday, i}
-                            <li>
-                                <a href="timetable/weekday/{i}">{capitalize(weekday)}</a>
-                            </li>
+                            <option value={i}>
+                                {capitalize(weekday)}
+                            </option>
                         {/each}
-                    </ul>
+                    </select>
                 {/if}
+
+                <button class="btn btn-primary" on:click={getTimetable}>Узнать расписание</button>
             </div>
             <form method="dialog" class="modal-backdrop">
                 <button>Закрыть</button>
