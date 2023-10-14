@@ -114,7 +114,7 @@
                                                     <div class="flex gap-4 flex-wrap bg-base-200 rounded-box p-4">
                                                         {#each files as file}
                                                             <a href={file.url} class="flex items-center gap-2" download>
-                                                                <Icon name="download" class="h-4 w-4 rounded-none" />
+                                                                <Icon name="download" class="h-4 w-4 fill-base-content rounded-none" />
                                                                 {file.name}
                                                             </a>
                                                         {/each}
