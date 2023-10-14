@@ -6,6 +6,7 @@
     import { superForm } from "sveltekit-superforms/client";
     import { weekdays } from "$lib/consts";
     import MainButton from "$lib/components/MainButton.svelte";
+    import Icon from "$lib/components/Icon.svelte";
 
     export let data: PageData;
 
@@ -58,94 +59,160 @@
     }
 </script>
 
-<h1>
-    {capitalize(weekdays[parseInt($page.params["weekday"])])}: Редактирование
-</h1>
-
-<form method="post" bind:this={formEl} use:enhance>
+<form class="flex flex-col gap-2" method="post" bind:this={formEl} use:enhance>
     <datalist id="subjects">
         {#each data.subjects as subject}
             <option value={subject.name} />
         {/each}
     </datalist>
 
-    <input
-        on:change={updateTime}
-        name="offset"
-        type="time"
-        value={numberToTime($form.offset)}
-        required
-    />
-    <input
-        name="subjectLength"
-        type="number"
-        placeholder="Длина предметов"
-        bind:value={$form.subjectLength}
-        {...$constraints.subjectLength}
-    />
-    <input
-        name="subjectBreak"
-        type="number"
-        placeholder="Перемены предметов"
-        bind:value={$form.subjectBreak}
-        {...$constraints.subjectBreak}
-    />
+    <div class="w-full">
+        <div class="w-full">
+            <label class="label" for="offset">
+                <span class="label-text">Начало занятий</span>
+            </label>
+            <input
+                id="offset"
+                on:change={updateTime}
+                name="offset"
+                type="time"
+                class="w-full input input-primary input-bordered"
+                value={numberToTime($form.offset)}
+                required
+            />
+        </div>
+        <div class="w-full">
+            <label class="label" for="subject-length">
+                <span class="label-text">Длина урока</span>
+            </label>
+            <input
+                id="subject-length"
+                name="subjectLength"
+                type="number"
+                class="w-full input input-primary input-bordered"
+                bind:value={$form.subjectLength}
+                {...$constraints.subjectLength}
+            />
+        </div>
+        <div class="w-full">
+            <label class="label" for="subject-break">
+                <span class="label-text">Длина перемены</span>
+            </label>
+            <input
+                id="subject-break"
+                name="subjectBreak"
+                type="number"
+                class="w-full input input-primary input-bordered"
+                bind:value={$form.subjectBreak}
+                {...$constraints.subjectBreak}
+            />
+        </div>
+    </div>
 
-    <ul>
-        {#each $form.subjects as _, i}
-            <li>
-                <input
-                    placeholder="Название предмета"
-                    type="text"
-                    list="subjects"
-                    on:change={() => updateSubject(i)}
-                    bind:value={$form.subjects[i].name}
-                    {...$constraints.subjects?.name}
-                />
-                <input
-                    placeholder="Длина предмета"
-                    type="number"
-                    bind:value={$form.subjects[i].length}
-                    {...$constraints.subjects?.length}
-                />
-                <input
-                    placeholder="Перемена предмета"
-                    type="number"
-                    bind:value={$form.subjects[i].break}
-                    {...$constraints.subjects?.break}
-                />
-                <input
-                    placeholder="Учитель"
-                    class="teacher"
-                    type="text"
-                    bind:value={$form.subjects[i].teacher}
-                    {...$constraints.subjects?.teacher}
-                />
-                <input
-                    placeholder="Класс"
-                    type="text"
-                    class="classroom"
-                    bind:value={$form.subjects[i].classroom}
-                    {...$constraints.subjects?.classroom}
-                />
-                <input
-                    placeholder="Позиция"
-                    type="number"
-                    bind:value={$form.subjects[i].position}
-                    {...$constraints.subjects?.position}
-                />
-
-                <button
-                    type="button"
-                    on:click={() => removeSubject($form.subjects[i].position)}
+    {#if $form.subjects.length}
+        <div class="join join-vertical w-full">
+            {#each $form.subjects as subject, i}
+                <div
+                    class="collapse collapse-arrow join-item border bg-base-100"
                 >
-                    Убрать
-                </button>
-            </li>
-        {/each}
-    </ul>
+                    <input type="radio" name="accordion-subjects" />
+                    <div class="collapse-title">
+                        {subject.position}.
+                        <span
+                            class="text-xl font-medium"
+                            class:text-neutral-content={!subject.name}
+                            >{subject.name || "[Пусто]"}</span
+                        >
+                    </div>
+                    <div class="collapse-content">
+                        <div class="w-full">
+                            <label for="name-{i}" class="label">
+                                <span class="label-text">Название</span>
+                            </label>
 
-    <button type="button" on:click={addSubject}>Добавить предмет</button>
+                            <input
+                                id="name-{i}"
+                                type="text"
+                                placeholder="Название"
+                                on:change={() => updateSubject(i)}
+                                class="w-full input input-bordered input-primary"
+                                bind:value={$form.subjects[i].name}
+                                {...$constraints.subjects?.name}
+                            />
+                        </div>
+                        <div class="w-full flex gap-4">
+                            <div class="grow">
+                                <label for="length-{i}" class="label">
+                                    <span class="label-text">Длина</span>
+                                </label>
+
+                                <input
+                                    id="length-{i}"
+                                    class="w-full input input-primary input-bordered"
+                                    placeholder="Длина"
+                                    type="number"
+                                    bind:value={$form.subjects[i].length}
+                                    {...$constraints.subjects?.length}
+                                />
+                            </div>
+                            <div class="grow">
+                                <label for="break-{i}" class="label">
+                                    <span class="label-text">Перемена</span>
+                                </label>
+
+                                <input
+                                    id="break-{i}"
+                                    class="w-full input input-primary input-bordered"
+                                    placeholder="Перемена"
+                                    type="number"
+                                    bind:value={$form.subjects[i].break}
+                                    {...$constraints.subjects?.break}
+                                />
+                            </div>
+                        </div>
+                        <div class="w-full">
+                            <label for="teacher-{i}" class="label">
+                                <span class="label-text">Учитель</span>
+                            </label>
+
+                            <input
+                                id="teacher-{i}"
+                                placeholder="Учитель"
+                                class="w-full input input-bordered input-secondary"
+                                type="text"
+                                bind:value={$form.subjects[i].teacher}
+                                {...$constraints.subjects?.teacher}
+                            />
+                        </div>
+                        <div class="w-full">
+                            <label for="classroom-{i}" class="label">
+                                <span class="label-text">Кабинет</span>
+                            </label>
+
+                            <input
+                                id="classroom-{i}"
+                                placeholder="Кабинет"
+                                class="w-full input input-secondary input-bordered"
+                                type="text"
+                                bind:value={$form.subjects[i].classroom}
+                                {...$constraints.subjects?.classroom}
+                            />
+                        </div>
+                        <button
+                            type="button"
+                            class="btn btn-error w-full mt-2"
+                            on:click={() => removeSubject(subject.position)}
+                            >Удалить</button
+                        >
+                    </div>
+                </div>
+            {/each}
+        </div>
+    {/if}
+
+    <button type="button" class="btn btn-primary" on:click={addSubject}
+        >Добавить предмет</button
+    >
 
     <MainButton onClick={submitForm} text="СОХРАНИТЬ" />
 </form>
