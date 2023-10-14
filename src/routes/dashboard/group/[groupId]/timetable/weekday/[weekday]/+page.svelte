@@ -6,6 +6,7 @@
     import { weekdays } from "$lib/consts";
     import { goto } from "$app/navigation";
     import MainButton from "$lib/components/MainButton.svelte";
+    import Icon from "$lib/components/Icon.svelte";
 
     export let data: PageData;
 
@@ -19,26 +20,57 @@
     });
 </script>
 
-<h1>{capitalize(weekdays[parseInt($page.params["weekday"])])}</h1>
-<p>Начало занятий: {numberToTime(data.timetable.offset)}</p>
-
 {#if data.timetable.subjects.length}
-    <ul>
+    <section class="join join-vertical w-full">
         {#each data.timetable.subjects as subject, i}
             {#if subject.name}
                 {@const offset = offsets[i]}
-                <li>
-                    [{numberToTime(offset[0])} - {numberToTime(offset[1])}]
-                    <h2>
-                        {subject.name} [{subject.classroom || "Нет кабинета"}] [{subject.teacher ||
-                            "Нет учителя"}]
-                    </h2>
-                </li>
+                <div
+                    class="collapse join-item border bg-base-100"
+                    class:collapse-arrow={subject.classroom || subject.teacher}
+                >
+                    <input type="radio" />
+                    <div class="collapse-title">
+                        <span>{subject.position}.</span>
+
+                        <span class="text-xl font-medium">{subject.name}</span>
+
+                        <p class="m-0 flex gap-2 items-center">
+                            <Icon name="clock" class="w-4 h-4 fill-base-content" />
+                            {numberToTime(offset[0])} - {numberToTime(offset[1])}
+                        </p>
+                    </div>
+                    {#if subject.classroom || subject.teacher}
+                        <div class="collapse-content">
+                            {#if subject.teacher}
+                                <div class="flex gap-2">
+                                    <Icon
+                                        name="hat"
+                                        class="h-6 w-6 fill-base-content"
+                                    />
+                                    {subject.teacher}
+                                </div>
+                            {/if}
+                            {#if subject.classroom}
+                                <div class="flex gap-2">
+                                    <Icon
+                                        name="marker"
+                                        class="h-6 w-6 fill-base-content"
+                                    />
+                                    {subject.classroom}
+                                </div>
+                            {/if}
+                        </div>
+                    {/if}
+                </div>
             {/if}
         {/each}
-    </ul>
+    </section>
 {:else}
-    <h2>Нет предметов</h2>
+    <div class="flex flex-col items-center">
+        <Icon name="beach" class="h-24 w-24 fill-base-content" />
+        <p class="text-lg text-base-content">Выходной</p>
+    </div>
 {/if}
 
 {#if data.user.role !== "USER" || data.groupUser?.role === "CURATOR" || data.groupUser?.role === "REDACTOR"}
