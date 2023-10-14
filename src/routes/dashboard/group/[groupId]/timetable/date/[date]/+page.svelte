@@ -59,7 +59,7 @@
                             <span class="text-xl font-medium">{subject.name}</span>
 
                             <p class="m-0 flex gap-2 items-center">
-                                <Icon name="clock" class="w-4 h-4" />
+                                <Icon name="clock" class="w-4 h-4 fill-base-content" />
                                 {numberToTime(offset[0])} - {numberToTime(
                                     offset[1]
                                 )}
