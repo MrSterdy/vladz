@@ -29,12 +29,6 @@
             {/if}
             {#if groupPath.startsWith("/timetable")}
                 {@const timetablePath = groupPath.split("/")}
-                <li class="m-0 p-0">
-                    <a href="/dashboard/group/{data.group.id}/timetable" class:disabled={groupPath === "/timetable/"}>
-                        <Icon name="calendar" class="fill-base-content h-4 w-4 mr-2" />
-                        Расписание
-                    </a>
-                </li>
                 {#if timetablePath.length >= 4}
                     <li class="m-0 p-0">
                         <a href="/dashboard/group/{data.group.id}/timetable/{timetablePath[2]}/{timetablePath[3]}" class:disabled={timetablePath.length === 5}>
