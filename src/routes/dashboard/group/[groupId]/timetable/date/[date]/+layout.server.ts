@@ -29,11 +29,7 @@ export const load: LayoutServerLoad = async event => {
             date.isSame(startDate) ||
             date.isSame(endDate)
         );
-    });
-
-    if (!dateTimetable && !weekdayTimetable) {
-        throw error(400, { message: "Раписание не найдено" });
-    }
+    }) && !dateTimetable?.subjects.length && !weekdayTimetable?.subjects.length;
 
     return { dayOff, dateTimetable, weekdayTimetable };
 };

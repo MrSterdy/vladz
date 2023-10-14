@@ -6,6 +6,8 @@
     import { superForm } from "sveltekit-superforms/client";
     import dayjs from "dayjs";
     import MainButton from "$lib/components/MainButton.svelte";
+    import type { DateSubject } from "$lib/types";
+    import Icon from "$lib/components/Icon.svelte";
 
     export let data: PageData;
 
@@ -26,8 +28,8 @@
             ...$form.subjects,
             {
                 name: "",
-                length: data.weekdayTimetable!.subjectLength,
-                break: data.weekdayTimetable!.subjectBreak,
+                length: data.weekdayTimetable?.subjectLength ?? 0,
+                break: data.weekdayTimetable?.subjectBreak ?? 0,
                 classroom: null,
                 teacher: null,
                 position: $form.subjects.length
@@ -58,115 +60,214 @@
         $form.subjects[subjectIndex]!.classroom = subject.classroom;
         $form.subjects[subjectIndex]!.teacher = subject.teacher;
     }
+
+    function removeHomeworkFile(index: number, fileName: string) {
+        const files = $form.subjects[index]!.homeworkFiles;
+        const subjectIndex = files?.findIndex(x => x.name === fileName);
+        $form.subjects[index]!.homeworkFiles =
+            files?.filter((_, i) => i !== subjectIndex) ?? null;
+    }
 </script>
 
-<h1>
-    {capitalize(dayjs($page.params["date"]).format("MMMM D, YYYY"))}:
-    Редактирование
-</h1>
-
-<form method="post" enctype="multipart/form-data" bind:this={formEl} use:enhance>
+<form
+    class="flex flex-col gap-2"
+    method="post"
+    enctype="multipart/form-data"
+    bind:this={formEl}
+    use:enhance
+>
     <datalist id="subjects">
         {#each data.subjects as subject}
             <option value={subject.name} />
         {/each}
     </datalist>
 
-    <input
-        on:change={updateTime}
-        name="offset"
-        type="time"
-        value={numberToTime($form.offset)}
-        required
-    />
-    <input
-        name="note"
-        type="text"
-        placeholder="Примечание"
-        bind:value={$form.note}
-        {...$constraints.note}
-    />
+    <div class="w-full">
+        <div class="w-full">
+            <label class="label" for="offset">
+                <span class="label-text">Начало занятий</span>
+            </label>
+            <input
+                id="offset"
+                on:change={updateTime}
+                name="offset"
+                type="time"
+                class="w-full input input-primary input-bordered"
+                value={numberToTime($form.offset)}
+                required
+            />
+        </div>
+        <div class="w-full">
+            <label class="label" for="note">
+                <span class="label-text">Примечание</span>
+            </label>
+            <input
+                id="note"
+                name="note"
+                type="text"
+                class="w-full input input-secondary input-bordered"
+                placeholder="Примечание"
+                bind:value={$form.note}
+                {...$constraints.note}
+            />
+        </div>
+    </div>
 
-    <ul>
-        {#each $form.subjects as _, i}
-            <li>
-                <input
-                    placeholder="Название предмета"
-                    type="text"
-                    list="subjects"
-                    on:change={() => updateSubject(i)}
-                    bind:value={$form.subjects[i].name}
-                    {...$constraints.subjects?.name}
-                />
-                <input
-                    placeholder="Длина предмета"
-                    type="number"
-                    bind:value={$form.subjects[i].length}
-                    {...$constraints.subjects?.length}
-                />
-                <input
-                    placeholder="Перемена предмета"
-                    type="number"
-                    bind:value={$form.subjects[i].break}
-                    {...$constraints.subjects?.break}
-                />
-                <input
-                    placeholder="Учитель"
-                    class="teacher"
-                    type="text"
-                    bind:value={$form.subjects[i].teacher}
-                    {...$constraints.subjects?.teacher}
-                />
-                <input
-                    placeholder="Класс"
-                    class="classroom"
-                    type="text"
-                    bind:value={$form.subjects[i].classroom}
-                    {...$constraints.subjects?.classroom}
-                />
-                <input
-                    placeholder="Позиция"
-                    type="number"
-                    bind:value={$form.subjects[i].position}
-                    {...$constraints.subjects?.position}
-                />
-
-                <div>
-                    <h3>Домашнее задание</h3>
-
-                    <input
-                        type="text"
-                        placeholder="Текст"
-                        bind:value={$form.subjects[i].homeworkText}
-                        {...$constraints.subjects?.homeworkText}
-                    />
-
-                    {#if $form.subjects[i].homeworkFiles?.length}
-                        <ul>
-                            {#each $form.subjects[i].homeworkFiles ?? [] as file}
-                                <li>{file.name}</li>
-                            {/each}
-                        </ul>
-                    {/if}
-
-                    <input
-                        type="file"
-                        multiple
-                        name="files-{$form.subjects[i].position}"
-                    />
-                </div>
-
-                <button
-                    type="button"
-                    on:click={() => removeSubject($form.subjects[i].position)}
+    {#if $form.subjects.length}
+        <div class="join join-vertical w-full">
+            {#each $form.subjects as subject, i}
+                <div
+                    class="collapse collapse-arrow join-item border bg-base-100"
                 >
-                    Убрать
-                </button>
-            </li>
-        {/each}
-    </ul>
+                    <input type="radio" name="accordion-subjects" />
+                    <div class="collapse-title">
+                        {subject.position}.
+                        <span class="text-xl font-medium" class:text-neutral-content={!subject.name}
+                            >{subject.name || "[Пусто]"}</span
+                        >
+                    </div>
+                    <div class="collapse-content">
+                        <div class="w-full">
+                            <label for="name-{i}" class="label">
+                                <span class="label-text">Название</span>
+                            </label>
 
-    <button type="button" on:click={addSubject}>Добавить предмет</button>
+                            <input
+                                id="name-{i}"
+                                type="text"
+                                placeholder="Название"
+                                on:change={() => updateSubject(i)}
+                                class="w-full input input-bordered input-primary"
+                                bind:value={$form.subjects[i].name}
+                                {...$constraints.subjects?.name}
+                            />
+                        </div>
+                        <div class="w-full flex gap-4">
+                            <div class="grow">
+                                <label for="length-{i}" class="label">
+                                    <span class="label-text">Длина</span>
+                                </label>
+
+                                <input
+                                    id="length-{i}"
+                                    class="w-full input input-primary input-bordered"
+                                    placeholder="Длина"
+                                    type="number"
+                                    bind:value={$form.subjects[i].length}
+                                    {...$constraints.subjects?.length}
+                                />
+                            </div>
+                            <div class="grow">
+                                <label for="break-{i}" class="label">
+                                    <span class="label-text">Перемена</span>
+                                </label>
+
+                                <input
+                                    id="break-{i}"
+                                    class="w-full input input-primary input-bordered"
+                                    placeholder="Перемена"
+                                    type="number"
+                                    bind:value={$form.subjects[i].break}
+                                    {...$constraints.subjects?.break}
+                                />
+                            </div>
+                        </div>
+                        <div class="w-full">
+                            <label for="teacher-{i}" class="label">
+                                <span class="label-text">Учитель</span>
+                            </label>
+
+                            <input
+                                id="teacher-{i}"
+                                placeholder="Учитель"
+                                class="w-full input input-bordered input-secondary"
+                                type="text"
+                                bind:value={$form.subjects[i].teacher}
+                                {...$constraints.subjects?.teacher}
+                            />
+                        </div>
+                        <div class="w-full">
+                            <label for="classroom-{i}" class="label">
+                                <span class="label-text">Кабинет</span>
+                            </label>
+
+                            <input
+                                id="classroom-{i}"
+                                placeholder="Кабинет"
+                                class="w-full input input-secondary input-bordered"
+                                type="text"
+                                bind:value={$form.subjects[i].classroom}
+                                {...$constraints.subjects?.classroom}
+                            />
+                        </div>
+                        {#if subject.name}
+                            <div class="w-full flex flex-col gap-2">
+                                <div class="w-full">
+                                    <label
+                                        for="homework-text-{i}"
+                                        class="label"
+                                    >
+                                        <span class="label-text"
+                                            >Домашнее задание</span
+                                        >
+                                    </label>
+
+                                    <input
+                                        id="homework-text-{i}"
+                                        type="text"
+                                        placeholder="Текст"
+                                        class="w-full input input-secondary input-bordered"
+                                        bind:value={$form.subjects[i]
+                                            .homeworkText}
+                                        {...$constraints.subjects?.homeworkText}
+                                    />
+                                </div>
+                                <input
+                                    name="files-{subject.position}"
+                                    type="file"
+                                    multiple
+                                    class="w-full file-input file-input-secondary file-input-bordered"
+                                />
+                                {#if subject.homeworkFiles?.length}
+                                    <div
+                                        class="w-full bg-base-200 flex p-4 gap-4 flex-wrap break-all"
+                                    >
+                                        {#each subject.homeworkFiles as file}
+                                            <button
+                                                on:click={() =>
+                                                    removeHomeworkFile(
+                                                        i,
+                                                        file.name
+                                                    )}
+                                                type="button"
+                                                class="flex gap-2 items-center"
+                                            >
+                                                <Icon
+                                                    name="cross"
+                                                    class="w-4 h-4 shrink-0"
+                                                />
+                                                {file.name}
+                                            </button>
+                                        {/each}
+                                    </div>
+                                {/if}
+                            </div>
+                        {/if}
+                        <button
+                            type="button"
+                            class="btn btn-error w-full mt-2"
+                            on:click={() => removeSubject(subject.position)}
+                            >Удалить</button
+                        >
+                    </div>
+                </div>
+            {/each}
+        </div>
+    {/if}
+
+    <button type="button" class="btn btn-primary" on:click={addSubject}
+        >Добавить предмет</button
+    >
 
     <MainButton onClick={submitForm} text="СОХРАНИТЬ" />
 </form>

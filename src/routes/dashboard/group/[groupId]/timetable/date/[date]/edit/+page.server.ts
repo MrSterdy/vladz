@@ -36,10 +36,11 @@ export const load: PageServerLoad = async event => {
                   homeworkFiles: subject.homework.files
               }))
           }
-        : {
-              note: weekdayTimetable!.note,
-              offset: weekdayTimetable!.offset,
-              subjects: weekdayTimetable!.subjects.map(subject => ({
+        : weekdayTimetable
+        ? {
+              offset: weekdayTimetable.offset,
+              note: null,
+              subjects: weekdayTimetable.subjects.map(subject => ({
                   name: subject.name,
                   length: subject.length,
                   break: subject.break,
@@ -49,6 +50,11 @@ export const load: PageServerLoad = async event => {
                   homeworkText: null,
                   homeworkFiles: null
               }))
+          }
+        : {
+              offset: 0,
+              note: null,
+              subjects: []
           };
 
     const subjects = await getSubjects(event.locals.group!.id);
@@ -224,7 +230,7 @@ export const actions: Actions = {
                                 const dateTimetable: DateTimetable = {
                                     date: nextTimetable.date.toISOString(),
                                     offset: timetable.offset,
-                                    note: timetable.note,
+                                    note: null,
                                     subjects: timetable.subjects.map(s => ({
                                         ...s,
                                         homework: { text: "", files: [] }
