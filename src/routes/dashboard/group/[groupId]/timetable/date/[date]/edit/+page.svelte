@@ -244,7 +244,7 @@
                                             >
                                                 <Icon
                                                     name="cross"
-                                                    class="w-4 h-4 shrink-0"
+                                                    class="w-4 h-4 fill-error shrink-0"
                                                 />
                                                 {file.name}
                                             </button>
