@@ -6,6 +6,7 @@
     import Icon from "$lib/components/Icon.svelte";
     import type { DateSubject, WeekdaySubject } from "$lib/types";
     import { imageTypes } from "$lib/consts";
+    import { fade } from "svelte/transition";
 
     export let data: PageData;
 
@@ -24,6 +25,8 @@
     });
 
     const subjects = (data.dateTimetable?.subjects ?? data.weekdayTimetable?.subjects ?? []) as (WeekdaySubject | DateSubject)[];
+
+    let selectedImage: string | null = null;
 </script>
 
 <section class="flex flex-col gap-2">
@@ -101,11 +104,11 @@
                                             {@const files = subject.homework.files.filter(f => !images.includes(f))}
                                             <div class="flex flex-col gap-2">
                                                 {#if images.length}
-                                                    <div class="bg-base-200 h-28 p-4 space-x-4 carousel rounded-box">
+                                                    <div class="bg-base-200 h-28 p-2 space-x-2 carousel rounded-box">
                                                         {#each images as image}
-                                                            <div class="carousel-item">
-                                                                <img class="m-0" src={image.url} alt={image.name} />
-                                                            </div>
+                                                            <button type="button" on:click={() => selectedImage = image.url} class="carousel-item">
+                                                                <img class="m-0 w-full h-full" src={image.url} alt={image.name} />
+                                                            </button>
                                                         {/each}
                                                     </div>
                                                 {/if}
@@ -132,6 +135,12 @@
         </div>
     {/if}
 </section>
+
+{#if selectedImage}
+    <button transition:fade={{ duration: 100 }} on:click={() => selectedImage = null} class:hidden={!selectedImage} class="grid place-items-center w-full h-full fixed inset-0 m-auto [&:not(.hidden)]:bg-base-100/90">
+        <img class="max-w-[90%] max-h-[90%] object-contain m-0 rounded" src={selectedImage} alt="" />
+    </button>
+{/if}
 
 {#if data.user.role !== "USER" || data.groupUser?.role === "CURATOR" || data.groupUser?.role === "REDACTOR"}
     <MainButton onClick={() => goto("edit")} text="РЕДАКТИРОВАТЬ" />
