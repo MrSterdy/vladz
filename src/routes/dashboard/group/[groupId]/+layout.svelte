@@ -4,6 +4,7 @@
     import { page } from "$app/stores";
     import { capitalize } from "$lib/utils/string";
     import { weekdays } from "$lib/consts";
+    import { dateToString, parseDate } from "$lib/utils/time";
 
     export let data: PageData;
 
@@ -36,7 +37,7 @@
                             {#if timetablePath[2] === "weekday"}
                                 {capitalize(weekdays[parseInt(timetablePath[3])])}
                             {:else}
-                                {timetablePath[3]}
+                                {capitalize(parseDate(timetablePath[3]).format("MMMM D, YYYY"))}
                             {/if}
                         </a>
                     </li>
