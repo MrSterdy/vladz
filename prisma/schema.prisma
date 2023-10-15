@@ -146,7 +146,7 @@ model Group {
 
   name String @db.VarChar(64)
 
-  inviteCode String
+  inviteCode String @db.VarChar(16)
 
   userGroups        UserGroup[]
   weekdayTimetables WeekdayTimetable[]
