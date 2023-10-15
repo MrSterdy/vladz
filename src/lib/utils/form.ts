@@ -21,7 +21,7 @@ export function handleKit(successMessage?: string) {
             toast.push((result.error as App.Error).message, { classes: ["toast-error"] });
         } else if (result.type === "failure") {
             toast.push("Произошла ошибка", { classes: ["toast-error"] });
-        } else if (result.type === "success" && successMessage) {
+        } else if (successMessage) {
             toast.push(successMessage, { classes: ["toast-success"] });
         }
 

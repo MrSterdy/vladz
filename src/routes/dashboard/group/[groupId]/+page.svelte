@@ -8,6 +8,7 @@
     import { groupUserRoles, weekdays } from "$lib/consts";
     import { formatISOString } from "$lib/utils/time";
     import { capitalize } from "$lib/utils/string";
+    import { handleKit } from "$lib/utils/form";
 
     export let data: PageData;
 
@@ -52,7 +53,7 @@
         </div>
 
         {#if data.groupUser}
-            <form class="card-actions" method="post" use:enhance>
+            <form class="card-actions" method="post" use:enhance={() => handleKit(`Вы покинули группу "${data.group.name}"`)}>
                 <input
                     type="submit"
                     class="btn btn-error w-full"
