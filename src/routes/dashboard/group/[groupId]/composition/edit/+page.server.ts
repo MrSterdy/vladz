@@ -3,7 +3,8 @@ import { type Actions, error, fail } from "@sveltejs/kit";
 import { message, superValidate } from "sveltekit-superforms/server";
 import {
     addUserToGroup,
-    getGroupUser, removeApplication,
+    getGroupUser,
+    removeApplication,
     removeGroupUser,
     updateGroupUserRole
 } from "$lib/server/services/groupService";
@@ -15,6 +16,7 @@ import {
 import { groupUserRoles } from "$lib/consts";
 import { capitalize } from "$lib/utils/string";
 import idSchema from "$lib/server/schemas/id";
+import { setFlash } from "sveltekit-flash-message/server";
 
 export const load: PageServerLoad = async () => {
     const form = await superValidate(idSchema);
@@ -37,7 +39,7 @@ export const actions: Actions = {
         }
 
         if (user.role === "CURATOR") {
-            return message(form, "Не удалось повысить пользователя в роли");
+            throw error(400, { message: "Не удалось повысить участника" });
         }
 
         if (user.role === "EDITOR" && event.locals.user!.role === "USER") {
@@ -52,6 +54,14 @@ export const actions: Actions = {
             user.id,
             capitalize(groupUserRoles[newRole]),
             group.name
+        );
+
+        setFlash(
+            {
+                type: "success",
+                message: `${user.lastName} ${user.firstName} был(-а) повышен(-а)`
+            },
+            event
         );
 
         return { form };
@@ -70,7 +80,7 @@ export const actions: Actions = {
         }
 
         if (user.role === "MEMBER") {
-            return message(form, "Не удалось понизить пользователя в роли");
+            throw error(400, "Не удалось понизить участника");
         }
 
         if (user.role === "CURATOR" && event.locals.user!.role === "USER") {
@@ -85,6 +95,14 @@ export const actions: Actions = {
             user.id,
             capitalize(groupUserRoles[newRole]),
             group.name
+        );
+
+        setFlash(
+            {
+                type: "success",
+                message: `${user.lastName} ${user.firstName} был(-а) понижен(-а)`
+            },
+            event
         );
 
         return { form };
@@ -110,6 +128,14 @@ export const actions: Actions = {
 
         await sendKickNotification(user.id, group.name);
 
+        setFlash(
+            {
+                type: "success",
+                message: `${user.lastName} ${user.firstName} был(-а) изгнан(-а)`
+            },
+            event
+        );
+
         return { form };
     },
     accept: async event => {
@@ -119,6 +145,11 @@ export const actions: Actions = {
         }
 
         const group = event.locals.group!;
+
+        const application = group.applications.find(a => a.id === form.data.id);
+        if (!application) {
+            throw error(400, { message: "Пользователь не подавал заявку" });
+        }
 
         const user = await getGroupUser(form.data.id, group.id);
         if (user) {
@@ -130,7 +161,19 @@ export const actions: Actions = {
             addUserToGroup(form.data.id, group.id)
         ]);
 
-        await sendApplicationStateNotification(form.data.id, "accepted", group.name);
+        await sendApplicationStateNotification(
+            form.data.id,
+            "accepted",
+            group.name
+        );
+
+        setFlash(
+            {
+                type: "success",
+                message: `${application.lastName} ${application.firstName} был(-а) принят(-а)`
+            },
+            event
+        );
 
         return { form };
     },
@@ -142,14 +185,31 @@ export const actions: Actions = {
 
         const group = event.locals.group!;
 
+        const application = group.applications.find(a => a.id === form.data.id);
+        if (!application) {
+            throw error(400, { message: "Пользователь не подавал заявку" });
+        }
+
         const user = await getGroupUser(form.data.id, group.id);
         if (user) {
             throw error(400, { message: "Пользователь уже состоит в группе" });
         }
 
-        await removeApplication(group.id, form.data.id)
+        await removeApplication(group.id, form.data.id);
 
-        await sendApplicationStateNotification(form.data.id, "denied", group.name);
+        await sendApplicationStateNotification(
+            form.data.id,
+            "denied",
+            group.name
+        );
+
+        setFlash(
+            {
+                type: "success",
+                message: `${application.lastName} ${application.firstName} был(-а) отклонен(-а)`
+            },
+            event
+        );
 
         return { form };
     }
