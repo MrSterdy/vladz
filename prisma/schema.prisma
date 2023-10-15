@@ -148,12 +148,12 @@ model Group {
 
   inviteCode String @db.VarChar(16)
 
-  groupUsers        GroupUser[]
+  users             GroupUser[]
   weekdayTimetables WeekdayTimetable[]
   weekdaySubjects   WeekdaySubject[]
   dateTimetables    DateTimetable[]
   dateSubjects      DateSubject[]
-  subject           Subject[]
+  subjects          Subject[]
   homeworkTexts     HomeworkText[]
   homeworkFiles     HomeworkFile[]
   holidays          Holiday[]
@@ -169,8 +169,8 @@ model User {
 
   role UserRole @default(USER)
 
-  groupUsers GroupUser[]
-  userSecret UserSecret?
+  groups GroupUser[]
+  secret UserSecret?
 }
 
 model GroupUser {

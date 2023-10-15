@@ -75,7 +75,7 @@ export async function sendTimetableNotifications(
                 path: ["notifications", "timetable"],
                 equals: true
             },
-            groupUsers: {
+            groups: {
                 some: {
                     groupId
                 }

@@ -5,7 +5,7 @@ export async function getUserGroups(userId: bigint): Promise<Group[]> {
     const result = await prisma.groupUser.findMany({
         where: { userId },
         include: {
-            group: { include: { groupUsers: { include: { user: true } } } }
+            group: { include: { users: { include: { user: true } } } }
         }
     });
 
@@ -13,7 +13,7 @@ export async function getUserGroups(userId: bigint): Promise<Group[]> {
         id: gu.groupId,
         inviteCode: gu.group.inviteCode,
         name: gu.group.name,
-        users: gu.group.groupUsers.map(nestedGu => ({
+        users: gu.group.users.map(nestedGu => ({
             id: nestedGu.userId,
             firstName: nestedGu.user.firstName,
             lastName: nestedGu.user.lastName,
