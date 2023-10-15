@@ -5,7 +5,7 @@ import {
     getGroupUser,
     removeGroupUser,
     updateGroupUserRole
-} from "$lib/server/services/userGroupService";
+} from "$lib/server/services/groupUserService";
 import {
     sendApplicationStateNotification,
     sendKickNotification,

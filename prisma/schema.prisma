@@ -148,7 +148,7 @@ model Group {
 
   inviteCode String @db.VarChar(16)
 
-  userGroups        UserGroup[]
+  groupUsers        GroupUser[]
   weekdayTimetables WeekdayTimetable[]
   weekdaySubjects   WeekdaySubject[]
   dateTimetables    DateTimetable[]
@@ -169,16 +169,16 @@ model User {
 
   role UserRole @default(USER)
 
-  userGroups UserGroup[]
+  groupUsers GroupUser[]
   userSecret UserSecret?
 }
 
-model UserGroup {
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId BigInt
-
+model GroupUser {
   group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
   groupId Int
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId BigInt
 
   role GroupRole @default(APPLICATION)
 

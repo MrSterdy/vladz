@@ -7,7 +7,7 @@ export async function getGroupByInviteCode(
 ): Promise<Group | null> {
     const result = await prisma.group.findFirst({
         where: { inviteCode },
-        include: { userGroups: { include: { user: true } } }
+        include: { groupUsers: { include: { user: true } } }
     });
 
     return result
@@ -15,7 +15,7 @@ export async function getGroupByInviteCode(
               id: result.id,
               inviteCode,
               name: result.name,
-              users: result.userGroups.map(ug => ({
+              users: result.groupUsers.map(ug => ({
                   id: ug.userId,
                   firstName: ug.user.firstName,
                   lastName: ug.user.lastName,
@@ -27,14 +27,14 @@ export async function getGroupByInviteCode(
 
 export async function getGroups(): Promise<Group[]> {
     const result = await prisma.group.findMany({
-        include: { userGroups: { include: { user: true } } }
+        include: { groupUsers: { include: { user: true } } }
     });
 
     return result.map(group => ({
         id: group.id,
         inviteCode: group.inviteCode,
         name: group.name,
-        users: group.userGroups.map(ug => ({
+        users: group.groupUsers.map(ug => ({
             id: ug.userId,
             firstName: ug.user.firstName,
             lastName: ug.user.lastName,
@@ -46,7 +46,7 @@ export async function getGroups(): Promise<Group[]> {
 export async function getGroupById(groupId: number): Promise<Group | null> {
     const result = await prisma.group.findFirst({
         where: { id: groupId },
-        include: { userGroups: { include: { user: true } } }
+        include: { groupUsers: { include: { user: true } } }
     });
 
     return result
@@ -54,7 +54,7 @@ export async function getGroupById(groupId: number): Promise<Group | null> {
               id: result.id,
               inviteCode: result.inviteCode,
               name: result.name,
-              users: result.userGroups.map(ug => ({
+              users: result.groupUsers.map(ug => ({
                   id: ug.userId,
                   firstName: ug.user.firstName,
                   lastName: ug.user.lastName,

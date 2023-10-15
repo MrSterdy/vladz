@@ -41,7 +41,7 @@ export async function sendApplicationNotifications(
     groupId: number,
     groupName: string
 ) {
-    const users = await prisma.userGroup.findMany({
+    const users = await prisma.groupUser.findMany({
         select: {
             userId: true
         },
@@ -66,20 +66,18 @@ export async function sendTimetableNotifications(
     groupName: string,
     date: Dayjs
 ) {
-    const users = await prisma.userSettings.findMany({
+    const users = await prisma.user.findMany({
         select: {
-            userId: true
+            id: true
         },
         where: {
             settings: {
                 path: ["notifications", "timetable"],
                 equals: true
             },
-            user: {
-                userGroups: {
-                    some: {
-                        groupId
-                    }
+            groupUsers: {
+                some: {
+                    groupId
                 }
             }
         }
@@ -88,7 +86,7 @@ export async function sendTimetableNotifications(
     await Promise.all(
         users.map(u =>
             bot.telegram.sendMessage(
-                u.userId.toString(),
+                u.id.toString(),
                 `⚡️ | Произошли изменения в расписании в группе "${groupName}" на ${date.format(
                     "DD.MM.YYYY"
                 )}`

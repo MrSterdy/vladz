@@ -1,6 +1,6 @@
 import type { Actions } from "./$types";
 import { error, redirect } from "@sveltejs/kit";
-import { removeUserFromGroup } from "$lib/server/services/userGroupService";
+import { removeUserFromGroup } from "$lib/server/services/groupUserService";
 
 export const actions: Actions = {
     default: async event => {

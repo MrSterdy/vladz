@@ -2,7 +2,7 @@ import { fail, error, redirect } from "@sveltejs/kit";
 import type { PageServerLoad, Actions } from "./$types";
 import { superValidate, message } from "sveltekit-superforms/server";
 
-import { addUserToGroup, getUserGroups } from "$lib/server/services/userGroupService";
+import { addUserToGroup, getUserGroups } from "$lib/server/services/groupUserService";
 import { createGroup, getGroupByInviteCode, getGroups } from "$lib/server/services/groupService";
 import {
     sendApplicationNotifications,
