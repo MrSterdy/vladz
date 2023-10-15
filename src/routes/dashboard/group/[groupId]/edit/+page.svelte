@@ -8,7 +8,7 @@
 
     export let data: PageData;
 
-    const { form, constraints, enhance } = superForm(data.form, {
+    const { form, constraints, enhance, errors } = superForm(data.form, {
         onUpdated: handleUpdated,
         onError: handleError
     });
@@ -24,6 +24,7 @@
                 class="input input-primary input-bordered w-full"
                 id="name"
                 name="name"
+                aria-invalid={$errors.name ? true : undefined}
                 bind:value={$form.name}
                 {...$constraints.name}
             />
