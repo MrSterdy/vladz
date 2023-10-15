@@ -4,27 +4,41 @@
     import { capitalize } from "$lib/utils/string";
     import { goto } from "$app/navigation";
     import MainButton from "$lib/components/MainButton.svelte";
+    import Icon from "$lib/components/Icon.svelte";
 
     export let data: PageData;
 </script>
 
-<h1>Руководство</h1>
-
-<form></form>
+<h1 class="text-center">Руководство</h1>
 
 {#if data.management.length}
-    <ul>
-        {#each data.management as user}
-            <li>
-                <h2>
-                    {user.lastName}
-                    {user.firstName} [{capitalize(userRoles[user.role])}]
-                </h2>
-            </li>
+    <table class="table">
+        <thead>
+        <tr>
+            <th></th>
+            <th>Имя</th>
+            <th>Роль</th>
+        </tr>
+        </thead>
+        <tbody>
+        {#each data.management as user, i}
+            <tr>
+                <th>{i + 1}</th>
+                <td class="break-word">{user.lastName} {user.firstName}</td>
+                <td>
+                <span class="badge badge-accent badge-outline">
+                    {capitalize(userRoles[user.role])}
+                </span>
+                </td>
+            </tr>
         {/each}
-    </ul>
+        </tbody>
+    </table>
 {:else}
-    <h2>Никого нет</h2>
+    <div class="flex flex-col items-center">
+        <Icon name="sad" class="h-24 w-24 fill-base-content" />
+        <p class="text-lg text-base-content">Никого нет</p>
+    </div>
 {/if}
 
 {#if data.user?.role === "ADMIN"}
