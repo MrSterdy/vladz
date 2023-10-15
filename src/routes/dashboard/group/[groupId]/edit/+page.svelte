@@ -5,6 +5,7 @@
     import { enhance as kitEnhance } from "$app/forms";
     import MainButton from "$lib/components/MainButton.svelte";
     import { handleError, handleUpdated } from "$lib/utils/form";
+    import { showConfirm } from "$lib/utils/telegram";
 
     export let data: PageData;
 
@@ -14,6 +15,12 @@
     });
 
     let formEl: HTMLFormElement;
+
+    let delFormEl: HTMLFormElement;
+
+    function confirmDeletion() {
+        showConfirm("Вы действительно хотите удалить группу?", () => delFormEl.requestSubmit());
+    }
 </script>
 
 <section class="card card-compact card-body bg-base-100">
@@ -31,8 +38,10 @@
         </div>
     </form>
 
-    <form method="post" action="?/delete" use:kitEnhance>
-        <input class="btn btn-error w-full" type="submit" value="Удалить" />
+    <form method="post" action="?/delete" bind:this={delFormEl} use:kitEnhance>
+        <button class="btn btn-error w-full" type="button" on:click={confirmDeletion}>
+            Удалить
+        </button>
     </form>
 
     <MainButton onClick={() => formEl.requestSubmit()} text="СОХРАНИТЬ" />

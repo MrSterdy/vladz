@@ -8,6 +8,7 @@
     import { groupUserRoles, weekdays } from "$lib/consts";
     import { formatISOString } from "$lib/utils/time";
     import { capitalize } from "$lib/utils/string";
+    import { showConfirm } from "$lib/utils/telegram";
 
     export let data: PageData;
 
@@ -26,6 +27,14 @@
         return activeTimetableTab === "date"
             ? goto(`timetable/date/${selectedDate}`)
             : goto(`timetable/weekday/${weekdaySelect.value}`);
+    }
+
+    let formEl: HTMLFormElement;
+
+    function confirmExit() {
+        showConfirm("Вы действительно хотите покинуть группу?", () =>
+            formEl.requestSubmit()
+        );
     }
 </script>
 
@@ -52,12 +61,19 @@
         </div>
 
         {#if data.groupUser}
-            <form class="card-actions" method="post" use:enhance>
-                <input
-                    type="submit"
+            <form
+                class="card-actions"
+                method="post"
+                bind:this={formEl}
+                use:enhance
+            >
+                <button
+                    type="button"
+                    on:click={confirmExit}
                     class="btn btn-error w-full"
-                    value="Покинуть группу"
-                />
+                >
+                    Покинуть группу
+                </button>
             </form>
         {/if}
     </div>
@@ -95,7 +111,10 @@
                         bind:value={selectedDate}
                     />
                 {:else}
-                    <select bind:this={weekdaySelect} class="select select-bordered select-primary">
+                    <select
+                        bind:this={weekdaySelect}
+                        class="select select-bordered select-primary"
+                    >
                         {#each weekdays as weekday, i}
                             <option value={i}>
                                 {capitalize(weekday)}
@@ -104,7 +123,9 @@
                     </select>
                 {/if}
 
-                <button class="btn btn-primary" on:click={getTimetable}>Узнать расписание</button>
+                <button class="btn btn-primary" on:click={getTimetable}
+                    >Узнать расписание</button
+                >
             </div>
             <form method="dialog" class="modal-backdrop">
                 <button>Закрыть</button>

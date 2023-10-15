@@ -79,6 +79,7 @@ declare global {
             eventType: TelegramWebAppEvent,
             eventHandler: () => unknown
         ) => void;
+        showConfirm: (message, callback: (ok: boolean) => void) => void;
         sendData: (data: unknown) => void;
         ready: () => void;
         expand: () => void;
