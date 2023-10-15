@@ -7,13 +7,16 @@
     import { groupUserRoles, userRoles } from "$lib/consts";
     import Icon from "$lib/components/Icon.svelte";
     import MainButton from "$lib/components/MainButton.svelte";
+    import { handleError, handleUpdated } from "$lib/utils/form";
 
     export let data: PageData;
 
-    const { form, enhance, constraints } = superForm(data.form);
+    const { form, enhance, constraints, errors } = superForm(data.form, {
+        onUpdated: handleUpdated,
+        onError: handleError
+    });
 
     let promoteForm: HTMLFormElement;
-    const submitPromoteForm = () => promoteForm.requestSubmit();
 </script>
 
 <h1 class="text-center">Редактирование руководства</h1>
@@ -23,12 +26,13 @@
         type="number"
         name="id"
         class="w-full input input-primary input-bordered"
+        aria-invalid={$errors.id ? true : undefined}
         placeholder="ID пользователя"
         bind:value={$form.id}
         {...$constraints.id}
     />
 
-    <MainButton text="ПОВЫСИТЬ" onClick={submitPromoteForm} />
+    <MainButton text="ПОВЫСИТЬ" onClick={() => promoteForm.requestSubmit()} />
 </form>
 
 {#if data.management.length}
