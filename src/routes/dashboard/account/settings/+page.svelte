@@ -2,14 +2,16 @@
     import type { PageData } from "./$types";
     import { superForm } from "sveltekit-superforms/client";
     import MainButton from "$lib/components/MainButton.svelte";
+    import { handleError, handleUpdated } from "$lib/utils/form";
 
     export let data: PageData;
 
-    const { form, enhance, constraints } = superForm(data.form);
+    const { form, enhance, constraints, errors } = superForm(data.form, {
+        onUpdated: handleUpdated,
+        onError: handleError
+    });
 
     let formEl: HTMLFormElement;
-
-    const submitForm = () => formEl.requestSubmit();
 
     function updateCheckboxSetting(
         setting: {
@@ -40,6 +42,7 @@
             <input
                 id="first-name"
                 name="first_name"
+                aria-invalid={$errors.first_name ? true : undefined}
                 class="input input-primary input-bordered w-full"
                 placeholder="Имя"
                 bind:value={$form.first_name}
@@ -53,6 +56,7 @@
             <input
                 id="last-name"
                 name="last_name"
+                aria-invalid={$errors.last_name ? true : undefined}
                 placeholder="Фамилия"
                 class="input input-primary input-bordered w-full"
                 bind:value={$form.last_name}
@@ -76,6 +80,6 @@
             </label>
         </div>
 
-        <MainButton onClick={submitForm} text="СОХРАНИТЬ" />
+        <MainButton onClick={() => formEl.requestSubmit()} text="СОХРАНИТЬ" />
     </form>
 </section>

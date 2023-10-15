@@ -1,8 +1,9 @@
 import { z } from "zod";
 import type { Actions, PageServerLoad } from "./$types";
 import { superValidate } from "sveltekit-superforms/server";
-import { fail, redirect } from "@sveltejs/kit";
+import { fail } from "@sveltejs/kit";
 import { getUserById, updateUser } from "$lib/server/services/userService";
+import { redirect } from "sveltekit-flash-message/server";
 
 const updateAccountSchema = z.object({
     first_name: z
@@ -48,6 +49,6 @@ export const actions: Actions = {
 
         await updateUser(user!);
 
-        throw redirect(303, "../");
+        throw redirect("../", { type: "success", message: "Настройки были изменены" }, event);
     }
 };
