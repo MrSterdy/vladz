@@ -5,6 +5,7 @@
     import "../app.css";
     import { onMount } from "svelte";
     import Navbar from "$lib/components/Navbar.svelte";
+    import { SvelteToast, toast } from "@zerodevx/svelte-toast";
 
     let onMainPage = true;
 
@@ -23,6 +24,10 @@
         );
     });
 </script>
+
+<div class="toast-wrapper">
+    <SvelteToast options={{ reversed: true, intro: { y: 192 }, dismissable: false }} />
+</div>
 
 <main
     class="flex flex-col min-h-full grow w-full gap-4 {onMainPage ? 'bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] to-base-100 from-primary' : ''} "

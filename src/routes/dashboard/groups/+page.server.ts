@@ -1,6 +1,6 @@
 import { fail, error } from "@sveltejs/kit";
 import type { PageServerLoad, Actions } from "./$types";
-import { superValidate, message } from "sveltekit-superforms/server";
+import { message, superValidate } from "sveltekit-superforms/server";
 
 import {
     createGroup,
@@ -38,17 +38,17 @@ export const actions: Actions = {
 
         const group = await getGroupByInviteCode(inviteForm.data.invite_code);
         if (!group) {
-            return message(inviteForm, "Группа с таким кодом приглашения не найдена");
+            throw error(400, { message: "Группа с таким кодом не найдена" });
         }
 
         const userId = event.locals.user!.id;
 
         if (group.users.some(u => u.id === userId)) {
-            return message(inviteForm, "Вы уже состоите в этой группе");
+            throw error(400, { message: "Вы уже состоите в группе с таким кодом" });
         }
 
         if (group.applications.some(u => u.id === userId)) {
-            return message(inviteForm, "Вы уже подали заявку в эту группу");
+            throw error(400, { message: "Вы уже подали заявку в группу с таким кодом" });
         }
 
         await createApplication(group.id, userId);
@@ -58,7 +58,7 @@ export const actions: Actions = {
             sendApplicationNotifications(group.id, group.name)
         ]);
 
-        return { inviteForm };
+        return message(inviteForm, "Заявка была успешно отправлена");
     },
     create: async (event) => {
         if (event.locals.user!.role !== "ADMIN" && event.locals.user!.role !== "HELPER") {

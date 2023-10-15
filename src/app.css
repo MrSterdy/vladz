@@ -3,6 +3,13 @@
 @tailwind utilities;
 
 @layer base {
+    :root {
+        --toastContainerTop: auto;
+        --toastContainerRight: auto;
+        --toastContainerBottom: 2rem;
+        --toastContainerLeft: calc(50vw - 8rem);
+    }
+
     html {
         @apply h-full;
     }
@@ -13,6 +20,27 @@
 }
 
 @layer components {
+    .toast-wrapper ._toastItem {
+        word-break: break-word;
+        @apply !rounded !w-full text-lg;
+    }
+
+    .toast-wrapper ._toastContainer {
+        @apply !left-0 !right-0 w-full !pr-4 !pl-4;
+    }
+
+    .toast-success {
+        --toastColor: theme("colors.success-content");
+        --toastBackground: theme("colors.success");
+        --toastBarBackground: theme("colors.emerald.500");
+    }
+
+    .toast-error {
+        --toastColor: theme("colors.error-content");
+        --toastBackground: theme("colors.error");
+        --toastBarBackground: theme("colors.red.500");
+    }
+
     a.disabled {
         @apply no-underline pointer-events-none;
     }

@@ -4,20 +4,21 @@
     import { enhance as kitEnhance } from "$app/forms";
     import MainButton from "$lib/components/MainButton.svelte";
     import Icon from "$lib/components/Icon.svelte";
+    import { handleError, handleUpdated } from "$lib/utils/form";
 
     export let data: PageData;
 
-    const { form, errors, constraints, message } = superForm(data.inviteForm);
+    const { form, errors, constraints, enhance } = superForm(data.inviteForm, {
+        onUpdated: handleUpdated,
+        onError: handleError
+    });
 
     let inviteForm: HTMLFormElement;
-    const submitInviteForm = () => inviteForm.requestSubmit();
-
     let createForm: HTMLFormElement;
-    const submitCreateForm = () => createForm.requestSubmit();
 </script>
 
 <div class="flex flex-col gap-4 h-full">
-    <form bind:this={inviteForm} method="POST" action="?/join">
+    <form bind:this={inviteForm} method="POST" action="?/join" use:enhance>
         <input
             type="text"
             aria-invalid={$errors.invite_code ? "true" : undefined}
@@ -27,7 +28,6 @@
             bind:value={$form.invite_code}
             {...$constraints.invite_code}
         />
-        {#if $message}<span>{$message}</span>{/if}
     </form>
 
     {#if data.groups.length || data.applications.length}
@@ -77,7 +77,7 @@
     {/if}
 
     {#if $form.invite_code.length === 16}
-        <MainButton text="ПОДАТЬ ЗАЯВКУ" onClick={submitInviteForm} />
+        <MainButton text="ПОДАТЬ ЗАЯВКУ" onClick={() => inviteForm.requestSubmit()} />
     {:else if data.user.role === "ADMIN" || data.user.role === "HELPER"}
         <form
             bind:this={createForm}
@@ -85,6 +85,6 @@
             action="?/create"
             use:kitEnhance
         />
-        <MainButton text="СОЗДАТЬ НОВУЮ ГРУППУ" onClick={submitCreateForm} />
+        <MainButton text="СОЗДАТЬ НОВУЮ ГРУППУ" onClick={() => createForm.requestSubmit()} />
     {/if}
 </div>
