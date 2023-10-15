@@ -165,11 +165,12 @@ model User {
   firstName String @db.VarChar(128)
   lastName  String @db.VarChar(128)
 
+  settings Json?
+
   role UserRole @default(USER)
 
-  userGroups   UserGroup[]
-  userSecret   UserSecret?
-  userSettings UserSettings?
+  userGroups UserGroup[]
+  userSecret UserSecret?
 }
 
 model UserGroup {
@@ -182,13 +183,6 @@ model UserGroup {
   role GroupRole @default(APPLICATION)
 
   @@id([userId, groupId])
-}
-
-model UserSettings {
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId BigInt @unique
-
-  settings Json
 }
 
 model UserSecret {

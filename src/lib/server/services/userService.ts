@@ -7,8 +7,7 @@ import type { User, UserSettings } from "$lib/types";
 
 export async function getUserById(id: bigint): Promise<User | null> {
     const result = await prisma.user.findFirst({
-        where: { id },
-        include: { userSettings: true }
+        where: { id }
     });
 
     return result
@@ -17,9 +16,9 @@ export async function getUserById(id: bigint): Promise<User | null> {
               firstName: result.firstName,
               lastName: result.lastName,
               role: result.role,
-              settings: (result.userSettings?.settings as
-                  | UserSettings
-                  | undefined) ?? { notifications: { timetable: false } }
+              settings: (result.settings as UserSettings | null) ?? {
+                  notifications: { timetable: false }
+              }
           }
         : null;
 }
@@ -45,7 +44,7 @@ export async function createUser(user: User) {
             firstName: user.firstName,
             lastName: user.lastName,
             role: user.role,
-            userSettings: { create: { settings: user.settings } }
+            settings: user.settings
         },
         update: { role: user.role },
         where: { id: user.id }
@@ -63,9 +62,7 @@ export async function updateUser(user: Partial<User> & Pick<User, "id">) {
             firstName: user.firstName,
             lastName: user.lastName,
             role: user.role,
-            userSettings: user.settings
-                ? { update: { settings: user.settings } }
-                : undefined
+            settings: user.settings
         }
     });
 
