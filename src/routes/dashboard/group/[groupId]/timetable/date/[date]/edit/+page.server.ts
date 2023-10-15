@@ -249,6 +249,6 @@ export const actions: Actions = {
 
         await sendTimetableNotifications(group.id, group.name, date);
 
-        throw redirect("../", { type: "success", message: "Расписание обновлено" }, event);
+        throw redirect("../", { type: "success", message: "Расписание было обновлено" }, event);
     }
 };
