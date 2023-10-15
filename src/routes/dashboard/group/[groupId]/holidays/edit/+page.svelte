@@ -7,6 +7,8 @@
 
     export let data: PageData;
 
+    const today = formatISOString(new Date());
+
     const { form, constraints, enhance } = superForm(data.form, {
         dataType: "json",
         onUpdated: handleUpdated,
@@ -16,8 +18,6 @@
     let formEl: HTMLFormElement;
 
     function addHoliday() {
-        const today = formatISOString(new Date());
-
         $form.holidays = [
             ...$form.holidays,
             { startDate: today, endDate: today }
@@ -45,6 +45,7 @@
                 <input
                     class="input input-primary input-bordered w-full"
                     type="date"
+                    min={formatISOString($form.holidays[i].startDate)}
                     bind:value={$form.holidays[i].endDate}
                     {...$constraints.holidays?.endDate}
                 />
