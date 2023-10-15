@@ -6,7 +6,7 @@
 
     export let data: PageData;
 
-    const { form, constraints, enhance } = superForm(data.form, {
+    const { form, constraints, enhance, errors } = superForm(data.form, {
         dataType: "json",
         onUpdated: handleUpdated,
         onError: handleError
@@ -49,6 +49,7 @@
                             id="name-{i}"
                             type="text"
                             placeholder="Название"
+                            aria-invalid={$errors.subjects?.[i].name ? true : undefined}
                             class="w-full input input-bordered input-primary"
                             bind:value={$form.subjects[i].name}
                             {...$constraints.subjects?.name}
@@ -63,6 +64,7 @@
                             id="teacher-{i}"
                             type="text"
                             placeholder="Учитель"
+                            aria-invalid={$errors.subjects?.[i].teacher ? true : undefined}
                             class="w-full input input-secondary input-bordered"
                             bind:value={$form.subjects[i].teacher}
                             {...$constraints.subjects?.teacher}
@@ -77,6 +79,7 @@
                             id="classroom-{i}"
                             type="text"
                             placeholder="Класс"
+                            aria-invalid={$errors.subjects?.[i].classroom ? true : undefined}
                             class="w-full input input-secondary input-bordered"
                             bind:value={$form.subjects[i].classroom}
                             {...$constraints.subjects?.classroom}
