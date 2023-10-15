@@ -5,7 +5,9 @@
     import "../app.css";
     import { onMount } from "svelte";
     import Navbar from "$lib/components/Navbar.svelte";
-    import { SvelteToast, toast } from "@zerodevx/svelte-toast";
+    import { SvelteToast } from "@zerodevx/svelte-toast";
+    import { getFlash } from "sveltekit-flash-message";
+    import { showToastError, showToastSuccess } from "$lib/utils/toast";
 
     let onMainPage = true;
 
@@ -16,6 +18,17 @@
         window.Telegram.WebApp.BackButton.show();
         onMainPage = false;
     }
+
+    const flash = getFlash(page);
+    flash.subscribe(flashResult => {
+        if (!flashResult) return;
+
+        (flashResult.type === "success" ? showToastSuccess : showToastError)(
+            flashResult.message
+        );
+
+        flash.set(undefined);
+    });
 
     onMount(() => {
         document.documentElement.setAttribute(

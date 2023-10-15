@@ -1,6 +1,7 @@
 import { fail, error } from "@sveltejs/kit";
 import type { PageServerLoad, Actions } from "./$types";
 import { message, superValidate } from "sveltekit-superforms/server";
+import { setFlash } from "sveltekit-flash-message/server";
 
 import {
     createGroup,
@@ -58,7 +59,7 @@ export const actions: Actions = {
             sendApplicationNotifications(group.id, group.name)
         ]);
 
-        return message(inviteForm, "Заявка была успешно отправлена");
+        setFlash({ type: "success", message: "Заявка была успешно отправлена" }, event);
     },
     create: async (event) => {
         if (event.locals.user!.role !== "ADMIN" && event.locals.user!.role !== "HELPER") {
@@ -67,5 +68,7 @@ export const actions: Actions = {
 
         const group = await createGroup("Новая группа");
         await createBucket(group.inviteCode);
+
+        setFlash({ type: "success", message: "Новая группа была успешно создана" }, event);
     }
 };

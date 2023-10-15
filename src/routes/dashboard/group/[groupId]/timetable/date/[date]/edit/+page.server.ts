@@ -1,6 +1,7 @@
 import type { Actions, PageServerLoad } from "./$types";
-import { error, fail, redirect } from "@sveltejs/kit";
-import { message, superValidate } from "sveltekit-superforms/server";
+import { error, fail } from "@sveltejs/kit";
+import { superValidate } from "sveltekit-superforms/server";
+import { redirect } from "sveltekit-flash-message/server";
 import {
     findNextTimetableWithSubject,
     getDateTimetable,
@@ -93,25 +94,16 @@ export const actions: Actions = {
                 newFiles.length + (subject.homeworkFiles?.length ?? 0);
 
             if (totalFiles > parseInt(MAX_FILES)) {
-                return message(
-                    form,
-                    `Можно загружать максимум ${MAX_FILES} файлов за 1 предмет`
-                );
+                throw error(400, { message: `Можно загружать максимум ${MAX_FILES} файлов за 1 предмет` });
             }
 
             if (!(subject.name ?? "") && (subject.homeworkText || totalFiles)) {
-                return message(
-                    form,
-                    "У предмета с пустым названием не должно быть ДЗ"
-                );
+                throw error(400, { message: "У предмета с пустым названием не должно быть ДЗ" })
             }
 
             if (totalFiles || subject.homeworkText) {
                 if (subjectsWithHomework.includes(subject.name!)) {
-                    return message(
-                        form,
-                        "Не должно быть больше 1 ДЗ у предметов с одинаковыми названиями в расписании"
-                    );
+                    throw error(400, { message: "Не должно быть больше 1 ДЗ у предметов с одинаковыми названиями в расписании" })
                 }
 
                 subjectsWithHomework.push(subject.name!);
@@ -257,6 +249,6 @@ export const actions: Actions = {
 
         await sendTimetableNotifications(group.id, group.name, date);
 
-        throw redirect(303, "../");
+        throw redirect("../", { type: "success", message: "Расписание обновлено" }, event);
     }
 };

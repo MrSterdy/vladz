@@ -1,6 +1,7 @@
 import type { Actions } from "./$types";
-import { error, redirect } from "@sveltejs/kit";
+import { error } from "@sveltejs/kit";
 import { removeUserFromGroup } from "$lib/server/services/groupService";
+import { redirect } from "sveltekit-flash-message/server";
 
 export const actions: Actions = {
     default: async event => {
@@ -15,6 +16,6 @@ export const actions: Actions = {
             event.locals.group!.id
         );
 
-        throw redirect(303, "/dashboard/groups");
+        throw redirect("/dashboard/groups", { type: "success", message: `Вы покинули группу "${event.locals.group!.name}"` }, event);
     }
 };

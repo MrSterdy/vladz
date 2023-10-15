@@ -11,7 +11,9 @@ declare global {
             group?: Group;
             groupUser?: GroupUser;
         }
-        // interface PageData {}
+        interface PageData {
+            flash?: { type: "success" | "error", message: string }
+        }
         // interface Platform {}
     }
 }

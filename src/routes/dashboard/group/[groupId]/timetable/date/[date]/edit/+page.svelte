@@ -1,23 +1,23 @@
 <script lang="ts">
-    import type { PageData } from "./$types";
-    import { capitalize } from "$lib/utils/string";
-    import { numberToTime, timeToNumber } from "$lib/utils/time";
-    import { page } from "$app/stores";
     import { superForm } from "sveltekit-superforms/client";
-    import dayjs from "dayjs";
+
+    import type { PageData } from "./$types";
+
+    import { numberToTime, timeToNumber } from "$lib/utils/time";
+
     import MainButton from "$lib/components/MainButton.svelte";
-    import type { DateSubject } from "$lib/types";
     import Icon from "$lib/components/Icon.svelte";
+    import { handleError, handleUpdated } from "$lib/utils/form";
 
     export let data: PageData;
 
-    const { form, enhance, constraints } = superForm(data.form, {
-        dataType: "json"
+    const { form, enhance, constraints, errors } = superForm(data.form, {
+        dataType: "json",
+        onUpdated: handleUpdated,
+        onError: handleError
     });
 
     let formEl: HTMLFormElement;
-
-    const submitForm = () => formEl.requestSubmit();
 
     function updateTime(this: HTMLInputElement) {
         $form.offset = timeToNumber(this.value);
@@ -105,6 +105,7 @@
                 id="note"
                 name="note"
                 type="text"
+                aria-invalid={$errors.note ? true : undefined}
                 class="w-full input input-secondary input-bordered"
                 placeholder="Примечание"
                 bind:value={$form.note}
@@ -135,6 +136,7 @@
                             <input
                                 id="name-{i}"
                                 type="text"
+                                aria-invalid={$errors.subjects?.[i].name ? true : undefined}
                                 placeholder="Название"
                                 on:change={() => updateSubject(i)}
                                 class="w-full input input-bordered input-primary"
@@ -151,6 +153,7 @@
                                 <input
                                     id="length-{i}"
                                     class="w-full input input-primary input-bordered"
+                                    aria-invalid={$errors.subjects?.[i].length ? true : undefined}
                                     placeholder="Длина"
                                     type="number"
                                     bind:value={$form.subjects[i].length}
@@ -165,6 +168,7 @@
                                 <input
                                     id="break-{i}"
                                     class="w-full input input-primary input-bordered"
+                                    aria-invalid={$errors.subjects?.[i].break ? true : undefined}
                                     placeholder="Перемена"
                                     type="number"
                                     bind:value={$form.subjects[i].break}
@@ -180,6 +184,7 @@
                             <input
                                 id="teacher-{i}"
                                 placeholder="Учитель"
+                                aria-invalid={$errors.subjects?.[i].teacher ? true : undefined}
                                 class="w-full input input-bordered input-secondary"
                                 type="text"
                                 bind:value={$form.subjects[i].teacher}
@@ -194,6 +199,7 @@
                             <input
                                 id="classroom-{i}"
                                 placeholder="Кабинет"
+                                aria-invalid={$errors.subjects?.[i].classroom ? true : undefined}
                                 class="w-full input input-secondary input-bordered"
                                 type="text"
                                 bind:value={$form.subjects[i].classroom}
@@ -216,6 +222,7 @@
                                         id="homework-text-{i}"
                                         type="text"
                                         placeholder="Текст"
+                                        aria-invalid={$errors.subjects?.[i].homeworkText ? true : undefined}
                                         class="w-full input input-secondary input-bordered"
                                         bind:value={$form.subjects[i]
                                             .homeworkText}
@@ -269,5 +276,5 @@
         >Добавить предмет</button
     >
 
-    <MainButton onClick={submitForm} text="СОХРАНИТЬ" />
+    <MainButton onClick={() => formEl.requestSubmit()} text="СОХРАНИТЬ" />
 </form>
