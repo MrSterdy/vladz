@@ -82,4 +82,6 @@ export type Group = {
     inviteCode: string;
 
     users: GroupUser[];
+
+    applications: BaseUser[];
 };

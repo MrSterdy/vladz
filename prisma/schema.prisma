@@ -148,15 +148,22 @@ model Group {
 
   inviteCode String @db.VarChar(16)
 
-  users             GroupUser[]
+  users GroupUser[]
+
+  applications GroupApplication[]
+
   weekdayTimetables WeekdayTimetable[]
   weekdaySubjects   WeekdaySubject[]
-  dateTimetables    DateTimetable[]
-  dateSubjects      DateSubject[]
-  subjects          Subject[]
-  homeworkTexts     HomeworkText[]
-  homeworkFiles     HomeworkFile[]
-  holidays          Holiday[]
+
+  dateTimetables DateTimetable[]
+  dateSubjects   DateSubject[]
+
+  subjects Subject[]
+
+  homeworkTexts HomeworkText[]
+  homeworkFiles HomeworkFile[]
+
+  holidays Holiday[]
 }
 
 model User {
@@ -169,7 +176,9 @@ model User {
 
   role UserRole @default(USER)
 
-  groups GroupUser[]
+  groups       GroupUser[]
+  applications GroupApplication[]
+
   secret UserSecret?
 }
 
@@ -180,9 +189,19 @@ model GroupUser {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId BigInt
 
-  role GroupRole @default(APPLICATION)
+  role GroupRole @default(MEMBER)
 
   @@id([userId, groupId])
+}
+
+model GroupApplication {
+  group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  groupId Int
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId BigInt
+
+  @@unique([groupId, userId])
 }
 
 model UserSecret {
@@ -202,5 +221,4 @@ enum GroupRole {
   CURATOR
   EDITOR
   MEMBER
-  APPLICATION
 }

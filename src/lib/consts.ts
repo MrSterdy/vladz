@@ -23,8 +23,7 @@ export const userRoles = {
 export const groupUserRoles = {
     "CURATOR": "куратор",
     "EDITOR": "редактор",
-    "MEMBER": "участник",
-    "APPLICATION": "заявка"
+    "MEMBER": "участник"
 } as const;
 
 export const imageTypes = ["image/png", "image/jpg", "image/jpeg"];

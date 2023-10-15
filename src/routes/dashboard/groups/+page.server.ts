@@ -1,9 +1,14 @@
-import { fail, error, redirect } from "@sveltejs/kit";
+import { fail, error } from "@sveltejs/kit";
 import type { PageServerLoad, Actions } from "./$types";
 import { superValidate, message } from "sveltekit-superforms/server";
 
-import { addUserToGroup, getUserGroups } from "$lib/server/services/groupUserService";
-import { createGroup, getGroupByInviteCode, getGroups } from "$lib/server/services/groupService";
+import {
+    createGroup,
+    getGroupByInviteCode,
+    getGroups,
+    getUserGroups,
+    createApplication, getUserApplications
+} from "$lib/server/services/groupService";
 import {
     sendApplicationNotifications,
     sendApplicationStateNotification
@@ -16,9 +21,12 @@ export const load: PageServerLoad = async event => {
 
     const getAll = event.locals.user!.role === "ADMIN" || event.locals.user!.role === "HELPER";
 
-    const groups = getAll ? await getGroups() : await getUserGroups(event.locals.user!.id);
+    const [groups, applications] = await Promise.all([
+        getAll ? getGroups() : getUserGroups(event.locals.user!.id),
+        getUserApplications(event.locals.user!.id)
+    ]);
 
-    return { groups, inviteForm };
+    return { groups, applications, inviteForm };
 }
 
 export const actions: Actions = {
@@ -36,17 +44,21 @@ export const actions: Actions = {
         const userId = event.locals.user!.id;
 
         if (group.users.some(u => u.id === userId)) {
-            return message(inviteForm, "Вы уже состоите в группе с таким кодом");
+            return message(inviteForm, "Вы уже состоите в этой группе");
         }
 
-        await addUserToGroup(userId, group.id);
+        if (group.applications.some(u => u.id === userId)) {
+            return message(inviteForm, "Вы уже подали заявку в эту группу");
+        }
+
+        await createApplication(group.id, userId);
 
         await Promise.all([
             sendApplicationStateNotification(userId, "sent", group.name),
             sendApplicationNotifications(group.id, group.name)
         ]);
 
-        throw redirect(303, `/dashboard/group/${group.id}`);
+        return { inviteForm };
     },
     create: async (event) => {
         if (event.locals.user!.role !== "ADMIN" && event.locals.user!.role !== "HELPER") {

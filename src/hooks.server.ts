@@ -162,17 +162,13 @@ export const authorizationHandler: Handle = async ({ event, resolve }) => {
     const groupPath = path.split(/^\/dashboard\/group\/\d+/)[1];
 
     if (
-        (groupPath !== "/" &&
-            user.role === "USER" &&
-            groupUser!.role === "APPLICATION") ||
         (groupPath.startsWith("/edit") && user.role === "USER") ||
         (groupPath.startsWith("/composition/edit") &&
             user.role === "USER" &&
             groupUser!.role !== "CURATOR") ||
         (path.includes("/edit") &&
             user.role === "USER" &&
-            (groupUser!.role === "APPLICATION" ||
-                groupUser!.role === "MEMBER"))
+            groupUser!.role === "MEMBER")
     ) {
         throw error(403, { message: "Доступ запрещен" });
     }
@@ -196,7 +192,8 @@ const userPromise = createUser({
     firstName: "Влад",
     lastName: "Король",
     role: "ADMIN",
-    settings: defaultSettings
+    settings: defaultSettings,
+    applications: []
 });
 
 const botPromise = bot.launch();

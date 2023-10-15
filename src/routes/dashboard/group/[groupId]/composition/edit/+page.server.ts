@@ -2,10 +2,11 @@ import type { PageServerLoad } from "./$types";
 import { type Actions, error, fail } from "@sveltejs/kit";
 import { message, superValidate } from "sveltekit-superforms/server";
 import {
-    getGroupUser,
+    addUserToGroup,
+    getGroupUser, removeApplication,
     removeGroupUser,
     updateGroupUserRole
-} from "$lib/server/services/groupUserService";
+} from "$lib/server/services/groupService";
 import {
     sendApplicationStateNotification,
     sendKickNotification,
@@ -43,24 +44,15 @@ export const actions: Actions = {
             throw error(403, { message: "Недостаточно прав" });
         }
 
-        const newRole =
-            user.role === "EDITOR"
-                ? "CURATOR"
-                : user.role === "MEMBER"
-                ? "EDITOR"
-                : "MEMBER";
+        const newRole = user.role === "EDITOR" ? "CURATOR" : "EDITOR";
 
         await updateGroupUserRole(user.id, group.id, newRole);
 
-        if (newRole === "MEMBER") {
-            await sendApplicationStateNotification(user.id, "accepted", group.name);
-        } else {
-            await sendPromotionNotification(
-                user.id,
-                capitalize(groupUserRoles[newRole]),
-                group.name
-            );
-        }
+        await sendPromotionNotification(
+            user.id,
+            capitalize(groupUserRoles[newRole]),
+            group.name
+        );
 
         return { form };
     },
@@ -116,15 +108,48 @@ export const actions: Actions = {
 
         await removeGroupUser(user.id, group.id);
 
-        if (user.role === "APPLICATION") {
-            await sendApplicationStateNotification(
-                user.id,
-                "denied",
-                group.name
-            );
-        } else {
-            await sendKickNotification(user.id, group.name);
+        await sendKickNotification(user.id, group.name);
+
+        return { form };
+    },
+    accept: async event => {
+        const form = await superValidate(event.request, idSchema);
+        if (!form.valid) {
+            return fail(400, { form });
         }
+
+        const group = event.locals.group!;
+
+        const user = await getGroupUser(form.data.id, group.id);
+        if (user) {
+            throw error(400, { message: "Пользователь уже состоит в группе" });
+        }
+
+        await Promise.all([
+            removeApplication(group.id, form.data.id),
+            addUserToGroup(form.data.id, group.id)
+        ]);
+
+        await sendApplicationStateNotification(form.data.id, "accepted", group.name);
+
+        return { form };
+    },
+    deny: async event => {
+        const form = await superValidate(event.request, idSchema);
+        if (!form.valid) {
+            return fail(400, { form });
+        }
+
+        const group = event.locals.group!;
+
+        const user = await getGroupUser(form.data.id, group.id);
+        if (user) {
+            throw error(400, { message: "Пользователь уже состоит в группе" });
+        }
+
+        await removeApplication(group.id, form.data.id)
+
+        await sendApplicationStateNotification(form.data.id, "denied", group.name);
 
         return { form };
     }

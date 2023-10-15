@@ -1,13 +1,17 @@
 import type { Group } from "$lib/types";
 import prisma from "$lib/server/db/prisma";
 import * as crypto from "crypto";
+import type { GroupUser } from "$lib/types";
 
 export async function getGroupByInviteCode(
     inviteCode: string
 ): Promise<Group | null> {
     const result = await prisma.group.findFirst({
         where: { inviteCode },
-        include: { users: { include: { user: true } } }
+        include: {
+            users: { include: { user: true } },
+            applications: { include: { user: true } }
+        }
     });
 
     return result
@@ -20,6 +24,11 @@ export async function getGroupByInviteCode(
                   firstName: ug.user.firstName,
                   lastName: ug.user.lastName,
                   role: ug.role
+              })),
+              applications: result.applications.map(a => ({
+                  id: a.userId,
+                  firstName: a.user.firstName,
+                  lastName: a.user.lastName
               }))
           }
         : null;
@@ -27,7 +36,10 @@ export async function getGroupByInviteCode(
 
 export async function getGroups(): Promise<Group[]> {
     const result = await prisma.group.findMany({
-        include: { users: { include: { user: true } } }
+        include: {
+            users: { include: { user: true } },
+            applications: { include: { user: true } }
+        }
     });
 
     return result.map(group => ({
@@ -39,6 +51,11 @@ export async function getGroups(): Promise<Group[]> {
             firstName: ug.user.firstName,
             lastName: ug.user.lastName,
             role: ug.role
+        })),
+        applications: group.applications.map(a => ({
+            id: a.userId,
+            firstName: a.user.firstName,
+            lastName: a.user.lastName
         }))
     }));
 }
@@ -46,7 +63,10 @@ export async function getGroups(): Promise<Group[]> {
 export async function getGroupById(groupId: number): Promise<Group | null> {
     const result = await prisma.group.findFirst({
         where: { id: groupId },
-        include: { users: { include: { user: true } } }
+        include: {
+            users: { include: { user: true } },
+            applications: { include: { user: true } }
+        }
     });
 
     return result
@@ -59,9 +79,116 @@ export async function getGroupById(groupId: number): Promise<Group | null> {
                   firstName: ug.user.firstName,
                   lastName: ug.user.lastName,
                   role: ug.role
+              })),
+              applications: result.applications.map(a => ({
+                  id: a.userId,
+                  firstName: a.user.firstName,
+                  lastName: a.user.lastName
               }))
           }
         : null;
+}
+
+export async function getUserGroups(userId: bigint): Promise<Group[]> {
+    const result = await prisma.groupUser.findMany({
+        where: { userId },
+        include: {
+            group: {
+                include: {
+                    users: { include: { user: true } },
+                    applications: { include: { user: true } }
+                }
+            }
+        }
+    });
+
+    return result.map(gu => ({
+        id: gu.groupId,
+        inviteCode: gu.group.inviteCode,
+        name: gu.group.name,
+        users: gu.group.users.map(nestedGu => ({
+            id: nestedGu.userId,
+            firstName: nestedGu.user.firstName,
+            lastName: nestedGu.user.lastName,
+            role: nestedGu.role
+        })),
+        applications: gu.group.applications.map(a => ({
+            id: a.userId,
+            firstName: a.user.firstName,
+            lastName: a.user.lastName
+        }))
+    }));
+}
+
+export async function getUserApplications(
+    userId: bigint
+): Promise<Omit<Group, "users" | "applications">[]> {
+    const result = await prisma.groupApplication.findMany({
+        where: { userId },
+        include: { group: true }
+    });
+
+    return result.map(a => ({
+        id: a.groupId,
+        name: a.group.name,
+        inviteCode: a.group.inviteCode
+    }));
+}
+
+export async function getGroupUser(
+    userId: bigint,
+    groupId: number
+): Promise<GroupUser | null> {
+    const result = await prisma.groupUser.findFirst({
+        where: { userId, groupId },
+        include: { user: true }
+    });
+
+    return result
+        ? {
+              id: userId,
+              firstName: result.user.firstName,
+              lastName: result.user.lastName,
+              role: result.role
+          }
+        : null;
+}
+
+export async function removeGroupUser(userId: bigint, groupId: number) {
+    await prisma.groupUser.delete({
+        where: { userId_groupId: { userId, groupId } }
+    });
+}
+
+export async function updateGroupUserRole(
+    userId: bigint,
+    groupId: number,
+    role: GroupUser["role"]
+) {
+    await prisma.groupUser.update({
+        where: { userId_groupId: { userId, groupId } },
+        data: { role }
+    });
+}
+
+export async function createApplication(groupId: number, userId: bigint) {
+    await prisma.groupApplication.create({ data: { userId, groupId } });
+}
+
+export async function removeApplication(groupId: number, userId: bigint) {
+    await prisma.groupApplication.delete({
+        where: { groupId_userId: { userId, groupId } }
+    });
+}
+
+export async function addUserToGroup(userId: bigint, groupId: number) {
+    await prisma.groupUser.create({ data: { userId, groupId } });
+}
+
+export async function removeUserFromGroup(userId: bigint, groupId: number) {
+    await prisma.groupUser.delete({
+        where: { userId_groupId: { userId, groupId } }
+    });
 }
 
 export async function updateGroupName(groupId: number, groupName: string) {
@@ -84,6 +211,7 @@ export async function createGroup(name: string): Promise<Group> {
         id: result.id,
         name: result.name,
         inviteCode: result.inviteCode,
-        users: []
+        users: [],
+        applications: []
     };
 }

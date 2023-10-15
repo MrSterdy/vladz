@@ -7,11 +7,9 @@
     import Icon from "$lib/components/Icon.svelte";
 
     export let data: PageData;
-
-    const users = data.group.users.filter(u => u.role !== "APPLICATION");
 </script>
 
-{#if users.length}
+{#if data.group.users.length}
     <table class="table">
         <thead>
         <tr>
@@ -21,7 +19,7 @@
         </tr>
         </thead>
         <tbody>
-        {#each users as user, i}
+        {#each data.group.users as user, i}
             <tr>
                 <th>{i + 1}</th>
                 <td class="break-word">{user.lastName} {user.firstName}</td>

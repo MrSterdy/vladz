@@ -30,38 +30,49 @@
         {#if $message}<span>{$message}</span>{/if}
     </form>
 
-    {#if data.groups.length}
+    {#if data.groups.length || data.applications.length}
         <ul class="list-none m-0 p-0 flex flex-col gap-4">
             {#each data.groups as group}
-                {@const groupUser = group.users.find(
-                    u => u.id === data.user.id
-                )}
                 <li class="m-0 p-0">
                     <a class="no-underline" href="/dashboard/group/{group.id}">
                         <div class="card card-compact card-body bg-base-100">
                             <h2 class="card-title m-0 flex gap-2 items-center">
                                 {group.name}
-                                {#if groupUser?.role === "APPLICATION"}
-                                    <span
-                                        class="mt-1 badge badge-accent badge-outline"
-                                        >ЗАЯВКА</span
-                                    >
-                                {/if}
                             </h2>
 
                             <p class="flex gap-2 items-center m-0">
-                                <Icon name="users" class="h-6 fill-base-content" />
+                                <Icon
+                                    name="users"
+                                    class="h-6 fill-base-content"
+                                />
                                 {group.users.length}
                             </p>
                         </div>
                     </a>
                 </li>
             {/each}
+            {#if data.user.role === "USER"}
+                {#each data.applications as application}
+                    <li class="m-0 p-0">
+                        <div class="card card-compact card-body bg-base-100">
+                            <h2 class="card-title m-0 flex gap-2 items-center">
+                                {application.name}
+                                <span
+                                    class="mt-1 badge badge-accent badge-outline"
+                                >ЗАЯВКА</span
+                                >
+                            </h2>
+                        </div>
+                    </li>
+                {/each}
+            {/if}
         </ul>
     {:else}
         <div class="self-center flex flex-col items-center">
             <Icon name="sad" class="h-24 w-24 fill-base-content" />
-            <p class="text-lg text-base-content">Нет групп, в которых вы состоите</p>
+            <p class="text-lg text-base-content">
+                Нет групп
+            </p>
         </div>
     {/if}
 
