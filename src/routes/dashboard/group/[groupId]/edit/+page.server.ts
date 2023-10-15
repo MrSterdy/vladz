@@ -1,5 +1,5 @@
 import type { PageServerLoad, Actions } from "./$types";
-import { fail, redirect } from "@sveltejs/kit";
+import { fail } from "@sveltejs/kit";
 import { superValidate } from "sveltekit-superforms/server";
 import {
     deleteGroup,
@@ -8,6 +8,7 @@ import {
 import { deleteBucket } from "$lib/server/services/fileService";
 
 import groupSchema from "$lib/server/schemas/group";
+import { redirect } from "sveltekit-flash-message/server";
 
 export const load: PageServerLoad = async event => {
     const form = await superValidate(groupSchema);
@@ -24,7 +25,7 @@ export const actions: Actions = {
         await deleteGroup(group.id);
         await deleteBucket(group.inviteCode);
 
-        throw redirect(303, "/dashboard/groups");
+        throw redirect("/dashboard/groups", { type: "success", message: "Группа была удалена" }, event);
     },
     update: async event => {
         const form = await superValidate(event.request, groupSchema);
@@ -35,6 +36,6 @@ export const actions: Actions = {
 
         await updateGroupName(event.locals.group!.id, form.data.name);
 
-        throw redirect(303, "../");
+        throw redirect("../", { type: "success", message: "Информация о группе была обновлена" }, event);
     }
 };

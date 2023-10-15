@@ -4,14 +4,16 @@
 
     import { enhance as kitEnhance } from "$app/forms";
     import MainButton from "$lib/components/MainButton.svelte";
+    import { handleError, handleUpdated } from "$lib/utils/form";
 
     export let data: PageData;
 
-    const { form, constraints, enhance } = superForm(data.form);
+    const { form, constraints, enhance } = superForm(data.form, {
+        onUpdated: handleUpdated,
+        onError: handleError
+    });
 
     let formEl: HTMLFormElement;
-
-    const submitForm = () => formEl.requestSubmit();
 </script>
 
 <section class="card card-compact card-body bg-base-100">
@@ -32,5 +34,5 @@
         <input class="btn btn-error w-full" type="submit" value="Удалить" />
     </form>
 
-    <MainButton onClick={submitForm} text="СОХРАНИТЬ" />
+    <MainButton onClick={() => formEl.requestSubmit()} text="СОХРАНИТЬ" />
 </section>
