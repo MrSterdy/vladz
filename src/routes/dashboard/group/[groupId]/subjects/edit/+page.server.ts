@@ -1,8 +1,9 @@
 import type { Actions, PageServerLoad } from "./$types";
 import { z } from "zod";
 import { superValidate } from "sveltekit-superforms/server";
-import { fail, redirect } from "@sveltejs/kit";
+import { fail } from "@sveltejs/kit";
 import { updateSubjects } from "$lib/server/services/subjectService";
+import { redirect } from "sveltekit-flash-message/server";
 
 const updateSubjectSchema = z.object({
     subjects: z.array(
@@ -52,6 +53,6 @@ export const actions: Actions = {
 
         await updateSubjects(event.locals.group!.id, form.data.subjects);
 
-        throw redirect(303, "../");
+        throw redirect("../", { type: "success", message: "Предметы были обновлены" }, event);
     }
 };

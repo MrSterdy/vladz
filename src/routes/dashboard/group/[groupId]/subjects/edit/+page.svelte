@@ -2,16 +2,17 @@
     import type { PageData } from "./$types";
     import { superForm } from "sveltekit-superforms/client";
     import MainButton from "$lib/components/MainButton.svelte";
+    import { handleError, handleUpdated } from "$lib/utils/form";
 
     export let data: PageData;
 
     const { form, constraints, enhance } = superForm(data.form, {
-        dataType: "json"
+        dataType: "json",
+        onUpdated: handleUpdated,
+        onError: handleError
     });
 
     let formEl: HTMLFormElement;
-
-    const submitForm = () => formEl.requestSubmit();
 
     function addSubject() {
         $form.subjects = [
@@ -92,5 +93,5 @@
 
     <button type="button" class="btn btn-primary w-full" on:click={addSubject}>Создать предмет</button>
 
-    <MainButton onClick={submitForm} text="СОХРАНИТЬ" />
+    <MainButton onClick={() => formEl.requestSubmit()} text="СОХРАНИТЬ" />
 </form>
