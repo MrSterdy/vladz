@@ -4,7 +4,7 @@
     import { enhance as kitEnhance } from "$app/forms";
     import MainButton from "$lib/components/MainButton.svelte";
     import Icon from "$lib/components/Icon.svelte";
-    import { handleError, handleUpdated } from "$lib/utils/form";
+    import { handleError, handleKit, handleUpdated } from "$lib/utils/form";
 
     export let data: PageData;
 
@@ -83,7 +83,7 @@
             bind:this={createForm}
             method="POST"
             action="?/create"
-            use:kitEnhance
+            use:kitEnhance={() => handleKit("Новая группа была успешно создана")}
         />
         <MainButton text="СОЗДАТЬ НОВУЮ ГРУППУ" onClick={() => createForm.requestSubmit()} />
     {/if}
