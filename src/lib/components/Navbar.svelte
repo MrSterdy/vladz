@@ -74,13 +74,25 @@
             </svg>
         </a>
     </div>
-    <div class="mini-icons h-full gap-6">
-        <a href="/dashboard/account">
-            <Icon name="user" class="h-7 w-auto fill-accent-content" />
-        </a>
-        <a href="/dashboard/groups">
-            <Icon name="users" class="h-7 w-auto fill-accent-content" />
-        </a>
+    <div class="dropdown dropdown-end">
+        <label tabindex="-1">
+            <input type="checkbox" class="hidden" />
+            <Icon name="menu" class="w-7 h-7 fill-accent-content" />
+        </label>
+        <div tabindex="-1" class="dropdown-content menu rounded-box gap-2 p-2 mt-6 bg-base-100">
+            <a href="/dashboard/account" class="flex gap-2 items-center text-accent-content font-bold">
+                <Icon name="user" class="h-7 w-auto fill-accent-content" />
+                Аккаунт
+            </a>
+            <a href="/dashboard/groups" class="flex gap-2 items-center text-accent-content font-bold">
+                <Icon name="users" class="h-7 w-auto fill-accent-content" />
+                Группы
+            </a>
+            <a href="/management" class="flex gap-2 items-center text-accent-content font-bold">
+                <Icon name="staff" class="h-7 w-auto fill-accent-content" />
+                Администрация
+            </a>
+        </div>
     </div>
 </div>
 
