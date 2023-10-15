@@ -2,14 +2,16 @@
     import type { PageData } from "./$types";
     import { superForm } from "sveltekit-superforms/client";
     import MainButton from "$lib/components/MainButton.svelte";
+    import { handleError, handleUpdated } from "$lib/utils/form";
 
     export let data: PageData;
 
-    const { form, errors, constraints, enhance } = superForm(data.form);
+    const { form, errors, constraints, enhance } = superForm(data.form, {
+        onUpdated: handleUpdated,
+        onError: handleError
+    });
 
     let formEl: HTMLFormElement;
-
-    const submitForm = () => formEl.requestSubmit();
 </script>
 
 <form method="post" bind:this={formEl} use:enhance>
@@ -37,5 +39,5 @@
         />
     </div>
 
-    <MainButton onClick={submitForm} text="ЗАРЕГИСТРИРОВАТЬСЯ" />
+    <MainButton onClick={() => formEl.requestSubmit()} text="ЗАРЕГИСТРИРОВАТЬСЯ" />
 </form>

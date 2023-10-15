@@ -6,6 +6,7 @@ import { createUser } from "$lib/server/services/userService";
 import { superValidate } from "sveltekit-superforms/server";
 import { defaultSettings } from "$lib/defaults";
 import registerSchema from "$lib/server/schemas/register";
+import { setFlash } from "sveltekit-flash-message/server";
 
 export const load: PageServerLoad = async event => {
     if (event.locals.user) {
@@ -35,6 +36,8 @@ export const actions: Actions = {
             role: "USER",
             settings: defaultSettings
         });
+
+        setFlash({ type: "success", message: "Вы успешно зарегистрировались" }, event);
 
         throw redirect(303, "/dashboard");
     }
