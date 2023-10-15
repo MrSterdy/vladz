@@ -48,7 +48,7 @@
                         </td>
                     {/if}
 
-                    {#if user.role !== "APPLICATION" && user.role !== "STUDENT" && (data.user.role !== "USER" || user.role !== "CURATOR")}
+                    {#if user.role !== "APPLICATION" && user.role !== "MEMBER" && (data.user.role !== "USER" || user.role !== "CURATOR")}
                         <td class="p-0">
                             <form method="post" action="?/demote" use:enhance>
                                 <input

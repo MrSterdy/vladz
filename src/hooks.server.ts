@@ -172,7 +172,7 @@ export const authorizationHandler: Handle = async ({ event, resolve }) => {
         (path.includes("/edit") &&
             user.role === "USER" &&
             (groupUser!.role === "APPLICATION" ||
-                groupUser!.role === "STUDENT"))
+                groupUser!.role === "MEMBER"))
     ) {
         throw error(403, { message: "Доступ запрещен" });
     }

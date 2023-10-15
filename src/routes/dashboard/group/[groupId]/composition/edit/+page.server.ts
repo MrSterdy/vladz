@@ -39,20 +39,20 @@ export const actions: Actions = {
             return message(form, "Не удалось повысить пользователя в роли");
         }
 
-        if (user.role === "REDACTOR" && event.locals.user!.role === "USER") {
+        if (user.role === "EDITOR" && event.locals.user!.role === "USER") {
             throw error(403, { message: "Недостаточно прав" });
         }
 
         const newRole =
-            user.role === "REDACTOR"
+            user.role === "EDITOR"
                 ? "CURATOR"
-                : user.role === "STUDENT"
-                ? "REDACTOR"
-                : "STUDENT";
+                : user.role === "MEMBER"
+                ? "EDITOR"
+                : "MEMBER";
 
         await updateGroupUserRole(user.id, group.id, newRole);
 
-        if (newRole === "STUDENT") {
+        if (newRole === "MEMBER") {
             await sendApplicationStateNotification(user.id, "accepted", group.name);
         } else {
             await sendPromotionNotification(
@@ -77,7 +77,7 @@ export const actions: Actions = {
             throw error(400, { message: "Пользователь не найден" });
         }
 
-        if (user.role === "STUDENT") {
+        if (user.role === "MEMBER") {
             return message(form, "Не удалось понизить пользователя в роли");
         }
 
@@ -85,7 +85,7 @@ export const actions: Actions = {
             throw error(403, { message: "Недостаточно прав" });
         }
 
-        const newRole = user.role === "CURATOR" ? "REDACTOR" : "STUDENT";
+        const newRole = user.role === "CURATOR" ? "EDITOR" : "MEMBER";
 
         await updateGroupUserRole(user.id, group.id, newRole);
 

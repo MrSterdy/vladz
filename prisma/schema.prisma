@@ -200,7 +200,7 @@ enum UserRole {
 
 enum GroupRole {
   CURATOR
-  REDACTOR
-  STUDENT
+  EDITOR
+  MEMBER
   APPLICATION
 }

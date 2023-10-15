@@ -30,6 +30,6 @@
     </div>
 {/if}
 
-{#if data.user.role !== "USER" || data.groupUser?.role === "CURATOR" || data.groupUser?.role === "REDACTOR"}
+{#if data.user.role !== "USER" || data.groupUser?.role === "CURATOR" || data.groupUser?.role === "EDITOR"}
     <MainButton onClick={() => goto("edit")} text="РЕДАКТИРОВАТЬ" />
 {/if}
