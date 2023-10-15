@@ -3,16 +3,17 @@
     import { superForm } from "sveltekit-superforms/client";
     import { formatISOString } from "$lib/utils/time";
     import MainButton from "$lib/components/MainButton.svelte";
+    import { handleError, handleUpdated } from "$lib/utils/form";
 
     export let data: PageData;
 
     const { form, constraints, enhance } = superForm(data.form, {
-        dataType: "json"
+        dataType: "json",
+        onUpdated: handleUpdated,
+        onError: handleError
     });
 
     let formEl: HTMLFormElement;
-
-    const submitForm = () => formEl.requestSubmit();
 
     function addHoliday() {
         const today = formatISOString(new Date());
@@ -63,5 +64,5 @@
         >Создать выходной</button
     >
 
-    <MainButton onClick={submitForm} text="СОХРАНИТЬ" />
+    <MainButton onClick={() => formEl.requestSubmit()} text="СОХРАНИТЬ" />
 </form>
