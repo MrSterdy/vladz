@@ -94,16 +94,23 @@ export const actions: Actions = {
                 newFiles.length + (subject.homeworkFiles?.length ?? 0);
 
             if (totalFiles > parseInt(MAX_FILES)) {
-                throw error(400, { message: `Можно загружать максимум ${MAX_FILES} файлов за 1 предмет` });
+                throw error(400, {
+                    message: `Можно загружать максимум ${MAX_FILES} файлов за 1 предмет`
+                });
             }
 
             if (!(subject.name ?? "") && (subject.homeworkText || totalFiles)) {
-                throw error(400, { message: "У предмета с пустым названием не должно быть ДЗ" })
+                throw error(400, {
+                    message: "У предмета с пустым названием не должно быть ДЗ"
+                });
             }
 
             if (totalFiles || subject.homeworkText) {
                 if (subjectsWithHomework.includes(subject.name!)) {
-                    throw error(400, { message: "Не должно быть больше 1 ДЗ у предметов с одинаковыми названиями в расписании" })
+                    throw error(400, {
+                        message:
+                            "Не должно быть больше 1 ДЗ у предметов с одинаковыми названиями в расписании"
+                    });
                 }
 
                 subjectsWithHomework.push(subject.name!);
@@ -249,6 +256,10 @@ export const actions: Actions = {
 
         await sendTimetableNotifications(group.id, group.name, date);
 
-        throw redirect("../", { type: "success", message: "Расписание было обновлено" }, event);
+        throw redirect(
+            "../",
+            { type: "success", message: "Расписание было обновлено" },
+            event
+        );
     }
 };

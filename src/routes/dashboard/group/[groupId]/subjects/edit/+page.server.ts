@@ -53,6 +53,10 @@ export const actions: Actions = {
 
         await updateSubjects(event.locals.group!.id, form.data.subjects);
 
-        throw redirect("../", { type: "success", message: "Предметы были обновлены" }, event);
+        throw redirect(
+            "../",
+            { type: "success", message: "Предметы были обновлены" },
+            event
+        );
     }
 };

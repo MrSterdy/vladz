@@ -123,7 +123,9 @@
                     <input type="radio" name="accordion-subjects" />
                     <div class="collapse-title">
                         {subject.position}.
-                        <span class="text-xl font-medium" class:text-neutral-content={!subject.name}
+                        <span
+                            class="text-xl font-medium"
+                            class:text-neutral-content={!subject.name}
                             >{subject.name || "[Пусто]"}</span
                         >
                     </div>
@@ -136,7 +138,9 @@
                             <input
                                 id="name-{i}"
                                 type="text"
-                                aria-invalid={$errors.subjects?.[i].name ? true : undefined}
+                                aria-invalid={$errors.subjects?.[i].name
+                                    ? true
+                                    : undefined}
                                 placeholder="Название"
                                 on:change={() => updateSubject(i)}
                                 class="w-full input input-bordered input-primary"
@@ -153,7 +157,9 @@
                                 <input
                                     id="length-{i}"
                                     class="w-full input input-primary input-bordered"
-                                    aria-invalid={$errors.subjects?.[i].length ? true : undefined}
+                                    aria-invalid={$errors.subjects?.[i].length
+                                        ? true
+                                        : undefined}
                                     placeholder="Длина"
                                     type="number"
                                     bind:value={$form.subjects[i].length}
@@ -168,7 +174,9 @@
                                 <input
                                     id="break-{i}"
                                     class="w-full input input-primary input-bordered"
-                                    aria-invalid={$errors.subjects?.[i].break ? true : undefined}
+                                    aria-invalid={$errors.subjects?.[i].break
+                                        ? true
+                                        : undefined}
                                     placeholder="Перемена"
                                     type="number"
                                     bind:value={$form.subjects[i].break}
@@ -184,7 +192,9 @@
                             <input
                                 id="teacher-{i}"
                                 placeholder="Учитель"
-                                aria-invalid={$errors.subjects?.[i].teacher ? true : undefined}
+                                aria-invalid={$errors.subjects?.[i].teacher
+                                    ? true
+                                    : undefined}
                                 class="w-full input input-bordered input-secondary"
                                 type="text"
                                 bind:value={$form.subjects[i].teacher}
@@ -199,7 +209,9 @@
                             <input
                                 id="classroom-{i}"
                                 placeholder="Кабинет"
-                                aria-invalid={$errors.subjects?.[i].classroom ? true : undefined}
+                                aria-invalid={$errors.subjects?.[i].classroom
+                                    ? true
+                                    : undefined}
                                 class="w-full input input-secondary input-bordered"
                                 type="text"
                                 bind:value={$form.subjects[i].classroom}
@@ -222,7 +234,10 @@
                                         id="homework-text-{i}"
                                         type="text"
                                         placeholder="Текст"
-                                        aria-invalid={$errors.subjects?.[i].homeworkText ? true : undefined}
+                                        aria-invalid={$errors.subjects?.[i]
+                                            .homeworkText
+                                            ? true
+                                            : undefined}
                                         class="w-full input input-secondary input-bordered"
                                         bind:value={$form.subjects[i]
                                             .homeworkText}

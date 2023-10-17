@@ -45,10 +45,15 @@ export const actions: Actions = {
         const user = await getUserById(event.locals.user!.id);
         user!.firstName = form.data.first_name;
         user!.lastName = form.data.last_name;
-        user!.settings.notifications.timetable = form.data.timetable_notifications;
+        user!.settings.notifications.timetable =
+            form.data.timetable_notifications;
 
         await updateUser(user!);
 
-        throw redirect("../", { type: "success", message: "Настройки были изменены" }, event);
+        throw redirect(
+            "../",
+            { type: "success", message: "Настройки были изменены" },
+            event
+        );
     }
 };

@@ -24,7 +24,9 @@
         return result;
     });
 
-    const subjects = (data.dateTimetable?.subjects ?? data.weekdayTimetable?.subjects ?? []) as (WeekdaySubject | DateSubject)[];
+    const subjects = (data.dateTimetable?.subjects ??
+        data.weekdayTimetable?.subjects ??
+        []) as (WeekdaySubject | DateSubject)[];
 
     let selectedImage: string | null = null;
 </script>
@@ -59,10 +61,15 @@
                         <div class="collapse-title">
                             <span>{subject.position}.</span>
 
-                            <span class="text-xl font-medium">{subject.name}</span>
+                            <span class="text-xl font-medium"
+                                >{subject.name}</span
+                            >
 
                             <p class="m-0 flex gap-2 items-center">
-                                <Icon name="clock" class="icon-small fill-base-content" />
+                                <Icon
+                                    name="clock"
+                                    class="icon-small fill-base-content"
+                                />
                                 {numberToTime(offset[0])} - {numberToTime(
                                     offset[1]
                                 )}
@@ -96,28 +103,61 @@
                                                 class="icon-medium fill-base-content rounded-none"
                                             />
 
-                                            <p class="m-0">{subject.homework.text || "Файлы ДЗ"}</p>
+                                            <p class="m-0">
+                                                {subject.homework.text ||
+                                                    "Файлы ДЗ"}
+                                            </p>
                                         </div>
 
                                         {#if subject.homework.files.length}
-                                            {@const images = subject.homework.files.filter(f => imageTypes.includes(f.type))}
-                                            {@const files = subject.homework.files.filter(f => !images.includes(f))}
+                                            {@const images =
+                                                subject.homework.files.filter(
+                                                    f =>
+                                                        imageTypes.includes(
+                                                            f.type
+                                                        )
+                                                )}
+                                            {@const files =
+                                                subject.homework.files.filter(
+                                                    f => !images.includes(f)
+                                                )}
                                             <div class="flex flex-col gap-2">
                                                 {#if images.length}
-                                                    <div class="bg-base-200 h-28 p-2 space-x-2 carousel rounded-box">
+                                                    <div
+                                                        class="bg-base-200 h-28 p-2 space-x-2 carousel rounded-box"
+                                                    >
                                                         {#each images as image}
-                                                            <button type="button" on:click={() => selectedImage = image.url} class="carousel-item">
-                                                                <img class="m-0 w-full h-full" src={image.url} alt={image.name} />
+                                                            <button
+                                                                type="button"
+                                                                on:click={() =>
+                                                                    (selectedImage =
+                                                                        image.url)}
+                                                                class="carousel-item"
+                                                            >
+                                                                <img
+                                                                    class="m-0 w-full h-full"
+                                                                    src={image.url}
+                                                                    alt={image.name}
+                                                                />
                                                             </button>
                                                         {/each}
                                                     </div>
                                                 {/if}
 
                                                 {#if files.length}
-                                                    <div class="flex gap-4 flex-wrap bg-base-200 rounded-box p-4">
+                                                    <div
+                                                        class="flex gap-4 flex-wrap bg-base-200 rounded-box p-4"
+                                                    >
                                                         {#each files as file}
-                                                            <a href={file.url} class="flex items-center gap-2" download>
-                                                                <Icon name="download" class="icon-small fill-base-content rounded-none" />
+                                                            <a
+                                                                href={file.url}
+                                                                class="flex items-center gap-2"
+                                                                download
+                                                            >
+                                                                <Icon
+                                                                    name="download"
+                                                                    class="icon-small fill-base-content rounded-none"
+                                                                />
                                                                 {file.name}
                                                             </a>
                                                         {/each}
@@ -137,8 +177,17 @@
 </section>
 
 {#if selectedImage}
-    <button transition:fade={{ duration: 100 }} on:click={() => selectedImage = null} class:hidden={!selectedImage} class="grid place-items-center w-full h-full fixed inset-0 m-auto [&:not(.hidden)]:bg-base-100/90">
-        <img class="max-w-[90%] max-h-[90%] object-contain m-0 rounded" src={selectedImage} alt="" />
+    <button
+        transition:fade={{ duration: 100 }}
+        on:click={() => (selectedImage = null)}
+        class:hidden={!selectedImage}
+        class="grid place-items-center w-full h-full fixed inset-0 m-auto [&:not(.hidden)]:bg-base-100/90"
+    >
+        <img
+            class="max-w-[90%] max-h-[90%] object-contain m-0 rounded"
+            src={selectedImage}
+            alt=""
+        />
     </button>
 {/if}
 

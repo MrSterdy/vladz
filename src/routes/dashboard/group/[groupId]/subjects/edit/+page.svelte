@@ -26,12 +26,7 @@
     }
 </script>
 
-<form
-    method="post"
-    class="flex flex-col gap-2"
-    bind:this={formEl}
-    use:enhance
->
+<form method="post" class="flex flex-col gap-2" bind:this={formEl} use:enhance>
     <div class="join join-vertical w-full">
         {#each $form.subjects as _, i}
             <div class="collapse collapse-arrow join-item border bg-base-100">
@@ -49,7 +44,9 @@
                             id="name-{i}"
                             type="text"
                             placeholder="Название"
-                            aria-invalid={$errors.subjects?.[i].name ? true : undefined}
+                            aria-invalid={$errors.subjects?.[i].name
+                                ? true
+                                : undefined}
                             class="w-full input input-bordered input-primary"
                             bind:value={$form.subjects[i].name}
                             {...$constraints.subjects?.name}
@@ -64,7 +61,9 @@
                             id="teacher-{i}"
                             type="text"
                             placeholder="Учитель"
-                            aria-invalid={$errors.subjects?.[i].teacher ? true : undefined}
+                            aria-invalid={$errors.subjects?.[i].teacher
+                                ? true
+                                : undefined}
                             class="w-full input input-secondary input-bordered"
                             bind:value={$form.subjects[i].teacher}
                             {...$constraints.subjects?.teacher}
@@ -79,14 +78,20 @@
                             id="classroom-{i}"
                             type="text"
                             placeholder="Класс"
-                            aria-invalid={$errors.subjects?.[i].classroom ? true : undefined}
+                            aria-invalid={$errors.subjects?.[i].classroom
+                                ? true
+                                : undefined}
                             class="w-full input input-secondary input-bordered"
                             bind:value={$form.subjects[i].classroom}
                             {...$constraints.subjects?.classroom}
                         />
                     </div>
 
-                    <button type="button" class="btn btn-error" on:click={() => removeSubject(i)}>
+                    <button
+                        type="button"
+                        class="btn btn-error"
+                        on:click={() => removeSubject(i)}
+                    >
                         Удалить
                     </button>
                 </div>
@@ -94,7 +99,9 @@
         {/each}
     </div>
 
-    <button type="button" class="btn btn-primary w-full" on:click={addSubject}>Создать предмет</button>
+    <button type="button" class="btn btn-primary w-full" on:click={addSubject}
+        >Создать предмет</button
+    >
 
     <MainButton onClick={() => formEl.requestSubmit()} text="СОХРАНИТЬ" />
 </form>

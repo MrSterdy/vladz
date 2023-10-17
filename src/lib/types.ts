@@ -87,7 +87,7 @@ export type Group = {
 };
 
 export type List<T> = {
-    items: T[],
+    items: T[];
     page: number;
     total: number;
 };

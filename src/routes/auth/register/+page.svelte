@@ -39,5 +39,8 @@
         />
     </div>
 
-    <MainButton onClick={() => formEl.requestSubmit()} text="ЗАРЕГИСТРИРОВАТЬСЯ" />
+    <MainButton
+        onClick={() => formEl.requestSubmit()}
+        text="ЗАРЕГИСТРИРОВАТЬСЯ"
+    />
 </form>

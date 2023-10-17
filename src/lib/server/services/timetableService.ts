@@ -132,7 +132,11 @@ export async function updateDateTimetable(
                                         type: file.type
                                     }
                             },
-                            create: { url: file.url, name: file.name, type: file.type }
+                            create: {
+                                url: file.url,
+                                name: file.name,
+                                type: file.type
+                            }
                         }))
                     },
                     ...(subject.homework.text
@@ -182,7 +186,11 @@ export async function updateDateTimetable(
                                         type: file.type
                                     }
                             },
-                            create: { url: file.url, name: file.name, type: file.type }
+                            create: {
+                                url: file.url,
+                                name: file.name,
+                                type: file.type
+                            }
                         }))
                     },
                     ...(subject.homework.text
@@ -226,13 +234,12 @@ export async function findNextTimetableWithSubject(
         day
     );
     if (!weekdayTimetable) {
-        const dateTimetable =
-            await findNearestDateTimetableWithSubject(
-                groupId,
-                subjectName,
-                startDate.toISOString(),
-                holidays
-            );
+        const dateTimetable = await findNearestDateTimetableWithSubject(
+            groupId,
+            subjectName,
+            startDate.toISOString(),
+            holidays
+        );
 
         return dateTimetable
             ? {
@@ -262,14 +269,13 @@ export async function findNextTimetableWithSubject(
 
     const endDate = startDate.add(nearestDay, "days");
 
-    const dateTimetable =
-        await findDateTimetableWithSubjectInRange(
-            groupId,
-            subjectName,
-            startDate.toISOString(),
-            endDate.toISOString(),
-            holidays
-        );
+    const dateTimetable = await findDateTimetableWithSubjectInRange(
+        groupId,
+        subjectName,
+        startDate.toISOString(),
+        endDate.toISOString(),
+        holidays
+    );
 
     return dateTimetable
         ? {

@@ -145,11 +145,12 @@ export async function getUserApplications(
     const [count, applications] = await prisma.$transaction([
         prisma.groupApplication.count({ where: { userId } }),
         prisma.groupApplication.findMany({
-        take: pageSize,
-        skip: (page - 1) * pageSize,
-        where: { userId },
-        include: { group: true }
-    })]);
+            take: pageSize,
+            skip: (page - 1) * pageSize,
+            where: { userId },
+            include: { group: true }
+        })
+    ]);
 
     return {
         items: applications.map(a => ({
@@ -159,7 +160,7 @@ export async function getUserApplications(
         })),
         total: count,
         page
-    }
+    };
 }
 
 export async function getGroupUser(

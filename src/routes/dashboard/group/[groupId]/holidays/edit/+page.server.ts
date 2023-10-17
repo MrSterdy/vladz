@@ -1,7 +1,7 @@
 import type { Actions, PageServerLoad } from "./$types";
 
 import { error, fail } from "@sveltejs/kit";
-import {  superValidate } from "sveltekit-superforms/server";
+import { superValidate } from "sveltekit-superforms/server";
 import { updateHolidays } from "$lib/server/services/holidayService";
 import { parseDate } from "$lib/utils/time";
 import type { Holiday } from "$lib/types";
@@ -50,6 +50,10 @@ export const actions: Actions = {
 
         await updateHolidays(event.locals.group!.id, holidays);
 
-        throw redirect("../", { type: "success", message: "Выходные были обновлены" }, event);
+        throw redirect(
+            "../",
+            { type: "success", message: "Выходные были обновлены" },
+            event
+        );
     }
 };

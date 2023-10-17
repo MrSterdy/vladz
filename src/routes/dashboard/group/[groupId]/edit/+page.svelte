@@ -19,7 +19,9 @@
     let delFormEl: HTMLFormElement;
 
     function confirmDeletion() {
-        showConfirm("Вы действительно хотите удалить группу?", () => delFormEl.requestSubmit());
+        showConfirm("Вы действительно хотите удалить группу?", () =>
+            delFormEl.requestSubmit()
+        );
     }
 </script>
 
@@ -39,7 +41,11 @@
     </form>
 
     <form method="post" action="?/delete" bind:this={delFormEl} use:kitEnhance>
-        <button class="btn btn-error w-full" type="button" on:click={confirmDeletion}>
+        <button
+            class="btn btn-error w-full"
+            type="button"
+            on:click={confirmDeletion}
+        >
             Удалить
         </button>
     </form>

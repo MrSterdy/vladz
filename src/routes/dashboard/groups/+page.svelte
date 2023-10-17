@@ -35,7 +35,7 @@
                 (parseInt($page.url.searchParams.get("page") || "2") || 2) - 1
             ).toString()
         );
-        goto(`?${query.toString()}`)
+        goto(`?${query.toString()}`);
     }
 
     function nextPage() {
@@ -46,7 +46,7 @@
                 (parseInt($page.url.searchParams.get("page") || "1") || 1) + 1
             ).toString()
         );
-        goto(`?${query.toString()}`)
+        goto(`?${query.toString()}`);
     }
 
     function switchType(newType: "applications" | "groups") {
@@ -120,11 +120,19 @@
             {#if totalPages > 1}
                 <div class="join self-center">
                     {#if data.groups.page > 1}
-                        <button class="join-item btn text-lg" on:click={prevPage}>«</button>
+                        <button
+                            class="join-item btn text-lg"
+                            on:click={prevPage}>«</button
+                        >
                     {/if}
-                    <button class="join-item btn text-lg">{data.groups.page}</button>
+                    <button class="join-item btn text-lg"
+                        >{data.groups.page}</button
+                    >
                     {#if totalPages > data.groups.page}
-                        <button class="join-item btn text-lg" on:click={nextPage}>»</button>
+                        <button
+                            class="join-item btn text-lg"
+                            on:click={nextPage}>»</button
+                        >
                     {/if}
                 </div>
             {/if}

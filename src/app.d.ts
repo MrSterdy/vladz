@@ -12,7 +12,7 @@ declare global {
             groupUser?: GroupUser;
         }
         interface PageData {
-            flash?: { type: "success" | "error", message: string }
+            flash?: { type: "success" | "error"; message: string };
         }
         // interface Platform {}
     }

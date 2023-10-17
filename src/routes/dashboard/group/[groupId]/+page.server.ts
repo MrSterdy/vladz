@@ -16,6 +16,13 @@ export const actions: Actions = {
             event.locals.group!.id
         );
 
-        throw redirect("/dashboard/groups", { type: "success", message: `Вы покинули группу "${event.locals.group!.name}"` }, event);
+        throw redirect(
+            "/dashboard/groups",
+            {
+                type: "success",
+                message: `Вы покинули группу "${event.locals.group!.name}"`
+            },
+            event
+        );
     }
 };

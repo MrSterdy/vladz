@@ -1,6 +1,12 @@
 import { Client } from "minio";
 
-import { MINIO_ACCESS_KEY, MINIO_ENDPOINT, MINIO_PORT, MINIO_SECRET_KEY, MINIO_SSL } from "$env/static/private";
+import {
+    MINIO_ACCESS_KEY,
+    MINIO_ENDPOINT,
+    MINIO_PORT,
+    MINIO_SECRET_KEY,
+    MINIO_SSL
+} from "$env/static/private";
 
 const minio = new Client({
     endPoint: MINIO_ENDPOINT,

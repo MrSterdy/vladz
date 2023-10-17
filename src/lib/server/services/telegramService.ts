@@ -52,7 +52,9 @@ export function generateJwt(user: TelegramUser) {
 
 export function parseJwt(token: string) {
     try {
-        const payload = jwt.verify(token, TELEGRAM_BOT_TOKEN) as { userInfo: string };
+        const payload = jwt.verify(token, TELEGRAM_BOT_TOKEN) as {
+            userInfo: string;
+        };
         const user = JSON.parse(payload.userInfo) as TelegramUser;
         user.id = BigInt(user.id);
 

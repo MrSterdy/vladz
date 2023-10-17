@@ -20,16 +20,19 @@ export const load: LayoutServerLoad = async event => {
         getWeekdayTimetable(date.day(), event.locals.group!.id)
     ]);
 
-    const dayOff = holidays.some(holiday => {
-        const startDate = parseDate(holiday.startDate);
-        const endDate = parseDate(holiday.endDate);
+    const dayOff =
+        holidays.some(holiday => {
+            const startDate = parseDate(holiday.startDate);
+            const endDate = parseDate(holiday.endDate);
 
-        return (
-            (date.isAfter(startDate) && date.isBefore(endDate)) ||
-            date.isSame(startDate) ||
-            date.isSame(endDate)
-        );
-    }) && !dateTimetable?.subjects.length && !weekdayTimetable?.subjects.length;
+            return (
+                (date.isAfter(startDate) && date.isBefore(endDate)) ||
+                date.isSame(startDate) ||
+                date.isSame(endDate)
+            );
+        }) &&
+        !dateTimetable?.subjects.length &&
+        !weekdayTimetable?.subjects.length;
 
     return { dayOff, dateTimetable, weekdayTimetable };
 };

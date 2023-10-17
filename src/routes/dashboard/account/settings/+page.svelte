@@ -66,9 +66,7 @@
 
         <div class="w-full">
             <label class="label gap-3 justify-between w-full">
-                <span class="label-text"
-                    >Уведомлять о расписаниях?</span
-                >
+                <span class="label-text">Уведомлять о расписаниях?</span>
                 <input
                     type="checkbox"
                     checked={$form.timetable_notifications}

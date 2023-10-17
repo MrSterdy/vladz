@@ -79,16 +79,28 @@
             <input type="checkbox" class="hidden" />
             <Icon name="menu" class="w-7 h-7 fill-accent-content" />
         </label>
-        <div tabindex="-1" class="z-10 shadow dropdown-content menu rounded-box gap-2 p-2 mt-6 bg-base-100">
-            <a href="/dashboard/account" class="flex gap-2 items-center text-accent-content font-bold">
+        <div
+            tabindex="-1"
+            class="z-10 shadow dropdown-content menu rounded-box gap-2 p-2 mt-6 bg-base-100"
+        >
+            <a
+                href="/dashboard/account"
+                class="flex gap-2 items-center text-accent-content font-bold"
+            >
                 <Icon name="user" class="h-7 w-auto fill-accent-content" />
                 Аккаунт
             </a>
-            <a href="/dashboard/groups" class="flex gap-2 items-center text-accent-content font-bold">
+            <a
+                href="/dashboard/groups"
+                class="flex gap-2 items-center text-accent-content font-bold"
+            >
                 <Icon name="users" class="h-7 w-auto fill-accent-content" />
                 Группы
             </a>
-            <a href="/management" class="flex gap-2 items-center text-accent-content font-bold">
+            <a
+                href="/management"
+                class="flex gap-2 items-center text-accent-content font-bold"
+            >
                 <Icon name="staff" class="h-7 w-auto fill-accent-content" />
                 Администрация
             </a>

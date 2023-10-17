@@ -14,7 +14,7 @@
         window.Telegram.WebApp.MainButton.showProgress(false);
         await onClick();
         window.Telegram.WebApp.MainButton.hideProgress();
-    }
+    };
 
     onMount(() => {
         window.Telegram.WebApp.MainButton.setText(text);

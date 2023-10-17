@@ -36,8 +36,13 @@
                         <span class="text-xl font-medium">{subject.name}</span>
 
                         <p class="m-0 flex gap-2 items-center">
-                            <Icon name="clock" class="icon-small fill-base-content" />
-                            {numberToTime(offset[0])} - {numberToTime(offset[1])}
+                            <Icon
+                                name="clock"
+                                class="icon-small fill-base-content"
+                            />
+                            {numberToTime(offset[0])} - {numberToTime(
+                                offset[1]
+                            )}
                         </p>
                     </div>
                     {#if subject.classroom || subject.teacher}

@@ -192,7 +192,7 @@ const userPromise = createUser({
     firstName: "Влад",
     lastName: "Король",
     role: "ADMIN",
-    settings: defaultSettings,
+    settings: defaultSettings
 });
 
 const botPromise = bot.launch();

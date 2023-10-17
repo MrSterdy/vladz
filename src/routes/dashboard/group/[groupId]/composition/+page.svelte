@@ -12,24 +12,24 @@
 {#if data.group.users.length}
     <table class="table">
         <thead>
-        <tr>
-            <th></th>
-            <th>Имя</th>
-            <th>Роль</th>
-        </tr>
+            <tr>
+                <th />
+                <th>Имя</th>
+                <th>Роль</th>
+            </tr>
         </thead>
         <tbody>
-        {#each data.group.users as user, i}
-            <tr>
-                <th>{i + 1}</th>
-                <td class="word-break">{user.lastName} {user.firstName}</td>
-                <td>
-                <span class="badge badge-accent badge-outline">
-                    {capitalize(groupUserRoles[user.role])}
-                </span>
-                </td>
-            </tr>
-        {/each}
+            {#each data.group.users as user, i}
+                <tr>
+                    <th>{i + 1}</th>
+                    <td class="word-break">{user.lastName} {user.firstName}</td>
+                    <td>
+                        <span class="badge badge-accent badge-outline">
+                            {capitalize(groupUserRoles[user.role])}
+                        </span>
+                    </td>
+                </tr>
+            {/each}
         </tbody>
     </table>
 {:else}

@@ -14,24 +14,24 @@
 {#if data.management.length}
     <table class="table">
         <thead>
-        <tr>
-            <th></th>
-            <th>Имя</th>
-            <th>Роль</th>
-        </tr>
+            <tr>
+                <th />
+                <th>Имя</th>
+                <th>Роль</th>
+            </tr>
         </thead>
         <tbody>
-        {#each data.management as user, i}
-            <tr>
-                <th>{i + 1}</th>
-                <td class="word-break">{user.lastName} {user.firstName}</td>
-                <td>
-                <span class="badge badge-accent badge-outline">
-                    {capitalize(userRoles[user.role])}
-                </span>
-                </td>
-            </tr>
-        {/each}
+            {#each data.management as user, i}
+                <tr>
+                    <th>{i + 1}</th>
+                    <td class="word-break">{user.lastName} {user.firstName}</td>
+                    <td>
+                        <span class="badge badge-accent badge-outline">
+                            {capitalize(userRoles[user.role])}
+                        </span>
+                    </td>
+                </tr>
+            {/each}
         </tbody>
     </table>
 {:else}

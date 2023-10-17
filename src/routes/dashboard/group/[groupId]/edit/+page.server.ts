@@ -25,7 +25,11 @@ export const actions: Actions = {
         await deleteGroup(group.id);
         await deleteBucket(group.inviteCode);
 
-        throw redirect("/dashboard/groups", { type: "success", message: "Группа была удалена" }, event);
+        throw redirect(
+            "/dashboard/groups",
+            { type: "success", message: "Группа была удалена" },
+            event
+        );
     },
     update: async event => {
         const form = await superValidate(event.request, groupSchema);
@@ -36,6 +40,10 @@ export const actions: Actions = {
 
         await updateGroupName(event.locals.group!.id, form.data.name);
 
-        throw redirect("../", { type: "success", message: "Информация о группе была обновлена" }, event);
+        throw redirect(
+            "../",
+            { type: "success", message: "Информация о группе была обновлена" },
+            event
+        );
     }
 };

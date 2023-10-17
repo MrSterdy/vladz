@@ -13,7 +13,9 @@ export async function getSubjects(groupId: number): Promise<Subject[]> {
 
 export async function updateSubjects(groupId: number, subjects: Subject[]) {
     const deleteOperation = prisma.subject.deleteMany({ where: { groupId } });
-    const createOperation = prisma.subject.createMany({ data: subjects.map(subject => ({ ...subject, groupId })) });
+    const createOperation = prisma.subject.createMany({
+        data: subjects.map(subject => ({ ...subject, groupId }))
+    });
 
     await prisma.$transaction([deleteOperation, createOperation]);
 }

@@ -12,7 +12,7 @@ export const load: PageServerLoad = async () => {
     const form = await superValidate(idSchema);
 
     return { form };
-}
+};
 
 export const actions: Actions = {
     promote: async event => {
@@ -34,9 +34,18 @@ export const actions: Actions = {
 
         await updateUser(user);
 
-        await sendPromotionNotification(user.id, capitalize(userRoles[user.role]));
+        await sendPromotionNotification(
+            user.id,
+            capitalize(userRoles[user.role])
+        );
 
-        setFlash({ type: "success", message: `${user.lastName} ${user.firstName} был(-а) повышен(-а)` }, event);
+        setFlash(
+            {
+                type: "success",
+                message: `${user.lastName} ${user.firstName} был(-а) повышен(-а)`
+            },
+            event
+        );
 
         return { form };
     },
@@ -59,9 +68,18 @@ export const actions: Actions = {
 
         await updateUser(user);
 
-        await sendPromotionNotification(user.id, capitalize(userRoles[user.role]));
+        await sendPromotionNotification(
+            user.id,
+            capitalize(userRoles[user.role])
+        );
 
-        setFlash({ type: "success", message: `${user.lastName} ${user.firstName} был(-а) понижен(-а)` }, event);
+        setFlash(
+            {
+                type: "success",
+                message: `${user.lastName} ${user.firstName} был(-а) понижен(-а)`
+            },
+            event
+        );
 
         return { form };
     }

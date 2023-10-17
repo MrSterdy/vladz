@@ -38,37 +38,48 @@
 {#if data.management.length}
     <table class="table">
         <thead>
-        <tr>
-            <th></th>
-            <th>Имя</th>
-            <th>Роль</th>
-            <th></th>
-            <th></th>
-        </tr>
+            <tr>
+                <th />
+                <th>Имя</th>
+                <th>Роль</th>
+                <th />
+                <th />
+            </tr>
         </thead>
         <tbody>
-        {#each data.management as user, i}
-            <tr>
-                <th>{i + 1}</th>
-                <td class="word-break">{user.lastName} {user.firstName}</td>
-                <td>
-                <span class="badge badge-accent badge-outline">
-                    {capitalize(userRoles[user.role])}
-                </span>
-                </td>
-                {#if user.role === "HELPER"}
-                    <td class="p-0">
-                        <form method="post" action="?/demote" use:kitEnhance>
-                            <input type="hidden" name="id" value={user.id} />
-
-                            <button type="submit" class="btn btn-ghost p-0">
-                                <Icon name="demote" class="icon-medium fill-error" />
-                            </button>
-                        </form>
+            {#each data.management as user, i}
+                <tr>
+                    <th>{i + 1}</th>
+                    <td class="word-break">{user.lastName} {user.firstName}</td>
+                    <td>
+                        <span class="badge badge-accent badge-outline">
+                            {capitalize(userRoles[user.role])}
+                        </span>
                     </td>
-                {/if}
-            </tr>
-        {/each}
+                    {#if user.role === "HELPER"}
+                        <td class="p-0">
+                            <form
+                                method="post"
+                                action="?/demote"
+                                use:kitEnhance
+                            >
+                                <input
+                                    type="hidden"
+                                    name="id"
+                                    value={user.id}
+                                />
+
+                                <button type="submit" class="btn btn-ghost p-0">
+                                    <Icon
+                                        name="demote"
+                                        class="icon-medium fill-error"
+                                    />
+                                </button>
+                            </form>
+                        </td>
+                    {/if}
+                </tr>
+            {/each}
         </tbody>
     </table>
 {:else}

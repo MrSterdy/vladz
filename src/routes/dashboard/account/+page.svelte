@@ -14,7 +14,8 @@
 
     <div class="card card-compact card-body bg-base-100">
         <h2 class="card-title m-0">
-            {data.user.lastName} {data.user.firstName}
+            {data.user.lastName}
+            {data.user.firstName}
             <span class="badge badge-accent badge-outline">
                 {capitalize(userRoles[data.user.role])}
             </span>
@@ -22,5 +23,8 @@
         <p class="m-0">ID: <span>{data.user.id}</span></p>
     </div>
 
-    <MainButton onClick={() => goto("/dashboard/account/settings")} text="НАСТРОЙКИ" />
+    <MainButton
+        onClick={() => goto("/dashboard/account/settings")}
+        text="НАСТРОЙКИ"
+    />
 </section>

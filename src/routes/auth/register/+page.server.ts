@@ -37,7 +37,10 @@ export const actions: Actions = {
             settings: defaultSettings
         });
 
-        setFlash({ type: "success", message: "Вы успешно зарегистрировались" }, event);
+        setFlash(
+            { type: "success", message: "Вы успешно зарегистрировались" },
+            event
+        );
 
         throw redirect(303, "/dashboard");
     }
