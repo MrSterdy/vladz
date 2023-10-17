@@ -38,7 +38,7 @@
         use:enhance
     >
         <div class="w-full">
-            <label class="label label-text" for="first-name">Ваше имя?</label>
+            <label class="label label-text" for="first-name">Имя</label>
             <input
                 id="first-name"
                 name="first_name"
@@ -51,7 +51,7 @@
         </div>
 
         <div class="w-full">
-            <label class="label label-text" for="last-name">Ваша фамилия?</label
+            <label class="label label-text" for="last-name">Фамилия</label
             >
             <input
                 id="last-name"

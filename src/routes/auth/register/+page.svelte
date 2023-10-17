@@ -18,25 +18,39 @@
     <h1 class="text-center">Регистрация</h1>
 
     <div class="card card-compact card-body bg-base-100">
-        <input
-            name="first_name"
-            aria-invalid={$errors.first_name ? "true" : undefined}
-            class="input input-primary input-bordered"
-            type="text"
-            placeholder="Имя"
-            bind:value={$form.first_name}
-            {...$constraints.first_name}
-        />
+        <div class="w-full">
+            <label for="first_name" class="label">
+                <span class="label-text">Ваше имя?</span>
+            </label>
 
-        <input
-            name="last_name"
-            aria-invalid={$errors.last_name ? "true" : undefined}
-            type="text"
-            placeholder="Фамилия"
-            class="input input-primary input-bordered"
-            bind:value={$form.last_name}
-            {...$constraints.last_name}
-        />
+            <input
+                id="first_name"
+                name="first_name"
+                aria-invalid={$errors.first_name ? "true" : undefined}
+                class="input input-primary input-bordered w-full"
+                type="text"
+                placeholder="Имя"
+                bind:value={$form.first_name}
+                {...$constraints.first_name}
+            />
+        </div>
+
+        <div class="w-full">
+            <label for="last_name" class="label">
+                <span class="label-text">Ваша фамилия?</span>
+            </label>
+
+            <input
+                id="last_name"
+                name="last_name"
+                aria-invalid={$errors.last_name ? "true" : undefined}
+                type="text"
+                placeholder="Фамилия"
+                class="input input-primary input-bordered w-full"
+                bind:value={$form.last_name}
+                {...$constraints.last_name}
+            />
+        </div>
     </div>
 
     <MainButton
