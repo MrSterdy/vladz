@@ -54,6 +54,6 @@
     }
 
     .card-body {
-        @apply p-6;
+        @apply p-4;
     }
 }
