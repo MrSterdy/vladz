@@ -20,6 +20,14 @@
 }
 
 @layer components {
+    .icon-small {
+        @apply w-4 h-4;
+    }
+
+    .icon-medium {
+        @apply w-6 h-6;
+    }
+
     .toast-wrapper ._toastItem {
         word-break: break-word;
         @apply !rounded !w-full text-lg;

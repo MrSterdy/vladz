@@ -36,7 +36,7 @@
                         <span class="text-xl font-medium">{subject.name}</span>
 
                         <p class="m-0 flex gap-2 items-center">
-                            <Icon name="clock" class="w-4 h-4 fill-base-content" />
+                            <Icon name="clock" class="icon-small fill-base-content" />
                             {numberToTime(offset[0])} - {numberToTime(offset[1])}
                         </p>
                     </div>
@@ -46,7 +46,7 @@
                                 <div class="flex gap-2">
                                     <Icon
                                         name="hat"
-                                        class="h-6 w-6 fill-base-content"
+                                        class="icon-medium fill-base-content"
                                     />
                                     {subject.teacher}
                                 </div>
@@ -55,7 +55,7 @@
                                 <div class="flex gap-2">
                                     <Icon
                                         name="marker"
-                                        class="h-6 w-6 fill-base-content"
+                                        class="icon-medium fill-base-content"
                                     />
                                     {subject.classroom}
                                 </div>

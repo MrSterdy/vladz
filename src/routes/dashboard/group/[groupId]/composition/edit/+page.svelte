@@ -59,7 +59,7 @@
                                                 >
                                                     <Icon
                                                         name="promote"
-                                                        class="h-6 w-6 fill-success"
+                                                        class="icon-medium fill-success"
                                                     />
                                                 </button>
                                             </form>
@@ -84,7 +84,7 @@
                                                 >
                                                     <Icon
                                                         name="demote"
-                                                        class="h-6 w-6 fill-error"
+                                                        class="icon-medium fill-error"
                                                     />
                                                 </button>
                                             </form>
@@ -108,7 +108,7 @@
                                             >
                                                 <Icon
                                                     name="ban"
-                                                    class="h-6 w-6 fill-error"
+                                                    class="icon-medium fill-error"
                                                 />
                                             </button>
                                         </form>
@@ -156,7 +156,7 @@
                                         >
                                             <Icon
                                                 name="check"
-                                                class="h-6 w-6 fill-success"
+                                                class="icon-medium fill-success"
                                             />
                                         </button>
                                     </form>
@@ -178,7 +178,7 @@
                                         >
                                             <Icon
                                                 name="cross"
-                                                class="h-6 w-6 fill-error"
+                                                class="icon-medium fill-error"
                                             />
                                         </button>
                                     </form>

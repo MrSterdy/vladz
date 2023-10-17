@@ -32,7 +32,7 @@
 <section class="flex flex-col gap-2">
     {#if data.dateTimetable?.note}
         <div class="alert alert-info flex">
-            <Icon name="info" class="w-6 h-6" />
+            <Icon name="info" class="icon-medium" />
             {data.dateTimetable.note}
         </div>
     {/if}
@@ -62,7 +62,7 @@
                             <span class="text-xl font-medium">{subject.name}</span>
 
                             <p class="m-0 flex gap-2 items-center">
-                                <Icon name="clock" class="w-4 h-4 fill-base-content" />
+                                <Icon name="clock" class="icon-small fill-base-content" />
                                 {numberToTime(offset[0])} - {numberToTime(
                                     offset[1]
                                 )}
@@ -74,7 +74,7 @@
                                     <div class="flex gap-2">
                                         <Icon
                                             name="hat"
-                                            class="h-6 w-6 fill-base-content"
+                                            class="icon-medium fill-base-content"
                                         />
                                         {subject.teacher}
                                     </div>
@@ -83,7 +83,7 @@
                                     <div class="flex gap-2">
                                         <Icon
                                             name="marker"
-                                            class="h-6 w-6 fill-base-content"
+                                            class="icon-medium fill-base-content"
                                         />
                                         {subject.classroom}
                                     </div>
@@ -93,7 +93,7 @@
                                         <div class="flex gap-2">
                                             <Icon
                                                 name="briefcase"
-                                                class="h-6 w-6 fill-base-content rounded-none"
+                                                class="icon-medium fill-base-content rounded-none"
                                             />
 
                                             <p class="m-0">{subject.homework.text || "Файлы ДЗ"}</p>
@@ -117,7 +117,7 @@
                                                     <div class="flex gap-4 flex-wrap bg-base-200 rounded-box p-4">
                                                         {#each files as file}
                                                             <a href={file.url} class="flex items-center gap-2" download>
-                                                                <Icon name="download" class="h-4 w-4 fill-base-content rounded-none" />
+                                                                <Icon name="download" class="icon-small fill-base-content rounded-none" />
                                                                 {file.name}
                                                             </a>
                                                         {/each}

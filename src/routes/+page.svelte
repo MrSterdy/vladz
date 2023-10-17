@@ -8,7 +8,7 @@
     <p class="text-lg">Владз позволяет вам просматривать домашние задания и расписания на любой день. Просто войдите в свою группу и начните пользоваться прямо сейчас.</p>
 
     <a href="/dashboard/groups" role="button" class="btn btn-primary">
-        <Icon name="arrow" class="fill-primary-content h-6 w-6 " />
+        <Icon name="arrow" class="fill-primary-content icon-medium " />
         Мои группы
     </a>
 </div>

@@ -251,7 +251,7 @@
                                             >
                                                 <Icon
                                                     name="cross"
-                                                    class="w-4 h-4 fill-error shrink-0"
+                                                    class="icon-small fill-error shrink-0"
                                                 />
                                                 {file.name}
                                             </button>

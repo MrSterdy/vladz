@@ -24,7 +24,7 @@
                             <span class="flex gap-2 items-center">
                                 <Icon
                                     name="hat"
-                                    class="h-6 w-6 fill-base-content"
+                                    class="icon-medium fill-base-content"
                                 />
                                 {subject.teacher}
                             </span>
@@ -33,7 +33,7 @@
                             <span class="flex gap-2 items-center">
                                 <Icon
                                     name="marker"
-                                    class="h-6 w-6 fill-base-content"
+                                    class="icon-medium fill-base-content"
                                 />
                                 {subject.classroom}
                             </span>

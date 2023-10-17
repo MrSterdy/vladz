@@ -62,7 +62,7 @@
                             <input type="hidden" name="id" value={user.id} />
 
                             <button type="submit" class="btn btn-ghost p-0">
-                                <Icon name="demote" class="h-6 w-6 fill-error" />
+                                <Icon name="demote" class="icon-medium fill-error" />
                             </button>
                         </form>
                     </td>
