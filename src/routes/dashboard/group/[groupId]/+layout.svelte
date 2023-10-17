@@ -4,7 +4,7 @@
     import { page } from "$app/stores";
     import { capitalize } from "$lib/utils/string";
     import { weekdays } from "$lib/consts";
-    import { dateToString, humanize, parseDate } from "$lib/utils/time";
+    import { humanize, parseDate } from "$lib/utils/time";
 
     export let data: PageData;
 

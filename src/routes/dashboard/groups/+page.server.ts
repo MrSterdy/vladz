@@ -1,5 +1,6 @@
-import { fail, error } from "@sveltejs/kit";
 import type { PageServerLoad, Actions } from "./$types";
+
+import { fail, error } from "@sveltejs/kit";
 import { superValidate } from "sveltekit-superforms/server";
 import { setFlash } from "sveltekit-flash-message/server";
 

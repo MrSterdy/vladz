@@ -30,7 +30,7 @@ export const load: PageServerLoad = async event => {
 
     form.data.first_name = user.firstName;
     form.data.last_name = user.lastName;
-    form.data.timetable_notifications = user.settings.notifications.timetable;
+    form.data.timetable_notifications = user.settings!.notifications.timetable;
 
     return { form };
 };
@@ -45,7 +45,7 @@ export const actions: Actions = {
         const user = await getUserById(event.locals.user!.id);
         user!.firstName = form.data.first_name;
         user!.lastName = form.data.last_name;
-        user!.settings.notifications.timetable =
+        user!.settings!.notifications.timetable =
             form.data.timetable_notifications;
 
         await updateUser(user!);

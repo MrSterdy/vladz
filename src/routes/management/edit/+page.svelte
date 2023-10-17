@@ -1,10 +1,12 @@
 <script lang="ts">
+    import { superForm } from "sveltekit-superforms/client";
+
     import type { PageData } from "./$types";
 
     import { enhance as kitEnhance } from "$app/forms";
-    import { superForm } from "sveltekit-superforms/client";
+
     import { capitalize } from "$lib/utils/string";
-    import { groupUserRoles, userRoles } from "$lib/consts";
+    import { userRoles } from "$lib/consts";
     import Icon from "$lib/components/Icon.svelte";
     import MainButton from "$lib/components/MainButton.svelte";
     import { handleError, handleUpdated } from "$lib/utils/form";

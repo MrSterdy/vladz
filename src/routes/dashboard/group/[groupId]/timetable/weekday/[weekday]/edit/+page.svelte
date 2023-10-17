@@ -1,12 +1,8 @@
 <script lang="ts">
     import type { PageData } from "./$types";
-    import { capitalize } from "$lib/utils/string";
     import { numberToTime, timeToNumber } from "$lib/utils/time";
-    import { page } from "$app/stores";
     import { superForm } from "sveltekit-superforms/client";
-    import { weekdays } from "$lib/consts";
     import MainButton from "$lib/components/MainButton.svelte";
-    import Icon from "$lib/components/Icon.svelte";
 
     export let data: PageData;
 

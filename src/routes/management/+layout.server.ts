@@ -1,4 +1,5 @@
 import type { LayoutServerLoad } from "./$types";
+
 import { getManagement } from "$lib/server/services/userService";
 
 export const load: LayoutServerLoad = async event => {

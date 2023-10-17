@@ -51,8 +51,7 @@
         </div>
 
         <div class="w-full">
-            <label class="label label-text" for="last-name">Фамилия</label
-            >
+            <label class="label label-text" for="last-name">Фамилия</label>
             <input
                 id="last-name"
                 name="last_name"

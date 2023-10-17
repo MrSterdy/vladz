@@ -1,12 +1,14 @@
 <script lang="ts">
+    import { onMount } from "svelte";
+    import { SvelteToast } from "@zerodevx/svelte-toast";
+    import { getFlash } from "sveltekit-flash-message";
+
     import { page } from "$app/stores";
     import { browser } from "$app/environment";
 
     import "../app.css";
-    import { onMount } from "svelte";
+
     import Navbar from "$lib/components/Navbar.svelte";
-    import { SvelteToast } from "@zerodevx/svelte-toast";
-    import { getFlash } from "sveltekit-flash-message";
     import { showToastError, showToastSuccess } from "$lib/utils/toast";
 
     let onMainPage = true;

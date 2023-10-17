@@ -1,14 +1,16 @@
 <script lang="ts">
     import type { PageData } from "./$types";
+
     import { superForm } from "sveltekit-superforms/client";
+
+    import { page } from "$app/stores";
+    import { goto } from "$app/navigation";
     import { enhance as kitEnhance } from "$app/forms";
+
     import MainButton from "$lib/components/MainButton.svelte";
     import Icon from "$lib/components/Icon.svelte";
     import { handleError, handleUpdated } from "$lib/utils/form";
-    import { pageSize, weekdays } from "$lib/consts";
-    import { page } from "$app/stores";
-    import { goto } from "$app/navigation";
-    import { capitalize } from "$lib/utils/string";
+    import { pageSize } from "$lib/consts";
 
     export let data: PageData;
 

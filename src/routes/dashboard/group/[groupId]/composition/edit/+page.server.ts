@@ -1,6 +1,6 @@
 import type { PageServerLoad } from "./$types";
 import { type Actions, error, fail } from "@sveltejs/kit";
-import { message, superValidate } from "sveltekit-superforms/server";
+import { superValidate } from "sveltekit-superforms/server";
 import {
     addUserToGroup,
     getGroupUser,

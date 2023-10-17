@@ -1,8 +1,11 @@
 <script lang="ts">
     import type { PageData } from "./$types";
+
+    import { goto } from "$app/navigation";
+
     import { userRoles } from "$lib/consts";
     import { capitalize } from "$lib/utils/string";
-    import { goto } from "$app/navigation";
+
     import MainButton from "$lib/components/MainButton.svelte";
     import Icon from "$lib/components/Icon.svelte";
 
