@@ -27,3 +27,5 @@ export const groupUserRoles = {
 } as const;
 
 export const imageTypes = ["image/png", "image/jpg", "image/jpeg"];
+
+export const pageSize = 10;

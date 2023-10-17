@@ -85,3 +85,9 @@ export type Group = {
 
     applications: BaseUser[];
 };
+
+export type List<T> = {
+    items: T[],
+    page: number;
+    total: number;
+};
