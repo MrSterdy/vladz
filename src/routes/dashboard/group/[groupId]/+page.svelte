@@ -51,11 +51,11 @@
 
         <div class="text-accent-content flex justify-between gap-3">
             <div class="flex items-center gap-2">
-                <Icon name="add-user" class="w-5 h-5 fill-base-content" />
+                <Icon name="add-user" class="icon-medium fill-base-content" />
                 {data.group.inviteCode}
             </div>
             <div class="flex items-center gap-2">
-                <Icon name="users" class="w-5 h-5 fill-base-content" />
+                <Icon name="users" class="icon-medium fill-base-content" />
                 {data.group.users.length}
             </div>
         </div>
