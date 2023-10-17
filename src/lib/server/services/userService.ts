@@ -33,7 +33,7 @@ export async function getManagement(): Promise<User[]> {
         firstName: user.firstName,
         lastName: user.lastName,
         role: user.role,
-        settings: null!
+        settings: null
     }));
 }
 
@@ -44,7 +44,7 @@ export async function createUser(user: User) {
             firstName: user.firstName,
             lastName: user.lastName,
             role: user.role,
-            settings: user.settings
+            settings: user.settings!
         },
         update: { role: user.role },
         where: { id: user.id }
@@ -62,7 +62,7 @@ export async function updateUser(user: Partial<User> & Pick<User, "id">) {
             firstName: user.firstName,
             lastName: user.lastName,
             role: user.role,
-            settings: user.settings
+            settings: user.settings!
         }
     });
 

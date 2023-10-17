@@ -142,8 +142,6 @@ export async function getUserApplications(
     userId: bigint,
     page = 1
 ): Promise<List<Omit<Group, "users" | "applications">>> {
-    const cursor = (page - 1) * pageSize;
-
     const [count, applications] = await prisma.$transaction([
         prisma.groupApplication.count({ where: { userId } }),
         prisma.groupApplication.findMany({

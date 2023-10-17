@@ -9,7 +9,7 @@ type BaseUser = {
 
 export type User = BaseUser & {
     role: keyof typeof userRoles;
-    settings: UserSettings;
+    settings: UserSettings | null;
 };
 
 export type UserSettings = {
