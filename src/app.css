@@ -20,6 +20,10 @@
 }
 
 @layer components {
+    .word-break {
+        word-break: break-word;
+    }
+
     .icon-small {
         @apply w-4 h-4;
     }
@@ -54,6 +58,11 @@
     }
 
     .card-body {
+        word-break: break-word;
         @apply p-4;
+    }
+
+    .card-body > * {
+        @apply flex-wrap;
     }
 }

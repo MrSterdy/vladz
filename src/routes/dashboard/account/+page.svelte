@@ -15,7 +15,7 @@
     <div class="card card-compact card-body bg-base-100">
         <h2 class="card-title m-0">
             {data.user.lastName} {data.user.firstName}
-            <span class="mt-1 badge badge-accent badge-outline">
+            <span class="badge badge-accent badge-outline">
                 {capitalize(userRoles[data.user.role])}
             </span>
         </h2>

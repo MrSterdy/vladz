@@ -34,7 +34,7 @@
 </script>
 
 {#if error}
-    <h1 class="text-center text-error break-all">Ошибка входа.</h1>
+    <h1 class="text-center text-error">Ошибка входа</h1>
 {:else}
     <div class="grid place-items-center">
         <span class="loading loading-spinner loading-lg" />

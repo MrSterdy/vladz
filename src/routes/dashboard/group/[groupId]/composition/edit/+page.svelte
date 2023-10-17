@@ -30,7 +30,7 @@
                         {#each data.group.users as user, i}
                             <tr>
                                 <th>{i + 1}</th>
-                                <td class="break-word"
+                                <td class="word-break"
                                     >{user.lastName} {user.firstName}</td
                                 >
                                 <td>
@@ -136,7 +136,7 @@
                         {#each data.group.applications as user, i}
                             <tr>
                                 <th>{i + 1}</th>
-                                <td class="break-word"
+                                <td class="word-break"
                                     >{user.lastName} {user.firstName}</td
                                 >
                                 <td class="p-0">

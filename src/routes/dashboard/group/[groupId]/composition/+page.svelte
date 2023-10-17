@@ -22,7 +22,7 @@
         {#each data.group.users as user, i}
             <tr>
                 <th>{i + 1}</th>
-                <td class="break-word">{user.lastName} {user.firstName}</td>
+                <td class="word-break">{user.lastName} {user.firstName}</td>
                 <td>
                 <span class="badge badge-accent badge-outline">
                     {capitalize(groupUserRoles[user.role])}
