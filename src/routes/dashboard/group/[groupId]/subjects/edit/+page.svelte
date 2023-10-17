@@ -35,7 +35,7 @@
     <div class="join join-vertical w-full">
         {#each $form.subjects as _, i}
             <div class="collapse collapse-arrow join-item border bg-base-100">
-                <input type="radio" name="my-accordion-4" />
+                <input type="radio" name="accordion-subjects" />
                 <div class="collapse-title text-xl font-medium">
                     {$form.subjects[i].name}
                 </div>

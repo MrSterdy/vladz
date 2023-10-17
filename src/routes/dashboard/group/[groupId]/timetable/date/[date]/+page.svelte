@@ -55,7 +55,7 @@
                                 (subject.homework?.text ||
                                     subject.homework?.files.length))}
                     >
-                        <input type="radio" />
+                        <input type="radio" name="accordion-subjects" />
                         <div class="collapse-title">
                             <span>{subject.position}.</span>
 

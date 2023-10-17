@@ -29,7 +29,7 @@
                     class="collapse join-item border bg-base-100"
                     class:collapse-arrow={subject.classroom || subject.teacher}
                 >
-                    <input type="radio" />
+                    <input type="radio" name="accordion-subjects" />
                     <div class="collapse-title">
                         <span>{subject.position}.</span>
 
