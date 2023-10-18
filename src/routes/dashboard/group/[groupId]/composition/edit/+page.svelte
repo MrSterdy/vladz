@@ -76,7 +76,7 @@
                                     {capitalize(groupUserRoles[user.role])}
                                 </span>
                             </td>
-                            {#if user.id !== data.groupUser?.id && (data.user.role !== "USER" || data.groupUser?.role === "CURATOR")}
+                            {#if (user.id !== data.groupUser?.id || data.user.role !== "USER") && (data.user.role !== "USER" || data.groupUser?.role === "CURATOR")}
                                 {#if user.role !== "CURATOR"}
                                     <td class="p-0">
                                         <form
