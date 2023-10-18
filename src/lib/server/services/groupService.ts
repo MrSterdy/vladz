@@ -163,25 +163,6 @@ export async function getUserApplications(
     };
 }
 
-export async function getGroupUser(
-    userId: bigint,
-    groupId: number
-): Promise<GroupUser | null> {
-    const result = await prisma.groupUser.findFirst({
-        where: { userId, groupId },
-        include: { user: true }
-    });
-
-    return result
-        ? {
-              id: userId,
-              firstName: result.user.firstName,
-              lastName: result.user.lastName,
-              role: result.role
-          }
-        : null;
-}
-
 export async function removeGroupUser(userId: bigint, groupId: number) {
     await prisma.groupUser.delete({
         where: { userId_groupId: { userId, groupId } }

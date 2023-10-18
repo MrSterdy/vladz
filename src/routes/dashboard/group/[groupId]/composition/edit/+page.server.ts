@@ -3,7 +3,6 @@ import { type Actions, error, fail } from "@sveltejs/kit";
 import { superValidate } from "sveltekit-superforms/server";
 import {
     addUserToGroup,
-    getGroupUser,
     removeApplication,
     removeGroupUser,
     updateGroupUserRole
@@ -32,8 +31,8 @@ export const actions: Actions = {
         }
 
         const group = event.locals.group!;
+        const user = group.users.find(x => x.id === form.data.id);
 
-        const user = await getGroupUser(form.data.id, group.id);
         if (!user) {
             throw error(400, { message: "Пользователь не найден" });
         }
@@ -73,8 +72,8 @@ export const actions: Actions = {
         }
 
         const group = event.locals.group!;
+        const user = group.users.find(x => x.id === form.data.id);
 
-        const user = await getGroupUser(form.data.id, group.id);
         if (!user) {
             throw error(400, { message: "Пользователь не найден" });
         }
@@ -114,8 +113,8 @@ export const actions: Actions = {
         }
 
         const group = event.locals.group!;
+        const user = group.users.find(x => x.id === form.data.id);
 
-        const user = await getGroupUser(form.data.id, group.id);
         if (!user) {
             throw error(400, { message: "Пользователь не найден" });
         }
@@ -145,13 +144,14 @@ export const actions: Actions = {
         }
 
         const group = event.locals.group!;
-
         const application = group.applications.find(a => a.id === form.data.id);
+
         if (!application) {
             throw error(400, { message: "Пользователь не подавал заявку" });
         }
 
-        const user = await getGroupUser(form.data.id, group.id);
+        const user = group.users.find(x => x.id === form.data.id);
+
         if (user) {
             throw error(400, { message: "Пользователь уже состоит в группе" });
         }
@@ -184,13 +184,14 @@ export const actions: Actions = {
         }
 
         const group = event.locals.group!;
-
         const application = group.applications.find(a => a.id === form.data.id);
+
         if (!application) {
             throw error(400, { message: "Пользователь не подавал заявку" });
         }
 
-        const user = await getGroupUser(form.data.id, group.id);
+        const user = group.users.find(x => x.id === form.data.id);
+
         if (user) {
             throw error(400, { message: "Пользователь уже состоит в группе" });
         }

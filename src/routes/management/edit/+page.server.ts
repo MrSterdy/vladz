@@ -24,6 +24,7 @@ export const actions: Actions = {
         }
 
         const user = await getUserById(form.data.id);
+
         if (!user) {
             throw error(400, { message: "Пользователь не найден" });
         }
@@ -58,6 +59,7 @@ export const actions: Actions = {
         }
 
         const user = await getUserById(form.data.id);
+
         if (!user) {
             throw error(400, { message: "Пользователь не найден" });
         }
