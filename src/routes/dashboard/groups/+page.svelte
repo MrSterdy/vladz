@@ -7,8 +7,8 @@
     import { goto } from "$app/navigation";
     import { page } from "$app/stores";
 
-    import Icon from "$lib/components/Icon.svelte";
     import MainButton from "$lib/components/MainButton.svelte";
+    import Status from "$lib/components/Status.svelte";
     import { pageSize } from "$lib/consts";
     import { handleError, handleUpdated } from "$lib/utils/form";
 
@@ -140,10 +140,7 @@
             {/if}
         </div>
     {:else}
-        <div class="self-center flex flex-col items-center">
-            <Icon name="sad" class="h-24 w-24 fill-base-content" />
-            <p class="text-lg text-base-content">Ничего нет</p>
-        </div>
+        <Status icon="sad" message="Нет групп" />
     {/if}
 
     {#if $form.invite_code.length === 16}

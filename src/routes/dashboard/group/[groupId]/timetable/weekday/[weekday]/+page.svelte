@@ -5,6 +5,7 @@
 
     import Icon from "$lib/components/Icon.svelte";
     import MainButton from "$lib/components/MainButton.svelte";
+    import Status from "$lib/components/Status.svelte";
     import { numberToTime } from "$lib/utils/time";
 
     export let data: PageData;
@@ -71,10 +72,7 @@
         {/each}
     </section>
 {:else}
-    <div class="flex flex-col items-center">
-        <Icon name="beach" class="h-24 w-24 fill-base-content" />
-        <p class="text-lg text-base-content">Выходной</p>
-    </div>
+    <Status icon="beach" message="Отдыхай" />
 {/if}
 
 {#if data.user.role !== "USER" || data.groupUser?.role === "CURATOR" || data.groupUser?.role === "EDITOR"}

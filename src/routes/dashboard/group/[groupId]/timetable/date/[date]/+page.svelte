@@ -7,6 +7,7 @@
 
     import Icon from "$lib/components/Icon.svelte";
     import MainButton from "$lib/components/MainButton.svelte";
+    import Status from "$lib/components/Status.svelte";
     import { imageTypes } from "$lib/consts";
     import type { DateSubject, WeekdaySubject } from "$lib/types";
     import { numberToTime } from "$lib/utils/time";
@@ -43,10 +44,7 @@
     {/if}
 
     {#if data.dayOff}
-        <div class="flex flex-col items-center">
-            <Icon name="beach" class="h-24 w-24 fill-base-content" />
-            <p class="text-lg text-base-content">Выходной</p>
-        </div>
+        <Status icon="beach" message="Отдыхай" />
     {:else}
         <div class="join join-vertical w-full">
             {#each subjects as subject, i}

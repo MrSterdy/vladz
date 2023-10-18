@@ -7,6 +7,7 @@
     import { page } from "$app/stores";
 
     import Icon from "$lib/components/Icon.svelte";
+    import Status from "$lib/components/Status.svelte";
     import { groupUserRoles } from "$lib/consts";
     import { capitalize } from "$lib/utils/string";
 
@@ -154,10 +155,7 @@
                 </tbody>
             </table>
         {:else}
-            <div class="flex flex-col items-center">
-                <Icon name="sad" class="h-24 w-24 fill-base-content" />
-                <p class="text-lg text-base-content">Никого нет</p>
-            </div>
+            <Status icon="sad" message="Никого нет" />
         {/if}
     {:else if data.group.applications.length}
         <table class="table">
@@ -211,9 +209,6 @@
             </tbody>
         </table>
     {:else}
-        <div class="flex flex-col items-center">
-            <Icon name="sad" class="h-24 w-24 fill-base-content" />
-            <p class="text-lg text-base-content">Никого нет</p>
-        </div>
+        <Status icon="sad" message="Никого нет" />
     {/if}
 </div>

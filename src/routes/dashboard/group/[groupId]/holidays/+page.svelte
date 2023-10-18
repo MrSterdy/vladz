@@ -5,8 +5,8 @@
 
     import { goto } from "$app/navigation";
 
-    import Icon from "$lib/components/Icon.svelte";
     import MainButton from "$lib/components/MainButton.svelte";
+    import Status from "$lib/components/Status.svelte";
     import { capitalize } from "$lib/utils/string";
     import { humanize } from "$lib/utils/time";
 
@@ -27,10 +27,7 @@
         {/each}
     </ul>
 {:else}
-    <div class="flex flex-col items-center">
-        <Icon name="sad" class="h-24 w-24 fill-base-content" />
-        <p class="text-lg text-base-content">Нет выходных</p>
-    </div>
+    <Status icon="sad" message="Нет выходных" />
 {/if}
 
 {#if data.user.role !== "USER" || data.groupUser?.role === "CURATOR" || data.groupUser?.role === "EDITOR"}
