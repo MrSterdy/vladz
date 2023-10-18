@@ -98,6 +98,20 @@
             this.value = "";
         }
     }
+
+    function moveUp(subjectIndex: number) {
+        const subjectPosition = $form.subjects[subjectIndex].position;
+        const upperSubjectIndex = $form.subjects.findIndex(s => s.position === (subjectPosition + 1));
+        $form.subjects[subjectIndex].position = subjectPosition + 1;
+        $form.subjects[upperSubjectIndex].position = subjectPosition;
+    }
+
+    function moveDown(subjectIndex: number) {
+        const subjectPosition = $form.subjects[subjectIndex].position;
+        const lowerSubjectIndex = $form.subjects.findIndex(s => s.position === (subjectPosition - 1));
+        $form.subjects[subjectIndex].position = subjectPosition - 1;
+        $form.subjects[lowerSubjectIndex].position = subjectPosition;
+    }
 </script>
 
 <form
@@ -146,8 +160,10 @@
     </div>
 
     {#if $form.subjects.length}
+        {@const positions = $form.subjects.map(s => s.position).sort()}
+        {@const [minPos, maxPos] = [positions[0], positions[positions.length - 1]]}
         <div class="join join-vertical w-full">
-            {#each $form.subjects as subject, i}
+            {#each $form.subjects.sort((a, b) => a.position - b.position) as subject, i}
                 <div
                     class="collapse collapse-arrow join-item border bg-base-100 rounded-box"
                 >
@@ -159,6 +175,21 @@
                             class:text-neutral-content={!subject.name}
                             >{subject.name || "[Пусто]"}</span
                         >
+
+                        {#if (subject.position >= minPos && subject.position < maxPos) || (subject.position > minPos && subject.position <= maxPos)}
+                            <div class="flex items-center">
+                                {#if subject.position >= minPos && subject.position < maxPos}
+                                    <button class="z-10" type="button" on:click={() => moveUp(i)}>
+                                        <Icon name="demote" class="icon-medium fill-base-content" />
+                                    </button>
+                                {/if}
+                                {#if subject.position > minPos && subject.position <= maxPos}
+                                    <button class="z-10" type="button" on:click={() => moveDown(i)}>
+                                        <Icon name="promote" class="icon-medium fill-base-content" />
+                                    </button>
+                                {/if}
+                            </div>
+                        {/if}
                     </div>
                     <div class="collapse-content">
                         <div class="w-full">
