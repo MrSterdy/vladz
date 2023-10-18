@@ -149,7 +149,7 @@
         <div class="join join-vertical w-full">
             {#each $form.subjects as subject, i}
                 <div
-                    class="collapse collapse-arrow join-item border bg-base-100"
+                    class="collapse collapse-arrow join-item border bg-base-100 rounded-box"
                 >
                     <input type="radio" name="accordion-subjects" />
                     <div class="collapse-title">
