@@ -21,7 +21,7 @@
             </tr>
         </thead>
         <tbody>
-            {#each data.group.users as user, i}
+            {#each data.group.users.sort((a, b) => `${a.lastName} ${a.firstName}`.localeCompare(`${b.lastName} ${b.firstName}`)) as user, i}
                 <tr>
                     <th>{i + 1}</th>
                     <td class="word-break">{user.lastName} {user.firstName}</td>
