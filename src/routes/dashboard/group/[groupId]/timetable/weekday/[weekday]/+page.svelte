@@ -20,7 +20,7 @@
     });
 </script>
 
-{#if data.timetable.subjects.length}
+{#if data.timetable.subjects.filter(s => s.name).length}
     <section class="join join-vertical w-full">
         {#each data.timetable.subjects as subject, i}
             {#if subject.name}

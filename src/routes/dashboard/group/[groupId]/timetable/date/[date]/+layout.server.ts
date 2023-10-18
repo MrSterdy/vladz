@@ -32,8 +32,8 @@ export const load: LayoutServerLoad = async event => {
                 date.isSame(endDate)
             );
         }) &&
-        !dateTimetable?.subjects.length &&
-        !weekdayTimetable?.subjects.length;
+        !dateTimetable?.subjects.filter(s => s.name).length &&
+        !weekdayTimetable?.subjects.filter(s => s.name).length;
 
     return { dayOff, dateTimetable, weekdayTimetable };
 };
