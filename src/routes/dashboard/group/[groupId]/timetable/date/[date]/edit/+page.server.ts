@@ -5,8 +5,7 @@ import { superValidate } from "sveltekit-superforms/server";
 
 import type { Actions, PageServerLoad } from "./$types";
 
-import { MAX_FILES } from "$env/static/private";
-
+import { maxFiles, maxFileSize } from "$lib/consts";
 import { dateTimetableSchema } from "$lib/server/schemas/timetable";
 import { uploadFile } from "$lib/server/services/fileService";
 import { getHolidays } from "$lib/server/services/holidayService";
@@ -91,16 +90,16 @@ export const actions: Actions = {
 
             const newFiles = formData
                 .getAll(filesName)
-                .filter(file => file instanceof File && file.size) as File[];
+                .slice(0, maxFiles - (subject.homeworkFiles?.length ?? 0))
+                .filter(
+                    file =>
+                        file instanceof File &&
+                        file.size > 0 &&
+                        file.size <= maxFileSize
+                ) as File[];
 
             const totalFiles =
                 newFiles.length + (subject.homeworkFiles?.length ?? 0);
-
-            if (totalFiles > parseInt(MAX_FILES)) {
-                throw error(400, {
-                    message: `Можно загружать максимум ${MAX_FILES} файлов за 1 предмет`
-                });
-            }
 
             if (!(subject.name ?? "") && (subject.homeworkText || totalFiles)) {
                 throw error(400, {

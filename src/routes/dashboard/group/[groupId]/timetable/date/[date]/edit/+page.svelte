@@ -5,8 +5,10 @@
 
     import Icon from "$lib/components/Icon.svelte";
     import MainButton from "$lib/components/MainButton.svelte";
+    import { maxFiles, maxFileSize } from "$lib/consts";
     import { handleError, handleUpdated } from "$lib/utils/form";
     import { numberToTime, timeToNumber } from "$lib/utils/time";
+    import { showToastError } from "$lib/utils/toast";
 
     export let data: PageData;
 
@@ -65,6 +67,36 @@
         const subjectIndex = files?.findIndex(x => x.name === fileName);
         $form.subjects[index]!.homeworkFiles =
             files?.filter((_, i) => i !== subjectIndex) ?? null;
+    }
+
+    function checkHomeworkFiles(this: HTMLInputElement) {
+        let count = 0;
+
+        for (const file of this.files ?? []) {
+            if (file.size > maxFileSize) {
+                showToastError(
+                    `Размер файла не должен превышать ${(
+                        maxFileSize / 1048576
+                    ).toFixed(1)}Мб`
+                );
+
+                this.value = "";
+
+                return;
+            }
+
+            count++;
+        }
+
+        const oldFilesLength = parseInt(
+            this.getAttribute("data-old-number") ?? "0"
+        );
+
+        if (count + oldFilesLength > maxFiles) {
+            showToastError(`Можно загружать максимум ${maxFiles} файлов`);
+
+            this.value = "";
+        }
     }
 </script>
 
@@ -247,6 +279,9 @@
                                     name="files-{subject.position}"
                                     type="file"
                                     multiple
+                                    on:change={checkHomeworkFiles}
+                                    data-old-number={subject.homeworkFiles
+                                        ?.length ?? 0}
                                     class="w-full file-input file-input-secondary file-input-bordered"
                                 />
                                 {#if subject.homeworkFiles?.length}
