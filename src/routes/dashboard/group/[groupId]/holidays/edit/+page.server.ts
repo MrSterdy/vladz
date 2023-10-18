@@ -44,7 +44,7 @@ export const actions: Actions = {
             }
 
             const startDateISO = startDate.toISOString();
-            const endDateISO = ednDate.toISOString();
+            const endDateISO = endDate.toISOString();
 
             for (const oldHoliday of holidays) {
                 if (
