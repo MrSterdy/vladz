@@ -94,70 +94,72 @@
                 {...$constraints.invite_code}
             />
         </form>
-    {/if}
 
-    {#if data.groups.items.length}
-        <div class="flex flex-col gap-4">
-            <ul class="list-none m-0 p-0 flex flex-col gap-4">
-                {#each data.groups.items as group}
-                    <li class="m-0 p-0">
-                        <a
-                            class="no-underline"
-                            href="/dashboard/group/{group.id}"
-                        >
-                            <div
-                                class="card card-compact card-body bg-base-100"
-                            >
-                                <h2
-                                    class="card-title m-0 flex gap-2 items-center"
-                                >
-                                    {group.name}
-                                </h2>
-                            </div>
-                        </a>
-                    </li>
-                {/each}
-            </ul>
-
-            {#if totalPages > 1}
-                <div class="join self-center">
-                    {#if data.groups.page > 1}
-                        <button
-                            class="join-item btn text-lg"
-                            on:click={prevPage}>«</button
-                        >
-                    {/if}
-                    <button class="join-item btn text-lg"
-                        >{data.groups.page}</button
-                    >
-                    {#if totalPages > data.groups.page}
-                        <button
-                            class="join-item btn text-lg"
-                            on:click={nextPage}>»</button
-                        >
-                    {/if}
-                </div>
-            {/if}
-        </div>
+        {#if $form.invite_code.length === 16}
+            <MainButton
+                text="ПОДАТЬ ЗАЯВКУ"
+                onClick={() => inviteForm.requestSubmit()}
+            />
+        {/if}
     {:else}
-        <Status icon="sad" message="Нет групп" />
-    {/if}
+        {#if data.groups.items.length}
+            <div class="flex flex-col gap-4">
+                <ul class="list-none m-0 p-0 flex flex-col gap-4">
+                    {#each data.groups.items as group}
+                        <li class="m-0 p-0">
+                            <a
+                                class="no-underline"
+                                href="/dashboard/group/{group.id}"
+                            >
+                                <div
+                                    class="card card-compact card-body bg-base-100"
+                                >
+                                    <h2
+                                        class="card-title m-0 flex gap-2 items-center"
+                                    >
+                                        {group.name}
+                                    </h2>
+                                </div>
+                            </a>
+                        </li>
+                    {/each}
+                </ul>
 
-    {#if $form.invite_code.length === 16}
-        <MainButton
-            text="ПОДАТЬ ЗАЯВКУ"
-            onClick={() => inviteForm.requestSubmit()}
-        />
-    {:else if data.user.role === "ADMIN" || data.user.role === "HELPER"}
-        <form
-            bind:this={createForm}
-            method="POST"
-            action="?/create"
-            use:kitEnhance
-        />
-        <MainButton
-            text="СОЗДАТЬ НОВУЮ ГРУППУ"
-            onClick={() => createForm.requestSubmit()}
-        />
+                {#if totalPages > 1}
+                    <div class="join self-center">
+                        {#if data.groups.page > 1}
+                            <button
+                                class="join-item btn text-lg"
+                                on:click={prevPage}>«</button
+                            >
+                        {/if}
+                        <button class="join-item btn text-lg"
+                            >{data.groups.page}</button
+                        >
+                        {#if totalPages > data.groups.page}
+                            <button
+                                class="join-item btn text-lg"
+                                on:click={nextPage}>»</button
+                            >
+                        {/if}
+                    </div>
+                {/if}
+            </div>
+        {:else}
+            <Status icon="sad" message="Нет групп" />
+        {/if}
+
+        {#if data.user.role === "ADMIN" || data.user.role === "HELPER"}
+            <form
+                bind:this={createForm}
+                method="POST"
+                action="?/create"
+                use:kitEnhance
+            />
+            <MainButton
+                text="СОЗДАТЬ НОВУЮ ГРУППУ"
+                onClick={() => createForm.requestSubmit()}
+            />
+        {/if}
     {/if}
 </div>
