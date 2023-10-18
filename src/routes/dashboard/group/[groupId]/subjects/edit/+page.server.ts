@@ -1,4 +1,4 @@
-import { fail } from "@sveltejs/kit";
+import { error, fail } from "@sveltejs/kit";
 import { redirect } from "sveltekit-flash-message/server";
 import { superValidate } from "sveltekit-superforms/server";
 import { z } from "zod";
@@ -6,6 +6,7 @@ import { z } from "zod";
 import type { Actions, PageServerLoad } from "./$types";
 
 import { updateSubjects } from "$lib/server/services/subjectService";
+
 
 const updateSubjectSchema = z.object({
     subjects: z.array(
@@ -51,6 +52,15 @@ export const actions: Actions = {
         const form = await superValidate(event.request, updateSubjectSchema);
         if (!form.valid) {
             return fail(400, { form });
+        }
+
+        if (
+            new Set(form.data.subjects.map(s => s.name)).size !==
+            form.data.subjects.length
+        ) {
+            throw error(400, {
+                message: "Название предметов должно быть уникальным"
+            });
         }
 
         await updateSubjects(event.locals.group!.id, form.data.subjects);
