@@ -131,6 +131,7 @@
                             <input
                                 id="name-{i}"
                                 type="text"
+                                list="subjects"
                                 placeholder="Название"
                                 on:change={() => updateSubject(i)}
                                 class="w-full input input-bordered input-primary"

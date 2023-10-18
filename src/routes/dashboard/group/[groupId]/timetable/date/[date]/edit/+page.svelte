@@ -169,6 +169,7 @@
                             <input
                                 id="name-{i}"
                                 type="text"
+                                list="subjects"
                                 aria-invalid={$errors.subjects?.[i].name
                                     ? true
                                     : undefined}
