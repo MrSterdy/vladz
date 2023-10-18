@@ -1,8 +1,9 @@
 import * as crypto from "crypto";
+import jwt from "jsonwebtoken";
 
 import { TELEGRAM_BOT_TOKEN } from "$env/static/private";
+
 import type { TelegramUser } from "$lib/types";
-import jwt from "jsonwebtoken";
 
 const secret = crypto
     .createHmac("sha256", "WebAppData")

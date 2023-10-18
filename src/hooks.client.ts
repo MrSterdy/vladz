@@ -1,6 +1,7 @@
+import type { HandleClientError } from "@sveltejs/kit";
 import dayjs from "dayjs";
 import "dayjs/locale/ru";
-import type { HandleClientError } from "@sveltejs/kit";
+
 import { hslToHex } from "$lib/utils/color";
 
 export const handleError: HandleClientError = ({ error }) => {

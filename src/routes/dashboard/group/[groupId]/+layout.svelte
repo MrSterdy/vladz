@@ -1,9 +1,11 @@
 <script lang="ts">
     import type { PageData } from "./$types";
-    import Icon from "$lib/components/Icon.svelte";
+
     import { page } from "$app/stores";
-    import { capitalize } from "$lib/utils/string";
+
+    import Icon from "$lib/components/Icon.svelte";
     import { weekdays } from "$lib/consts";
+    import { capitalize } from "$lib/utils/string";
     import { humanize, parseDate } from "$lib/utils/time";
 
     export let data: PageData;

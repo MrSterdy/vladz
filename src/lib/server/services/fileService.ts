@@ -1,7 +1,9 @@
-import minio from "$lib/server/db/minio";
-import { MINIO_ENDPOINT, MINIO_SSL } from "$env/static/private";
 import { createHash } from "crypto";
 import type { BucketItem } from "minio";
+
+import { MINIO_ENDPOINT, MINIO_SSL } from "$env/static/private";
+
+import minio from "$lib/server/db/minio";
 
 function generateBucketName(groupCode: string) {
     return `vladik-group-${groupCode}`;

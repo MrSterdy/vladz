@@ -1,12 +1,12 @@
 import { fail } from "@sveltejs/kit";
+import { redirect } from "sveltekit-flash-message/server";
+import { superValidate } from "sveltekit-superforms/server";
 
 import type { PageServerLoad, Actions } from "./$types";
 
-import { createUser } from "$lib/server/services/userService";
-import { superValidate } from "sveltekit-superforms/server";
 import { defaultSettings } from "$lib/defaults";
 import registerSchema from "$lib/server/schemas/register";
-import { redirect } from "sveltekit-flash-message/server";
+import { createUser } from "$lib/server/services/userService";
 
 export const load: PageServerLoad = async event => {
     if (event.locals.user) {

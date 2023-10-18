@@ -1,8 +1,7 @@
-import jwt from "jsonwebtoken";
 import * as crypto from "crypto";
+import jwt from "jsonwebtoken";
 
 import prisma from "$lib/server/db/prisma";
-
 import type { User, UserSettings } from "$lib/types";
 
 export async function getUserById(id: bigint): Promise<User | null> {

@@ -4,5 +4,16 @@
     "semi": true,
     "singleQuote": false,
     "arrowParens": "avoid",
-    "quoteProps": "preserve"
+    "quoteProps": "preserve",
+    "plugins": [
+        "prettier-plugin-svelte",
+        "@trivago/prettier-plugin-sort-imports"
+    ],
+    "importOrder": [
+        "^\\./(.*)$",
+        "^\\$env/(.*)$",
+        "^\\$app/(.*)$",
+        "^\\$lib/(.*)$"
+    ],
+    "importOrderSeparation": true
 }

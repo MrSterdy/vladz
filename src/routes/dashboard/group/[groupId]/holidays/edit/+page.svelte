@@ -1,9 +1,11 @@
 <script lang="ts">
-    import type { PageData } from "./$types";
     import { superForm } from "sveltekit-superforms/client";
-    import { formatISOString } from "$lib/utils/time";
+
+    import type { PageData } from "./$types";
+
     import MainButton from "$lib/components/MainButton.svelte";
     import { handleError, handleUpdated } from "$lib/utils/form";
+    import { formatISOString } from "$lib/utils/time";
 
     export let data: PageData;
 

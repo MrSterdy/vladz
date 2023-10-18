@@ -1,8 +1,10 @@
 <script lang="ts">
-    import type { PageData } from "./$types";
     import { superForm } from "sveltekit-superforms/client";
 
+    import type { PageData } from "./$types";
+
     import { enhance as kitEnhance } from "$app/forms";
+
     import MainButton from "$lib/components/MainButton.svelte";
     import { handleError, handleUpdated } from "$lib/utils/form";
     import { showConfirm } from "$lib/utils/telegram";

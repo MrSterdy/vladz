@@ -1,21 +1,24 @@
-import type { Actions, PageServerLoad } from "./$types";
 import { error, fail } from "@sveltejs/kit";
-import { superValidate } from "sveltekit-superforms/server";
+import dayjs from "dayjs";
 import { redirect } from "sveltekit-flash-message/server";
+import { superValidate } from "sveltekit-superforms/server";
+
+import type { Actions, PageServerLoad } from "./$types";
+
+import { MAX_FILES } from "$env/static/private";
+
+import { dateTimetableSchema } from "$lib/server/schemas/timetable";
+import { uploadFile } from "$lib/server/services/fileService";
+import { getHolidays } from "$lib/server/services/holidayService";
+import { sendTimetableNotifications } from "$lib/server/services/notificationService";
+import { getSubjects } from "$lib/server/services/subjectService";
 import {
     findNextTimetableWithSubject,
     getDateTimetable,
     updateDateTimetable
 } from "$lib/server/services/timetableService";
-import { dateToString, parseDate } from "$lib/utils/time";
-import { getSubjects } from "$lib/server/services/subjectService";
-import { sendTimetableNotifications } from "$lib/server/services/notificationService";
-import { MAX_FILES } from "$env/static/private";
 import type { DateSubject, DateTimetable } from "$lib/types";
-import { uploadFile } from "$lib/server/services/fileService";
-import { getHolidays } from "$lib/server/services/holidayService";
-import dayjs from "dayjs";
-import { dateTimetableSchema } from "$lib/server/schemas/timetable";
+import { dateToString, parseDate } from "$lib/utils/time";
 
 export const load: PageServerLoad = async event => {
     const { dateTimetable, weekdayTimetable } = await event.parent();

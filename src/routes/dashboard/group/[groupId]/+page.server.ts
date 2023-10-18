@@ -1,7 +1,7 @@
-import type { Actions } from "./$types";
-
 import { error } from "@sveltejs/kit";
 import { redirect } from "sveltekit-flash-message/server";
+
+import type { Actions } from "./$types";
 
 import { removeUserFromGroup } from "$lib/server/services/groupService";
 

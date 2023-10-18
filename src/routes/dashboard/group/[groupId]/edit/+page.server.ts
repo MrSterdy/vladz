@@ -1,14 +1,15 @@
-import type { PageServerLoad, Actions } from "./$types";
 import { fail } from "@sveltejs/kit";
+import { redirect } from "sveltekit-flash-message/server";
 import { superValidate } from "sveltekit-superforms/server";
+
+import type { PageServerLoad, Actions } from "./$types";
+
+import groupSchema from "$lib/server/schemas/group";
+import { deleteBucket } from "$lib/server/services/fileService";
 import {
     deleteGroup,
     updateGroupName
 } from "$lib/server/services/groupService";
-import { deleteBucket } from "$lib/server/services/fileService";
-
-import groupSchema from "$lib/server/schemas/group";
-import { redirect } from "sveltekit-flash-message/server";
 
 export const load: PageServerLoad = async event => {
     const form = await superValidate(groupSchema);

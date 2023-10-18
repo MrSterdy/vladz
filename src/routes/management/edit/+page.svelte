@@ -5,11 +5,11 @@
 
     import { enhance as kitEnhance } from "$app/forms";
 
-    import { capitalize } from "$lib/utils/string";
-    import { userRoles } from "$lib/consts";
     import Icon from "$lib/components/Icon.svelte";
     import MainButton from "$lib/components/MainButton.svelte";
+    import { userRoles } from "$lib/consts";
     import { handleError, handleUpdated } from "$lib/utils/form";
+    import { capitalize } from "$lib/utils/string";
 
     export let data: PageData;
 

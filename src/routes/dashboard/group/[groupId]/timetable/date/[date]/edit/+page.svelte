@@ -3,11 +3,10 @@
 
     import type { PageData } from "./$types";
 
-    import { numberToTime, timeToNumber } from "$lib/utils/time";
-
-    import MainButton from "$lib/components/MainButton.svelte";
     import Icon from "$lib/components/Icon.svelte";
+    import MainButton from "$lib/components/MainButton.svelte";
     import { handleError, handleUpdated } from "$lib/utils/form";
+    import { numberToTime, timeToNumber } from "$lib/utils/time";
 
     export let data: PageData;
 

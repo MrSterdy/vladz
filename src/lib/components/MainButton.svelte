@@ -1,5 +1,6 @@
 <script lang="ts">
     import { onDestroy, onMount } from "svelte";
+
     import { browser } from "$app/environment";
 
     interface $$Props {

@@ -1,8 +1,9 @@
-import type { Group, List } from "$lib/types";
-import prisma from "$lib/server/db/prisma";
 import * as crypto from "crypto";
-import type { GroupUser } from "$lib/types";
+
 import { pageSize } from "$lib/consts";
+import prisma from "$lib/server/db/prisma";
+import type { Group, List } from "$lib/types";
+import type { GroupUser } from "$lib/types";
 
 export async function getGroupByInviteCode(
     inviteCode: string

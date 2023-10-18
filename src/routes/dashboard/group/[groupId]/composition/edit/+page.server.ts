@@ -1,6 +1,11 @@
-import type { PageServerLoad } from "./$types";
 import { type Actions, error, fail } from "@sveltejs/kit";
+import { setFlash } from "sveltekit-flash-message/server";
 import { superValidate } from "sveltekit-superforms/server";
+
+import type { PageServerLoad } from "./$types";
+
+import { groupUserRoles } from "$lib/consts";
+import idSchema from "$lib/server/schemas/id";
 import {
     addUserToGroup,
     removeApplication,
@@ -12,10 +17,7 @@ import {
     sendKickNotification,
     sendPromotionNotification
 } from "$lib/server/services/notificationService";
-import { groupUserRoles } from "$lib/consts";
 import { capitalize } from "$lib/utils/string";
-import idSchema from "$lib/server/schemas/id";
-import { setFlash } from "sveltekit-flash-message/server";
 
 export const load: PageServerLoad = async () => {
     const form = await superValidate(idSchema);

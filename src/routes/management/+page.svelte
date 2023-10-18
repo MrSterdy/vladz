@@ -3,11 +3,10 @@
 
     import { goto } from "$app/navigation";
 
+    import Icon from "$lib/components/Icon.svelte";
+    import MainButton from "$lib/components/MainButton.svelte";
     import { userRoles } from "$lib/consts";
     import { capitalize } from "$lib/utils/string";
-
-    import MainButton from "$lib/components/MainButton.svelte";
-    import Icon from "$lib/components/Icon.svelte";
 
     export let data: PageData;
 </script>

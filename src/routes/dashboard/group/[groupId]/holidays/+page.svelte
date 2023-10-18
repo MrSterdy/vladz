@@ -1,10 +1,13 @@
 <script lang="ts">
-    import type { PageData } from "./$types";
-    import { goto } from "$app/navigation";
-    import MainButton from "$lib/components/MainButton.svelte";
-    import Icon from "$lib/components/Icon.svelte";
-    import { capitalize } from "$lib/utils/string";
     import dayjs from "dayjs";
+
+    import type { PageData } from "./$types";
+
+    import { goto } from "$app/navigation";
+
+    import Icon from "$lib/components/Icon.svelte";
+    import MainButton from "$lib/components/MainButton.svelte";
+    import { capitalize } from "$lib/utils/string";
     import { humanize } from "$lib/utils/time";
 
     export let data: PageData;

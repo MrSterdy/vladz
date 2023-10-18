@@ -1,12 +1,13 @@
 import { json, error, type RequestEvent } from "@sveltejs/kit";
 
+import { ADMIN_ID } from "$env/static/private";
+
+import { AUTH_TELEGRAM_COOKIE_NAME } from "$lib/consts";
 import {
     decodeInitData,
     generateJwt
 } from "$lib/server/services/telegramService";
-import { AUTH_TELEGRAM_COOKIE_NAME } from "$lib/consts";
 import type { TelegramUser } from "$lib/types";
-import { ADMIN_ID } from "$env/static/private";
 
 export async function POST(event: RequestEvent) {
     let telegramInfo: TelegramUser | null = null;

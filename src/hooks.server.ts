@@ -4,6 +4,11 @@ import {
     error,
     type HandleServerError
 } from "@sveltejs/kit";
+import { sequence } from "@sveltejs/kit/hooks";
+import dayjs from "dayjs";
+import "dayjs/locale/ru";
+
+import { ADMIN_ID } from "$env/static/private";
 
 import {
     AUTH_ACCESS_COOKIE_NAME,
@@ -11,19 +16,13 @@ import {
     AUTH_TELEGRAM_COOKIE_NAME,
     REDIRECT_PARAM_NAME
 } from "$lib/consts";
-import * as telegramService from "$lib/server/services/telegramService";
-import * as userService from "$lib/server/services/userService";
-import type { TelegramUser, User } from "$lib/types";
-import { createUser } from "$lib/server/services/userService";
-import { ADMIN_ID } from "$env/static/private";
-
-import dayjs from "dayjs";
-
-import "dayjs/locale/ru";
-import { sequence } from "@sveltejs/kit/hooks";
-import { getGroupById } from "$lib/server/services/groupService";
 import { defaultSettings } from "$lib/defaults";
 import bot from "$lib/server/bot";
+import { getGroupById } from "$lib/server/services/groupService";
+import * as telegramService from "$lib/server/services/telegramService";
+import * as userService from "$lib/server/services/userService";
+import { createUser } from "$lib/server/services/userService";
+import type { TelegramUser, User } from "$lib/types";
 
 export const authenticationHandler: Handle = async ({ event, resolve }) => {
     if (

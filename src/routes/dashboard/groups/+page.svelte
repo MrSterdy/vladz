@@ -1,16 +1,16 @@
 <script lang="ts">
-    import type { PageData } from "./$types";
-
     import { superForm } from "sveltekit-superforms/client";
 
-    import { page } from "$app/stores";
-    import { goto } from "$app/navigation";
-    import { enhance as kitEnhance } from "$app/forms";
+    import type { PageData } from "./$types";
 
-    import MainButton from "$lib/components/MainButton.svelte";
+    import { enhance as kitEnhance } from "$app/forms";
+    import { goto } from "$app/navigation";
+    import { page } from "$app/stores";
+
     import Icon from "$lib/components/Icon.svelte";
-    import { handleError, handleUpdated } from "$lib/utils/form";
+    import MainButton from "$lib/components/MainButton.svelte";
     import { pageSize } from "$lib/consts";
+    import { handleError, handleUpdated } from "$lib/utils/form";
 
     export let data: PageData;
 

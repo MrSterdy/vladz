@@ -1,4 +1,5 @@
 import { Telegraf } from "telegraf";
+
 import { TELEGRAM_BOT_TOKEN } from "$env/static/private";
 
 const bot = new Telegraf(TELEGRAM_BOT_TOKEN);

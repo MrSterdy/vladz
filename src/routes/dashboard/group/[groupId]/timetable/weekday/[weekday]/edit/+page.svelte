@@ -1,8 +1,10 @@
 <script lang="ts">
-    import type { PageData } from "./$types";
-    import { numberToTime, timeToNumber } from "$lib/utils/time";
     import { superForm } from "sveltekit-superforms/client";
+
+    import type { PageData } from "./$types";
+
     import MainButton from "$lib/components/MainButton.svelte";
+    import { numberToTime, timeToNumber } from "$lib/utils/time";
 
     export let data: PageData;
 

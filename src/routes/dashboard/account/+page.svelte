@@ -1,10 +1,11 @@
 <script lang="ts">
     import type { PageData } from "./$types";
 
+    import { goto } from "$app/navigation";
+
+    import MainButton from "$lib/components/MainButton.svelte";
     import { userRoles } from "$lib/consts";
     import { capitalize } from "$lib/utils/string";
-    import { goto } from "$app/navigation";
-    import MainButton from "$lib/components/MainButton.svelte";
 
     export let data: PageData;
 </script>

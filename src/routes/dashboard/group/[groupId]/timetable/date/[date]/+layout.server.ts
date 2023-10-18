@@ -1,11 +1,12 @@
-import type { LayoutServerLoad } from "./$types";
 import { error } from "@sveltejs/kit";
 
+import type { LayoutServerLoad } from "./$types";
+
+import { getHolidays } from "$lib/server/services/holidayService";
 import {
     getDateTimetable,
     getWeekdayTimetable
 } from "$lib/server/services/timetableService";
-import { getHolidays } from "$lib/server/services/holidayService";
 import { parseDate } from "$lib/utils/time";
 
 export const load: LayoutServerLoad = async event => {

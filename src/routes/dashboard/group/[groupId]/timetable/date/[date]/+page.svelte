@@ -1,12 +1,15 @@
 <script lang="ts">
-    import type { PageData } from "./$types";
-    import { numberToTime } from "$lib/utils/time";
-    import { goto } from "$app/navigation";
-    import MainButton from "$lib/components/MainButton.svelte";
-    import Icon from "$lib/components/Icon.svelte";
-    import type { DateSubject, WeekdaySubject } from "$lib/types";
-    import { imageTypes } from "$lib/consts";
     import { fade } from "svelte/transition";
+
+    import type { PageData } from "./$types";
+
+    import { goto } from "$app/navigation";
+
+    import Icon from "$lib/components/Icon.svelte";
+    import MainButton from "$lib/components/MainButton.svelte";
+    import { imageTypes } from "$lib/consts";
+    import type { DateSubject, WeekdaySubject } from "$lib/types";
+    import { numberToTime } from "$lib/utils/time";
 
     export let data: PageData;
 

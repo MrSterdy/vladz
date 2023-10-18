@@ -1,9 +1,11 @@
-import { z } from "zod";
-import type { Actions, PageServerLoad } from "./$types";
-import { superValidate } from "sveltekit-superforms/server";
 import { fail } from "@sveltejs/kit";
-import { getUserById, updateUser } from "$lib/server/services/userService";
 import { redirect } from "sveltekit-flash-message/server";
+import { superValidate } from "sveltekit-superforms/server";
+import { z } from "zod";
+
+import type { Actions, PageServerLoad } from "./$types";
+
+import { getUserById, updateUser } from "$lib/server/services/userService";
 
 const updateAccountSchema = z.object({
     first_name: z

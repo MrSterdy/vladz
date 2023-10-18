@@ -1,9 +1,11 @@
-import type { Actions, PageServerLoad } from "./$types";
-import { z } from "zod";
-import { superValidate } from "sveltekit-superforms/server";
 import { fail } from "@sveltejs/kit";
-import { updateSubjects } from "$lib/server/services/subjectService";
 import { redirect } from "sveltekit-flash-message/server";
+import { superValidate } from "sveltekit-superforms/server";
+import { z } from "zod";
+
+import type { Actions, PageServerLoad } from "./$types";
+
+import { updateSubjects } from "$lib/server/services/subjectService";
 
 const updateSubjectSchema = z.object({
     subjects: z.array(

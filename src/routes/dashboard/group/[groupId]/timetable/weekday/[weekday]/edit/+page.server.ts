@@ -1,9 +1,11 @@
-import type { Actions, PageServerLoad } from "./$types";
 import { fail, redirect } from "@sveltejs/kit";
 import { superValidate } from "sveltekit-superforms/server";
-import { updateWeekdayTimetable } from "$lib/server/services/timetableService";
-import { getSubjects } from "$lib/server/services/subjectService";
+
+import type { Actions, PageServerLoad } from "./$types";
+
 import { weekdayTimetableSchema } from "$lib/server/schemas/timetable";
+import { getSubjects } from "$lib/server/services/subjectService";
+import { updateWeekdayTimetable } from "$lib/server/services/timetableService";
 
 export const load: PageServerLoad = async event => {
     const { timetable } = await event.parent();

@@ -1,12 +1,13 @@
+import { error, fail } from "@sveltejs/kit";
+import { redirect } from "sveltekit-flash-message/server";
+import { superValidate } from "sveltekit-superforms/server";
+
 import type { Actions, PageServerLoad } from "./$types";
 
-import { error, fail } from "@sveltejs/kit";
-import { superValidate } from "sveltekit-superforms/server";
-import { updateHolidays } from "$lib/server/services/holidayService";
-import { parseDate } from "$lib/utils/time";
-import type { Holiday } from "$lib/types";
 import holidaysSchema from "$lib/server/schemas/holidays";
-import { redirect } from "sveltekit-flash-message/server";
+import { updateHolidays } from "$lib/server/services/holidayService";
+import type { Holiday } from "$lib/types";
+import { parseDate } from "$lib/utils/time";
 
 export const load: PageServerLoad = async event => {
     const { holidays } = await event.parent();

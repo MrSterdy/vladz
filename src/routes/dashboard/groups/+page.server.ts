@@ -1,9 +1,11 @@
+import { fail, error } from "@sveltejs/kit";
+import { setFlash } from "sveltekit-flash-message/server";
+import { superValidate } from "sveltekit-superforms/server";
+
 import type { PageServerLoad, Actions } from "./$types";
 
-import { fail, error } from "@sveltejs/kit";
-import { superValidate } from "sveltekit-superforms/server";
-import { setFlash } from "sveltekit-flash-message/server";
-
+import inviteSchema from "$lib/server/schemas/invite";
+import { createBucket } from "$lib/server/services/fileService";
 import {
     createGroup,
     getGroupByInviteCode,
@@ -16,8 +18,6 @@ import {
     sendApplicationNotifications,
     sendApplicationStateNotification
 } from "$lib/server/services/notificationService";
-import { createBucket } from "$lib/server/services/fileService";
-import inviteSchema from "$lib/server/schemas/invite";
 import type { Group, List } from "$lib/types";
 
 export const load: PageServerLoad = async event => {

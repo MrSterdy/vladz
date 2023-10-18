@@ -1,6 +1,7 @@
-import prisma from "$lib/server/db/prisma";
-import bot from "$lib/server/bot";
 import type { Dayjs } from "dayjs";
+
+import bot from "$lib/server/bot";
+import prisma from "$lib/server/db/prisma";
 
 export async function sendPromotionNotification(
     userId: bigint,
