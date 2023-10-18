@@ -43,6 +43,20 @@ export const actions: Actions = {
                 throw error(400, { message: "Неправильный формат выходных" });
             }
 
+            const startDateISO = startDate.toISOString();
+            const endDateISO = ednDate.toISOString();
+
+            for (const oldHoliday of holidays) {
+                if (
+                    oldHoliday.startDate === startDateISO &&
+                    oldHoliday.endDate === endDateISO
+                ) {
+                    throw error(400, {
+                        message: "Выходные должны быть уникальными"
+                    });
+                }
+            }
+
             holidays.push({
                 startDate: startDate.toISOString(),
                 endDate: endDate.toISOString()
