@@ -66,3 +66,10 @@ ngrok http http://localhost:5173
 ```
 
 И привяжите новоиспеченную ссылку к кнопке вашего бота через `BotFather`
+
+## Скриншоты
+
+![Скриншот](https://user-images.githubusercontent.com/83646375/276526012-36f36878-8a81-44df-bc33-a34b72045b0e.png)
+![Скриншот](https://user-images.githubusercontent.com/83646375/276526023-f3b52339-206b-4d8b-9996-454131a5a439.png)
+![Скриншот](https://user-images.githubusercontent.com/83646375/276526027-bbbf3f0c-e820-4d38-b033-dc5497578391.png)
+![Скриншот](https://user-images.githubusercontent.com/83646375/276526030-1e73a08f-291e-42fd-8f3e-e8ab452933e2.png)
