@@ -26,7 +26,7 @@
             {#if subject.name}
                 {@const offset = offsets[i]}
                 <div
-                    class="collapse join-item border bg-base-100"
+                    class="collapse join-item border bg-base-100 rounded-box"
                     class:collapse-arrow={subject.classroom || subject.teacher}
                 >
                     <input type="radio" name="accordion-subjects" />

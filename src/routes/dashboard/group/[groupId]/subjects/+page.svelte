@@ -14,7 +14,7 @@
     <div class="join join-vertical word-break w-full">
         {#each data.subjects as subject}
             <div
-                class="collapse join-item border bg-base-100"
+                class="collapse join-item border bg-base-100 rounded-box"
                 class:collapse-arrow={subject.teacher || subject.classroom}
             >
                 <input type="radio" name="accordion-subjects" />

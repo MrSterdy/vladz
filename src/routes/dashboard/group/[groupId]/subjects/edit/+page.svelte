@@ -31,7 +31,7 @@
 <form method="post" class="flex flex-col gap-2" bind:this={formEl} use:enhance>
     <div class="join join-vertical word-break w-full">
         {#each $form.subjects as _, i}
-            <div class="collapse collapse-arrow join-item border bg-base-100">
+            <div class="collapse collapse-arrow join-item border bg-base-100 rounded-box">
                 <input type="radio" name="accordion-subjects" />
                 <div class="collapse-title text-xl font-medium">
                     {$form.subjects[i].name}
