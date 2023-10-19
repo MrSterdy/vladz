@@ -37,8 +37,8 @@
 
 <section class="flex flex-col gap-2">
     {#if data.dateTimetable?.note}
-        <div class="alert alert-info flex">
-            <Icon name="info" class="icon-medium" />
+        <div class="alert alert-info flex word-break">
+            <Icon name="info" class="icon-medium shrink-0" />
             {data.dateTimetable.note}
         </div>
     {/if}
