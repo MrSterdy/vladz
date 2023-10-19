@@ -22,7 +22,7 @@ export const load: LayoutServerLoad = async event => {
     ]);
 
     const dayOff =
-        holidays.some(holiday => {
+        (holidays.some(holiday => {
             const startDate = parseDate(holiday.startDate);
             const endDate = parseDate(holiday.endDate);
 
@@ -32,8 +32,9 @@ export const load: LayoutServerLoad = async event => {
                 date.isSame(endDate)
             );
         }) &&
-        !dateTimetable?.subjects.filter(s => s.name).length &&
-        !weekdayTimetable?.subjects.filter(s => s.name).length;
+            !dateTimetable?.subjects.filter(s => s.name).length) ||
+        (!dateTimetable?.subjects.filter(s => s.name).length &&
+            !weekdayTimetable?.subjects.filter(s => s.name).length);
 
     return { dayOff, dateTimetable, weekdayTimetable };
 };
