@@ -189,8 +189,6 @@ export const actions: Actions = {
                 }
 
                 if (removedSubjects.length) {
-                    console.log(removedSubjects);
-
                     const holidays = await getHolidays(group.id);
 
                     await Promise.all(
