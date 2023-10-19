@@ -3,6 +3,7 @@
 
     import type { PageData } from "./$types";
 
+    import BackButton from "$lib/components/BackButton.svelte";
     import MainButton from "$lib/components/MainButton.svelte";
     import { handleError, handleUpdated } from "$lib/utils/form";
 
@@ -15,6 +16,8 @@
 
     let formEl: HTMLFormElement;
 </script>
+
+<BackButton newPage="/" />
 
 <form method="post" bind:this={formEl} use:enhance>
     <h1 class="text-center">Регистрация</h1>

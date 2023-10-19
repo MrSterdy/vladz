@@ -7,6 +7,7 @@
     import MainButton from "$lib/components/MainButton.svelte";
     import Status from "$lib/components/Status.svelte";
     import { numberToTime } from "$lib/utils/time";
+    import BackButton from "$lib/components/BackButton.svelte";
 
     export let data: PageData;
 
@@ -19,6 +20,8 @@
         return result;
     });
 </script>
+
+<BackButton newPage="../../../" />
 
 {#if data.timetable.subjects.filter(s => s.name).length}
     <section class="join join-vertical word-break w-full">

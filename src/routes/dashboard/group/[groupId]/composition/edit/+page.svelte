@@ -10,6 +10,7 @@
     import Status from "$lib/components/Status.svelte";
     import { groupUserRoles } from "$lib/consts";
     import { capitalize } from "$lib/utils/string";
+    import BackButton from "$lib/components/BackButton.svelte";
 
     export let data: PageData;
 
@@ -32,6 +33,8 @@
         goto(`?${params.toString()}`);
     }
 </script>
+
+<BackButton newPage="../" />
 
 <div class="flex flex-col gap-4 h-full">
     <div class="tabs w-full flex gap-3 justify-around">

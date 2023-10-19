@@ -6,9 +6,12 @@
     import MainButton from "$lib/components/MainButton.svelte";
     import { userRoles } from "$lib/consts";
     import { capitalize } from "$lib/utils/string";
+    import BackButton from "$lib/components/BackButton.svelte";
 
     export let data: PageData;
 </script>
+
+<BackButton newPage="/" />
 
 <section>
     <h1 class="text-center">Аккаунт</h1>

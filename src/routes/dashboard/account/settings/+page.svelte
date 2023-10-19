@@ -5,6 +5,7 @@
 
     import MainButton from "$lib/components/MainButton.svelte";
     import { handleError, handleUpdated } from "$lib/utils/form";
+    import BackButton from "$lib/components/BackButton.svelte";
 
     export let data: PageData;
 
@@ -29,6 +30,8 @@
         $form[setting] = input.checked;
     }
 </script>
+
+<BackButton newPage="../" />
 
 <section>
     <h1 class="text-center">Настройки</h1>

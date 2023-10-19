@@ -11,6 +11,7 @@
     import { userRoles } from "$lib/consts";
     import { handleError, handleUpdated } from "$lib/utils/form";
     import { capitalize } from "$lib/utils/string";
+    import BackButton from "$lib/components/BackButton.svelte";
 
     export let data: PageData;
 
@@ -21,6 +22,8 @@
 
     let promoteForm: HTMLFormElement;
 </script>
+
+<BackButton newPage="../" />
 
 <h1 class="text-center">Редактирование руководства</h1>
 

@@ -7,9 +7,12 @@
     import Status from "$lib/components/Status.svelte";
     import { groupUserRoles } from "$lib/consts";
     import { capitalize } from "$lib/utils/string";
+    import BackButton from "$lib/components/BackButton.svelte";
 
     export let data: PageData;
 </script>
+
+<BackButton newPage="../" />
 
 {#if data.group.users.length}
     <table class="table">

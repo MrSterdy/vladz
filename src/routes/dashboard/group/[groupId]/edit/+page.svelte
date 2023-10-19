@@ -8,6 +8,7 @@
     import MainButton from "$lib/components/MainButton.svelte";
     import { handleError, handleUpdated } from "$lib/utils/form";
     import { showConfirm } from "$lib/utils/telegram";
+    import BackButton from "$lib/components/BackButton.svelte";
 
     export let data: PageData;
 
@@ -26,6 +27,8 @@
         );
     }
 </script>
+
+<BackButton newPage="../" />
 
 <section class="card card-compact card-body bg-base-100">
     <form method="post" action="?/update" bind:this={formEl} use:enhance>

@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/ru";
 
 import { hslToHex } from "$lib/utils/color";
+import { goto } from "$app/navigation";
 
 export const handleError: HandleClientError = ({ error }) => {
     console.error(error);
@@ -11,9 +12,6 @@ export const handleError: HandleClientError = ({ error }) => {
 };
 
 window.Telegram.WebApp.ready();
-
-window.Telegram.WebApp.BackButton.onClick(() => window.history.back());
-
 window.Telegram.WebApp.expand();
 
 const styles = getComputedStyle(document.body);

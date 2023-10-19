@@ -9,6 +9,7 @@
     import { handleError, handleUpdated } from "$lib/utils/form";
     import { numberToTime, timeToNumber } from "$lib/utils/time";
     import { showToastError } from "$lib/utils/toast";
+    import BackButton from "$lib/components/BackButton.svelte";
 
     export let data: PageData;
 
@@ -113,6 +114,8 @@
         $form.subjects[lowerSubjectIndex].position = subjectPosition;
     }
 </script>
+
+<BackButton newPage="../" />
 
 <form
     class="flex flex-col gap-2"

@@ -11,6 +11,7 @@
     import Status from "$lib/components/Status.svelte";
     import { pageSize } from "$lib/consts";
     import { handleError, handleUpdated } from "$lib/utils/form";
+    import BackButton from "$lib/components/BackButton.svelte";
 
     export let data: PageData;
 
@@ -63,6 +64,8 @@
         goto(`?${params.toString()}`);
     }
 </script>
+
+<BackButton newPage="/" />
 
 <div class="flex flex-col gap-4 h-full">
     <div class="tabs w-full flex gap-3 justify-around">

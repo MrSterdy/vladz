@@ -11,6 +11,7 @@
     import { imageTypes } from "$lib/consts";
     import type { DateSubject, WeekdaySubject } from "$lib/types";
     import { numberToTime } from "$lib/utils/time";
+    import BackButton from "$lib/components/BackButton.svelte";
 
     export let data: PageData;
 
@@ -34,6 +35,8 @@
 
     let selectedImage: string | null = null;
 </script>
+
+<BackButton newPage="../../../" />
 
 <section class="flex flex-col gap-2">
     {#if data.dateTimetable?.note}

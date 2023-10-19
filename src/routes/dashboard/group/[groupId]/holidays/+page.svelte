@@ -9,9 +9,12 @@
     import Status from "$lib/components/Status.svelte";
     import { capitalize } from "$lib/utils/string";
     import { humanize } from "$lib/utils/time";
+    import BackButton from "$lib/components/BackButton.svelte";
 
     export let data: PageData;
 </script>
+
+<BackButton newPage="../" />
 
 {#if data.holidays.length}
     <ul>

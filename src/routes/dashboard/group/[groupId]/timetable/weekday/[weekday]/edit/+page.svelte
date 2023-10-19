@@ -6,6 +6,7 @@
     import MainButton from "$lib/components/MainButton.svelte";
     import { numberToTime, timeToNumber } from "$lib/utils/time";
     import Icon from "$lib/components/Icon.svelte";
+    import BackButton from "$lib/components/BackButton.svelte";
 
     export let data: PageData;
 
@@ -71,6 +72,8 @@
         $form.subjects[lowerSubjectIndex].position = subjectPosition;
     }
 </script>
+
+<BackButton newPage="../" />
 
 <form class="flex flex-col gap-2" method="post" bind:this={formEl} use:enhance>
     <datalist id="subjects">

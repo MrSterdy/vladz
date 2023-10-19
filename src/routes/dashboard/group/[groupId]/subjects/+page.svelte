@@ -6,9 +6,12 @@
     import Icon from "$lib/components/Icon.svelte";
     import MainButton from "$lib/components/MainButton.svelte";
     import Status from "$lib/components/Status.svelte";
+    import BackButton from "$lib/components/BackButton.svelte";
 
     export let data: PageData;
 </script>
+
+<BackButton newPage="../" />
 
 {#if data.subjects.length}
     <div class="join join-vertical word-break w-full">

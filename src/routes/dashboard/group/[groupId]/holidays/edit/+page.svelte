@@ -6,6 +6,7 @@
     import MainButton from "$lib/components/MainButton.svelte";
     import { handleError, handleUpdated } from "$lib/utils/form";
     import { formatISOString } from "$lib/utils/time";
+    import BackButton from "$lib/components/BackButton.svelte";
 
     export let data: PageData;
 
@@ -30,6 +31,8 @@
         $form.holidays = $form.holidays.filter((_, i) => i !== index);
     }
 </script>
+
+<BackButton newPage="../" />
 
 <form method="post" bind:this={formEl} use:enhance>
     <ul class="m-0 p-0 list-none">

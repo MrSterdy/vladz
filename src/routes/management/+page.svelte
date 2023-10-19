@@ -7,9 +7,12 @@
     import Status from "$lib/components/Status.svelte";
     import { userRoles } from "$lib/consts";
     import { capitalize } from "$lib/utils/string";
+    import BackButton from "$lib/components/BackButton.svelte";
 
     export let data: PageData;
 </script>
+
+<BackButton newPage="/" />
 
 <h1 class="text-center">Руководство</h1>
 

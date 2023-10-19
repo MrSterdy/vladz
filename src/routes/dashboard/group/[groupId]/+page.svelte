@@ -10,6 +10,7 @@
     import { capitalize } from "$lib/utils/string";
     import { showConfirm } from "$lib/utils/telegram";
     import { formatISOString } from "$lib/utils/time";
+    import BackButton from "$lib/components/BackButton.svelte";
 
     export let data: PageData;
 
@@ -38,6 +39,8 @@
         );
     }
 </script>
+
+<BackButton newPage="/dashboard/groups" />
 
 <section class="flex flex-col justify-between h-full gap-5">
     <div class="card card-compact card-body bg-base-100 grow-0">

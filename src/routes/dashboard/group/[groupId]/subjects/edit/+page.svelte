@@ -5,6 +5,7 @@
 
     import MainButton from "$lib/components/MainButton.svelte";
     import { handleError, handleUpdated } from "$lib/utils/form";
+    import BackButton from "$lib/components/BackButton.svelte";
 
     export let data: PageData;
 
@@ -27,6 +28,8 @@
         $form.subjects = $form.subjects.filter((_, i) => i !== index);
     }
 </script>
+
+<BackButton newPage="../" />
 
 <form method="post" class="flex flex-col gap-2" bind:this={formEl} use:enhance>
     <div class="join join-vertical word-break w-full">
