@@ -162,7 +162,7 @@
     {#if $form.subjects.length}
         {@const positions = $form.subjects.map(s => s.position).sort()}
         {@const [minPos, maxPos] = [positions[0], positions[positions.length - 1]]}
-        <div class="join join-vertical w-full">
+        <div class="join join-vertical word-break w-full">
             {#each $form.subjects.sort((a, b) => a.position - b.position) as subject, i}
                 <div
                     class="collapse collapse-arrow join-item border bg-base-100 rounded-box"

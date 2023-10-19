@@ -29,7 +29,7 @@
 </script>
 
 <form method="post" class="flex flex-col gap-2" bind:this={formEl} use:enhance>
-    <div class="join join-vertical w-full">
+    <div class="join join-vertical word-break w-full">
         {#each $form.subjects as _, i}
             <div class="collapse collapse-arrow join-item border bg-base-100">
                 <input type="radio" name="accordion-subjects" />

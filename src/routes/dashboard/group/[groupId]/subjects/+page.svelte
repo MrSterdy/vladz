@@ -11,7 +11,7 @@
 </script>
 
 {#if data.subjects.length}
-    <div class="join join-vertical w-full">
+    <div class="join join-vertical word-break w-full">
         {#each data.subjects as subject}
             <div
                 class="collapse join-item border bg-base-100"
@@ -27,7 +27,7 @@
                             <span class="flex gap-2 items-center">
                                 <Icon
                                     name="hat"
-                                    class="icon-medium fill-base-content"
+                                    class="icon-medium fill-base-content shrink-0"
                                 />
                                 {subject.teacher}
                             </span>
@@ -36,7 +36,7 @@
                             <span class="flex gap-2 items-center">
                                 <Icon
                                     name="marker"
-                                    class="icon-medium fill-base-content"
+                                    class="icon-medium fill-base-content shrink-0"
                                 />
                                 {subject.classroom}
                             </span>

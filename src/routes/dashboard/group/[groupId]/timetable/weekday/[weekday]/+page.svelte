@@ -21,7 +21,7 @@
 </script>
 
 {#if data.timetable.subjects.filter(s => s.name).length}
-    <section class="join join-vertical w-full">
+    <section class="join join-vertical word-break w-full">
         {#each data.timetable.subjects as subject, i}
             {#if subject.name}
                 {@const offset = offsets[i]}
@@ -38,7 +38,7 @@
                         <p class="m-0 flex gap-2 items-center">
                             <Icon
                                 name="clock"
-                                class="icon-small fill-base-content"
+                                class="icon-small fill-base-content shrink-0"
                             />
                             {numberToTime(offset[0])} - {numberToTime(
                                 offset[1]
@@ -51,7 +51,7 @@
                                 <div class="flex gap-2">
                                     <Icon
                                         name="hat"
-                                        class="icon-medium fill-base-content"
+                                        class="icon-medium fill-base-content shrink-0"
                                     />
                                     {subject.teacher}
                                 </div>
@@ -60,7 +60,7 @@
                                 <div class="flex gap-2">
                                     <Icon
                                         name="marker"
-                                        class="icon-medium fill-base-content"
+                                        class="icon-medium fill-base-content shrink-0"
                                     />
                                     {subject.classroom}
                                 </div>

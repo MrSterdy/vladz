@@ -46,7 +46,7 @@
     {#if data.dayOff}
         <Status icon="beach" message="Отдыхай" />
     {:else}
-        <div class="join join-vertical w-full">
+        <div class="join join-vertical word-break w-full">
             {#each subjects as subject, i}
                 {#if subject.name}
                     {@const offset = offsets[i]}
@@ -69,7 +69,7 @@
                             <p class="m-0 flex gap-2 items-center">
                                 <Icon
                                     name="clock"
-                                    class="icon-small fill-base-content"
+                                    class="icon-small fill-base-content shrink-0"
                                 />
                                 {numberToTime(offset[0])} - {numberToTime(
                                     offset[1]
@@ -82,7 +82,7 @@
                                     <div class="flex gap-2">
                                         <Icon
                                             name="hat"
-                                            class="icon-medium fill-base-content"
+                                            class="icon-medium fill-base-content shrink-0"
                                         />
                                         {subject.teacher}
                                     </div>
@@ -91,7 +91,7 @@
                                     <div class="flex gap-2">
                                         <Icon
                                             name="marker"
-                                            class="icon-medium fill-base-content"
+                                            class="icon-medium fill-base-content shrink-0"
                                         />
                                         {subject.classroom}
                                     </div>
@@ -101,7 +101,7 @@
                                         <div class="flex gap-2">
                                             <Icon
                                                 name="briefcase"
-                                                class="icon-medium fill-base-content rounded-none"
+                                                class="icon-medium fill-base-content rounded-none shrink-0"
                                             />
 
                                             <p class="m-0">
