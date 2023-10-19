@@ -46,7 +46,7 @@
 </div>
 
 <main
-    class="flex flex-col min-h-full grow w-full gap-4 {onMainPage
+    class="flex flex-col min-h-full grow w-full {onMainPage
         ? 'bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] to-base-100 from-primary'
         : ''} "
 >
