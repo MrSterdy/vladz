@@ -50,22 +50,24 @@
 
 `PUBLIC_MAX_FILE_SIZE` - максимальный размер файла _(в байтах)_
 
+`ORIGIN` - ссылка будущего сайта
+
 ### Docker
 
-Постройте и запустите проект
+Сделайте порт `5173` публичным (для примера взят [ngrok](https://ngrok.com)
 
 ```bash
-docker compose build --build-arg TELEGRAM_BOT_TOKEN="<TOKEN>" --build-arg ADMIN_ID="<ID>"
+ngrok http 5173
+```
+
+Постройте и запустите проект, указав на получившуюся https ссылку ngrok
+
+```bash
+ORIGIN=<NGROK_HTTPS_URL> docker compose build --build-arg TELEGRAM_BOT_TOKEN=<TOKEN> --build-arg ADMIN_ID=<ID>
 docker compose up
 ```
 
-Затем сделайте `http://localhost:5173` публичным (для примера взят [ngrok](https://ngrok.com))
-
-```bash
-ngrok http http://localhost:5173
-```
-
-И привяжите новоиспеченную ссылку к кнопке вашего бота через `BotFather`
+И привяжите ссылку к кнопке вашего бота через `BotFather`
 
 ## Скриншоты
 
