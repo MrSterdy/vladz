@@ -3,8 +3,6 @@ import jwt from "jsonwebtoken";
 
 import { TELEGRAM_BOT_TOKEN } from "$env/static/private";
 
-import type { TelegramUser } from "$lib/types";
-
 const secret = crypto
     .createHmac("sha256", "WebAppData")
     .update(TELEGRAM_BOT_TOKEN)
@@ -36,30 +34,22 @@ export function decodeInitData(initData: string) {
 
     const userIndex = arr.findIndex(str => str.startsWith("user="));
 
-    return JSON.parse(
-        arr[userIndex].split("=")[1]
-    ) as TelegramWebApp["initDataUnsafe"]["user"];
+    return (JSON.parse(arr[userIndex].split("=")[1]) as { id: bigint }).id;
 }
 
-export function generateJwt(user: TelegramUser) {
-    const userInfo = {
-        userInfo: JSON.stringify(user, (_, v) =>
-            typeof v === "bigint" ? v.toString() : v
-        )
-    };
-
-    return jwt.sign(userInfo, TELEGRAM_BOT_TOKEN, { expiresIn: "1d" });
+export function generateJwt(telegramId: bigint) {
+    return jwt.sign({ telegramId: telegramId.toString() }, TELEGRAM_BOT_TOKEN, {
+        expiresIn: "1d"
+    });
 }
 
 export function parseJwt(token: string) {
     try {
         const payload = jwt.verify(token, TELEGRAM_BOT_TOKEN) as {
-            userInfo: string;
+            telegramId: string;
         };
-        const user = JSON.parse(payload.userInfo) as TelegramUser;
-        user.id = BigInt(user.id);
 
-        return user;
+        return BigInt(payload.telegramId);
     } catch (e) {
         return null;
     }

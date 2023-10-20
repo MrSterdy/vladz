@@ -65,15 +65,6 @@ export type Holiday = {
     endDate: string;
 };
 
-export type TelegramUser = {
-    id: bigint;
-
-    first_name: string;
-    last_name: string;
-
-    username: string;
-};
-
 export type Group = {
     id: number;
 

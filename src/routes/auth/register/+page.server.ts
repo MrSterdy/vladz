@@ -30,7 +30,7 @@ export const actions: Actions = {
         }
 
         await createUser({
-            id: event.locals.telegramUser!.id,
+            id: event.locals.telegramId!,
             firstName: form.data.first_name,
             lastName: form.data.last_name,
             role: "USER",

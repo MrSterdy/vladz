@@ -7,18 +7,12 @@ import {
     decodeInitData,
     generateJwt
 } from "$lib/server/services/telegramService";
-import type { TelegramUser } from "$lib/types";
 
 export async function POST(event: RequestEvent) {
-    let telegramInfo: TelegramUser | null = null;
+    let telegramId: bigint | null = null;
 
     if (import.meta.env.DEV) {
-        telegramInfo = {
-            id: BigInt(ADMIN_ID),
-            first_name: "Влад",
-            last_name: "Король",
-            username: "vlad"
-        };
+        telegramId = BigInt(ADMIN_ID);
     } else {
         const rawInitData = (await event.request.json()) as {
             initData?: string;
@@ -27,14 +21,14 @@ export async function POST(event: RequestEvent) {
             throw error(400, { message: "Invalid initData" });
         }
 
-        telegramInfo = decodeInitData(rawInitData.initData);
+        telegramId = decodeInitData(rawInitData.initData);
     }
 
-    if (!telegramInfo) {
+    if (!telegramId) {
         throw error(400, { message: "Invalid initData" });
     }
 
-    event.cookies.set(AUTH_TELEGRAM_COOKIE_NAME, generateJwt(telegramInfo), {
+    event.cookies.set(AUTH_TELEGRAM_COOKIE_NAME, generateJwt(telegramId), {
         httpOnly: true,
         secure: true,
         sameSite: "none",

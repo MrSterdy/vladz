@@ -22,7 +22,7 @@ import { getGroupById } from "$lib/server/services/groupService";
 import * as telegramService from "$lib/server/services/telegramService";
 import * as userService from "$lib/server/services/userService";
 import { createUser } from "$lib/server/services/userService";
-import type { TelegramUser, User } from "$lib/types";
+import type { User } from "$lib/types";
 
 export const authenticationHandler: Handle = async ({ event, resolve }) => {
     if (
@@ -33,13 +33,13 @@ export const authenticationHandler: Handle = async ({ event, resolve }) => {
     }
 
     let user: User | null = null;
-    let telegramUser: TelegramUser | null = null;
+    let telegramId: bigint | null = null;
 
     const telegramCookie = event.cookies.get(AUTH_TELEGRAM_COOKIE_NAME);
 
     if (
         !telegramCookie ||
-        !(telegramUser = telegramService.parseJwt(telegramCookie))
+        !(telegramId = telegramService.parseJwt(telegramCookie))
     ) {
         throw redirect(
             303,
@@ -49,7 +49,7 @@ export const authenticationHandler: Handle = async ({ event, resolve }) => {
         );
     }
 
-    event.locals.telegramUser = telegramUser;
+    event.locals.telegramId = telegramId;
 
     let tokens = {
         accessToken: event.cookies.get(AUTH_ACCESS_COOKIE_NAME),
@@ -59,16 +59,16 @@ export const authenticationHandler: Handle = async ({ event, resolve }) => {
     let updateTokens = false;
 
     if (!tokens.accessToken && !tokens.refreshToken) {
-        user = await userService.getUserById(telegramUser.id);
+        user = await userService.getUserById(telegramId);
         if (user) {
             updateTokens = true;
         }
     }
 
     if (!user && !updateTokens) {
-        tokens.secret = await userService.getUserSecretById(telegramUser.id);
+        tokens.secret = await userService.getUserSecretById(telegramId);
         if (!tokens.secret) {
-            user = await userService.getUserById(telegramUser.id);
+            user = await userService.getUserById(telegramId);
             if (user) {
                 updateTokens = true;
             }
@@ -86,7 +86,7 @@ export const authenticationHandler: Handle = async ({ event, resolve }) => {
                     tokens.secret!
                 ))
             ) {
-                user = await userService.getUserById(telegramUser.id);
+                user = await userService.getUserById(telegramId);
             }
 
             if (user) {
@@ -96,7 +96,7 @@ export const authenticationHandler: Handle = async ({ event, resolve }) => {
     } else if (!updateTokens) {
         user =
             userService.parseJwt(tokens.refreshToken!, tokens.secret!) ??
-            (await userService.getUserById(telegramUser.id));
+            (await userService.getUserById(telegramId));
 
         if (user) {
             updateTokens = true;
@@ -120,7 +120,7 @@ export const authenticationHandler: Handle = async ({ event, resolve }) => {
             path: "/",
             domain: event.url.hostname
         });
-        await userService.setUserSecretById(telegramUser.id, tokens.secret!);
+        await userService.setUserSecretById(telegramId, tokens.secret!);
     }
 
     if (!user) {

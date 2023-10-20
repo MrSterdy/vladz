@@ -1,4 +1,4 @@
-import type { Group, GroupUser, TelegramUser, User } from "$lib/types";
+import type { Group, GroupUser, User } from "$lib/types";
 
 declare global {
     namespace App {
@@ -7,7 +7,7 @@ declare global {
         }
         interface Locals {
             user?: User;
-            telegramUser?: TelegramUser;
+            telegramId?: bigint;
             group?: Group;
             groupUser?: GroupUser;
         }
