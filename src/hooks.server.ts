@@ -21,7 +21,11 @@ import bot from "$lib/server/bot";
 import { getGroupById } from "$lib/server/services/groupService";
 import * as telegramService from "$lib/server/services/telegramService";
 import * as userService from "$lib/server/services/userService";
-import { createUser } from "$lib/server/services/userService";
+import {
+    createUser,
+    getManagement,
+    updateUser
+} from "$lib/server/services/userService";
 import type { User } from "$lib/types";
 
 export const authenticationHandler: Handle = async ({ event, resolve }) => {
@@ -186,18 +190,37 @@ export const handleError: HandleServerError = ({ error }) => {
     return { message: "Произошла непредвиденная ошибка" };
 };
 
-const userPromise = createUser({
-    id: BigInt(ADMIN_ID),
-    firstName: "Влад",
-    lastName: "Король",
-    role: "ADMIN",
-    settings: defaultSettings
-});
+const managementPromise = (async function () {
+    const adminId = BigInt(ADMIN_ID);
+    const management = await getManagement();
+
+    const membersToDemote: Promise<void>[] = [];
+
+    for (const user of management) {
+        if (user.role === "ADMIN") {
+            if (user.id === adminId) {
+                return;
+            }
+
+            user.role = "HELPER";
+
+            membersToDemote.push(updateUser(user));
+        }
+    }
+
+    await Promise.all([...membersToDemote, createUser({
+        id: adminId,
+        firstName: "Влад",
+        lastName: "Король",
+        role: "ADMIN",
+        settings: defaultSettings
+    })]);
+})();
 
 const botPromise = bot.launch();
 
 if (import.meta.env.DEV) {
-    userPromise.catch(console.error);
+    managementPromise.catch(console.error);
     botPromise.catch(console.error);
 }
 
