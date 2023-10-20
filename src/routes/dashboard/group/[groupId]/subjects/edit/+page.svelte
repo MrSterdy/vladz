@@ -82,7 +82,7 @@
                         <input
                             id="classroom-{i}"
                             type="text"
-                            placeholder="Класс"
+                            placeholder="Кабинет"
                             aria-invalid={$errors.subjects?.[i].classroom
                                 ? true
                                 : undefined}
