@@ -7,11 +7,15 @@
     import Icon from "$lib/components/Icon.svelte";
     import MainButton from "$lib/components/MainButton.svelte";
     import { numberToTime, timeToNumber } from "$lib/utils/time";
+    import { handleError, handleUpdated } from "$lib/utils/form";
 
     export let data: PageData;
 
     const { form, enhance, constraints } = superForm(data.form, {
-        dataType: "json"
+        dataType: "json",
+        onUpdated: handleUpdated,
+        onError: handleError,
+        taintedMessage: "Вы действительно хотите покинуть страницу? Изменения, cделанные вами, не сохранятся"
     });
 
     let formEl: HTMLFormElement;

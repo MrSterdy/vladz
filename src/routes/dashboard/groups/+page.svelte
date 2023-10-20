@@ -17,7 +17,8 @@
 
     const { form, errors, constraints, enhance } = superForm(data.inviteForm, {
         onUpdated: handleUpdated,
-        onError: handleError
+        onError: handleError,
+        taintedMessage: null
     });
 
     let inviteForm: HTMLFormElement;

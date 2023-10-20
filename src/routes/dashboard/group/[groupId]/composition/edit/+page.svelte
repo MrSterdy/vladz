@@ -11,10 +11,13 @@
     import Status from "$lib/components/Status.svelte";
     import { groupUserRoles } from "$lib/consts";
     import { capitalize } from "$lib/utils/string";
+    import { handleError } from "$lib/utils/form";
 
     export let data: PageData;
 
-    const { enhance } = superForm(data.form);
+    const { enhance } = superForm(data.form, {
+        onError: handleError
+    });
 
     $: currentType = $page.url.searchParams.get("type");
     $: if (currentType !== "applications" && currentType !== "members") {
