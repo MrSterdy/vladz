@@ -5,7 +5,9 @@ import { z } from "zod";
 
 import type { Actions, PageServerLoad } from "./$types";
 
+import { notifications } from "$lib/consts";
 import { getUserById, updateUser } from "$lib/server/services/userService";
+import type { UserSettings } from "$lib/types";
 
 const updateAccountSchema = z.object({
     first_name: z
@@ -20,10 +22,15 @@ const updateAccountSchema = z.object({
             invalid_type_error: "Фамилия должно быть строкой"
         })
         .max(64, "Фамилия не должна превышать 64 символов"),
-    timetable_notifications: z.boolean({
-        invalid_type_error: "Настройка должная быть булевом",
-        required_error: "Настройка обязательна"
-    })
+    notifications: z
+        .array(z.enum(notifications), {
+            invalid_type_error: "Уведомления должны быть массивом",
+            required_error: "Уведомления должны быть массивом"
+        })
+        .refine(
+            items => new Set(items).size === items.length,
+            "Уведомления должны быть уникальными"
+        )
 });
 
 export const load: PageServerLoad = async event => {
@@ -32,7 +39,14 @@ export const load: PageServerLoad = async event => {
 
     form.data.first_name = user.firstName;
     form.data.last_name = user.lastName;
-    form.data.timetable_notifications = user.settings!.notifications.timetable;
+    form.data.notifications = user.settings
+        ? (Object.keys(user.settings.notifications).filter(
+              key =>
+                  user.settings!.notifications[
+                      key as keyof UserSettings["notifications"]
+                  ]
+          ) as (keyof UserSettings["notifications"])[])
+        : [];
 
     return { form };
 };
@@ -47,8 +61,19 @@ export const actions: Actions = {
         const user = await getUserById(event.locals.user!.id);
         user!.firstName = form.data.first_name;
         user!.lastName = form.data.last_name;
-        user!.settings!.notifications.timetable =
-            form.data.timetable_notifications;
+        if (!user!.settings) {
+            user!.settings = { notifications: {} };
+        }
+
+        for (const notification of form.data.notifications) {
+            user!.settings.notifications[notification] = true;
+        }
+
+        for (const notification of notifications) {
+            if (!form.data.notifications.includes(notification)) {
+                user!.settings.notifications[notification] = false;
+            }
+        }
 
         await updateUser(user!);
 

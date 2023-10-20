@@ -34,3 +34,5 @@ export const pageSize = 10;
 
 export const maxFileSize = parseInt(PUBLIC_MAX_FILE_SIZE);
 export const maxFiles = parseInt(PUBLIC_MAX_FILES);
+
+export const notifications = ["timetable", "application_new"] as const;

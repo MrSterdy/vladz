@@ -10,8 +10,8 @@
     import Icon from "$lib/components/Icon.svelte";
     import Status from "$lib/components/Status.svelte";
     import { groupUserRoles } from "$lib/consts";
-    import { capitalize } from "$lib/utils/string";
     import { handleError } from "$lib/utils/form";
+    import { capitalize } from "$lib/utils/string";
 
     export let data: PageData;
 

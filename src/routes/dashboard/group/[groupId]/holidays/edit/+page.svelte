@@ -16,7 +16,8 @@
         dataType: "json",
         onUpdated: handleUpdated,
         onError: handleError,
-        taintedMessage: "Вы действительно хотите покинуть страницу? Изменения, cделанные вами, не сохранятся"
+        taintedMessage:
+            "Вы действительно хотите покинуть страницу? Изменения, cделанные вами, не сохранятся"
     });
 
     let formEl: HTMLFormElement;

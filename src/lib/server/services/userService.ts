@@ -15,9 +15,7 @@ export async function getUserById(id: bigint): Promise<User | null> {
               firstName: result.firstName,
               lastName: result.lastName,
               role: result.role,
-              settings: (result.settings as UserSettings | null) ?? {
-                  notifications: { timetable: false }
-              }
+              settings: result.settings as UserSettings | null
           }
         : null;
 }
@@ -43,7 +41,7 @@ export async function createUser(user: User) {
             firstName: user.firstName,
             lastName: user.lastName,
             role: user.role,
-            settings: user.settings!
+            settings: user.settings ?? undefined
         },
         update: { role: user.role },
         where: { id: user.id }
@@ -61,7 +59,7 @@ export async function updateUser(user: Partial<User> & Pick<User, "id">) {
             firstName: user.firstName,
             lastName: user.lastName,
             role: user.role,
-            settings: user.settings!
+            settings: user.settings ?? undefined
         }
     });
 

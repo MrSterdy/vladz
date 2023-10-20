@@ -22,10 +22,7 @@ export async function sendApplicationStateNotification(
     groupName: string
 ) {
     let notification = `⚡️ | Ваша заявка в группу "${groupName}" была `;
-    notification +=
-        state === "accepted"
-            ? "принята"
-            : "отклонена";
+    notification += state === "accepted" ? "принята" : "отклонена";
 
     await bot.telegram.sendMessage(userId.toString(), notification);
 }
@@ -40,20 +37,28 @@ export async function sendApplicationNotifications(
     groupId: number,
     groupName: string
 ) {
-    const users = await prisma.groupUser.findMany({
+    const users = await prisma.user.findMany({
         select: {
-            userId: true
+            id: true
         },
         where: {
-            groupId,
-            role: "CURATOR"
+            groups: {
+                some: {
+                    groupId,
+                    role: "CURATOR"
+                }
+            },
+            settings: {
+                path: ["notifications", "application_new"],
+                equals: true
+            }
         }
     });
 
     await Promise.allSettled(
         users.map(u =>
             bot.telegram.sendMessage(
-                u.userId.toString(),
+                u.id.toString(),
                 `⚡️ | Новая заявка в группе "${groupName}"`
             )
         )

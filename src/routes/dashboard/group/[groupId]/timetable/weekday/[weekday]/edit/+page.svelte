@@ -6,8 +6,8 @@
     import BackButton from "$lib/components/BackButton.svelte";
     import Icon from "$lib/components/Icon.svelte";
     import MainButton from "$lib/components/MainButton.svelte";
-    import { numberToTime, timeToNumber } from "$lib/utils/time";
     import { handleError, handleUpdated } from "$lib/utils/form";
+    import { numberToTime, timeToNumber } from "$lib/utils/time";
 
     export let data: PageData;
 
@@ -15,7 +15,8 @@
         dataType: "json",
         onUpdated: handleUpdated,
         onError: handleError,
-        taintedMessage: "Вы действительно хотите покинуть страницу? Изменения, cделанные вами, не сохранятся"
+        taintedMessage:
+            "Вы действительно хотите покинуть страницу? Изменения, cделанные вами, не сохранятся"
     });
 
     let formEl: HTMLFormElement;

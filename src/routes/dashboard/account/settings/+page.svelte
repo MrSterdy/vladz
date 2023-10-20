@@ -12,24 +12,11 @@
     const { form, enhance, constraints, errors } = superForm(data.form, {
         onUpdated: handleUpdated,
         onError: handleError,
-        taintedMessage: "Вы действительно хотите покинуть страницу? Изменения, cделанные вами, не сохранятся"
+        taintedMessage:
+            "Вы действительно хотите покинуть страницу? Изменения, cделанные вами, не сохранятся"
     });
 
     let formEl: HTMLFormElement;
-
-    function updateCheckboxSetting(
-        setting: {
-            [K in keyof typeof $form]-?: (typeof $form)[K] extends boolean
-                ? K
-                : never;
-        }[keyof typeof $form]
-    ) {
-        const input = document.querySelector(
-            `input[name=${setting}]`
-        ) as HTMLInputElement;
-
-        $form[setting] = input.checked;
-    }
 </script>
 
 <BackButton newPage="../" />
@@ -71,13 +58,24 @@
 
         <div class="w-full">
             <label class="label gap-3 justify-between w-full">
-                <span class="label-text">Уведомлять о расписаниях?</span>
+                <span class="label-text"
+                    >Уведомлять об изменениях расписаний?</span
+                >
                 <input
                     type="checkbox"
-                    checked={$form.timetable_notifications}
-                    on:change={() =>
-                        updateCheckboxSetting("timetable_notifications")}
-                    name="timetable_notifications"
+                    bind:group={$form.notifications}
+                    value="timetable"
+                    name="notifications"
+                    class="checkbox checkbox-primary"
+                />
+            </label>
+            <label class="label gap-3 justify-between w-full">
+                <span class="label-text">Уведомлять о новых заявках?</span>
+                <input
+                    type="checkbox"
+                    bind:group={$form.notifications}
+                    value="application_new"
+                    name="notifications"
                     class="checkbox checkbox-primary"
                 />
             </label>

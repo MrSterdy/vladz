@@ -208,13 +208,16 @@ const managementPromise = (async function () {
         }
     }
 
-    await Promise.all([...membersToDemote, createUser({
-        id: adminId,
-        firstName: "Влад",
-        lastName: "Король",
-        role: "ADMIN",
-        settings: defaultSettings
-    })]);
+    await Promise.all([
+        ...membersToDemote,
+        createUser({
+            id: adminId,
+            firstName: "Влад",
+            lastName: "Король",
+            role: "ADMIN",
+            settings: defaultSettings
+        })
+    ]);
 })();
 
 const botPromise = bot.launch();

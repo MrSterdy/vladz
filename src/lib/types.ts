@@ -14,7 +14,8 @@ export type User = BaseUser & {
 
 export type UserSettings = {
     notifications: {
-        timetable: boolean;
+        timetable?: boolean;
+        application_new?: boolean;
     };
 };
 

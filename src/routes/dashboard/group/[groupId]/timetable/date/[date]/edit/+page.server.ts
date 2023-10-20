@@ -179,11 +179,16 @@ export const actions: Actions = {
                 const newFiles = newTimetable.subjects
                     .filter(s => s.homework.files.length)
                     .reduce(
-                        (acc, s) => [...acc, ...s.homework.files.map(f => f.url)],
+                        (acc, s) => [
+                            ...acc,
+                            ...s.homework.files.map(f => f.url)
+                        ],
                         [] as string[]
                     );
 
-                const removedFiles = oldFiles.filter(f => !newFiles.includes(f));
+                const removedFiles = oldFiles.filter(
+                    f => !newFiles.includes(f)
+                );
 
                 await deleteFiles(removedFiles);
             }
