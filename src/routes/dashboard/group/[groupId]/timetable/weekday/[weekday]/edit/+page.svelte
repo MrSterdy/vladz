@@ -3,10 +3,10 @@
 
     import type { PageData } from "./$types";
 
+    import BackButton from "$lib/components/BackButton.svelte";
+    import Icon from "$lib/components/Icon.svelte";
     import MainButton from "$lib/components/MainButton.svelte";
     import { numberToTime, timeToNumber } from "$lib/utils/time";
-    import Icon from "$lib/components/Icon.svelte";
-    import BackButton from "$lib/components/BackButton.svelte";
 
     export let data: PageData;
 
@@ -60,14 +60,18 @@
 
     function moveUp(subjectIndex: number) {
         const subjectPosition = $form.subjects[subjectIndex].position;
-        const upperSubjectIndex = $form.subjects.findIndex(s => s.position === (subjectPosition + 1));
+        const upperSubjectIndex = $form.subjects.findIndex(
+            s => s.position === subjectPosition + 1
+        );
         $form.subjects[subjectIndex].position = subjectPosition + 1;
         $form.subjects[upperSubjectIndex].position = subjectPosition;
     }
 
     function moveDown(subjectIndex: number) {
         const subjectPosition = $form.subjects[subjectIndex].position;
-        const lowerSubjectIndex = $form.subjects.findIndex(s => s.position === (subjectPosition - 1));
+        const lowerSubjectIndex = $form.subjects.findIndex(
+            s => s.position === subjectPosition - 1
+        );
         $form.subjects[subjectIndex].position = subjectPosition - 1;
         $form.subjects[lowerSubjectIndex].position = subjectPosition;
     }
@@ -127,7 +131,10 @@
 
     {#if $form.subjects.length}
         {@const positions = $form.subjects.map(s => s.position).sort()}
-        {@const [minPos, maxPos] = [positions[0], positions[positions.length - 1]]}
+        {@const [minPos, maxPos] = [
+            positions[0],
+            positions[positions.length - 1]
+        ]}
         <div class="join join-vertical word-break w-full">
             {#each $form.subjects.sort((a, b) => a.position - b.position) as subject, i}
                 <div
@@ -145,13 +152,27 @@
                         {#if (subject.position >= minPos && subject.position < maxPos) || (subject.position > minPos && subject.position <= maxPos)}
                             <div class="flex items-center">
                                 {#if subject.position >= minPos && subject.position < maxPos}
-                                    <button class="z-10" type="button" on:click={() => moveUp(i)}>
-                                        <Icon name="demote" class="icon-medium fill-base-content" />
+                                    <button
+                                        class="z-10"
+                                        type="button"
+                                        on:click={() => moveUp(i)}
+                                    >
+                                        <Icon
+                                            name="demote"
+                                            class="icon-medium fill-base-content"
+                                        />
                                     </button>
                                 {/if}
                                 {#if subject.position > minPos && subject.position <= maxPos}
-                                    <button class="z-10" type="button" on:click={() => moveDown(i)}>
-                                        <Icon name="promote" class="icon-medium fill-base-content" />
+                                    <button
+                                        class="z-10"
+                                        type="button"
+                                        on:click={() => moveDown(i)}
+                                    >
+                                        <Icon
+                                            name="promote"
+                                            class="icon-medium fill-base-content"
+                                        />
                                     </button>
                                 {/if}
                             </div>

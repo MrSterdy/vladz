@@ -3,11 +3,11 @@
 
     import { goto } from "$app/navigation";
 
+    import BackButton from "$lib/components/BackButton.svelte";
     import Icon from "$lib/components/Icon.svelte";
     import MainButton from "$lib/components/MainButton.svelte";
     import Status from "$lib/components/Status.svelte";
     import { numberToTime } from "$lib/utils/time";
-    import BackButton from "$lib/components/BackButton.svelte";
 
     export let data: PageData;
 
@@ -51,21 +51,31 @@
                     {#if subject.classroom || subject.teacher}
                         <div class="collapse-content">
                             {#if subject.teacher}
-                                <div class="flex gap-2">
+                                <div class="flex gap-2 items-center">
                                     <Icon
                                         name="hat"
-                                        class="icon-medium fill-base-content shrink-0"
+                                        class="icon-medium fill-base-content shrink-0 self-start"
                                     />
-                                    {subject.teacher}
+                                    <div class="flex flex-col">
+                                        <span class="text-sm font-medium"
+                                            >Преподаватель</span
+                                        >
+                                        {subject.teacher}
+                                    </div>
                                 </div>
                             {/if}
                             {#if subject.classroom}
-                                <div class="flex gap-2">
+                                <div class="flex gap-2 items-center">
                                     <Icon
                                         name="marker"
-                                        class="icon-medium fill-base-content shrink-0"
+                                        class="icon-medium fill-base-content shrink-0 self-start"
                                     />
-                                    {subject.classroom}
+                                    <div class="flex flex-col">
+                                        <span class="text-sm font-medium"
+                                            >Кабинет</span
+                                        >
+                                        {subject.classroom}
+                                    </div>
                                 </div>
                             {/if}
                         </div>

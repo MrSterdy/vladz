@@ -7,7 +7,6 @@ import type { Actions, PageServerLoad } from "./$types";
 
 import { updateSubjects } from "$lib/server/services/subjectService";
 
-
 const updateSubjectSchema = z.object({
     subjects: z.array(
         z.object({

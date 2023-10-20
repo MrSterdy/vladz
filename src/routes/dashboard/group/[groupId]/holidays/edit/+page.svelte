@@ -3,10 +3,10 @@
 
     import type { PageData } from "./$types";
 
+    import BackButton from "$lib/components/BackButton.svelte";
     import MainButton from "$lib/components/MainButton.svelte";
     import { handleError, handleUpdated } from "$lib/utils/form";
     import { formatISOString } from "$lib/utils/time";
-    import BackButton from "$lib/components/BackButton.svelte";
 
     export let data: PageData;
 

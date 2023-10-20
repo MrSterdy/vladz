@@ -5,11 +5,11 @@
 
     import { goto } from "$app/navigation";
 
+    import BackButton from "$lib/components/BackButton.svelte";
     import MainButton from "$lib/components/MainButton.svelte";
     import Status from "$lib/components/Status.svelte";
     import { capitalize } from "$lib/utils/string";
     import { humanize } from "$lib/utils/time";
-    import BackButton from "$lib/components/BackButton.svelte";
 
     export let data: PageData;
 </script>

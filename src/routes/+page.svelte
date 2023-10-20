@@ -18,7 +18,13 @@
             Мои группы
         </a>
 
-        <button class="btn btn-neutral" on:click={() => window.Telegram.WebApp.openLink("https://github.com/MrSterdy/vladz")}>
+        <button
+            class="btn btn-neutral"
+            on:click={() =>
+                window.Telegram.WebApp.openLink(
+                    "https://github.com/MrSterdy/vladz"
+                )}
+        >
             <Icon name="github" class="fill-neutral-content icon-medium" />
             GitHub
         </button>

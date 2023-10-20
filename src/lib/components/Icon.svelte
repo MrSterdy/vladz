@@ -114,7 +114,10 @@
     const icon = icons[name];
 </script>
 
-<svg viewBox="0 0 {icon.viewBox} {icon.viewBox}" class={twMerge("rounded-none", $$props["class"])}>
+<svg
+    viewBox="0 0 {icon.viewBox} {icon.viewBox}"
+    class={twMerge("rounded-none", $$props["class"])}
+>
     <!--eslint-disable-next-line svelte/no-at-html-tags-->
     {@html icon.src}
 </svg>

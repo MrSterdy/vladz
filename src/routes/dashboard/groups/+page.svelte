@@ -7,11 +7,11 @@
     import { goto } from "$app/navigation";
     import { page } from "$app/stores";
 
+    import BackButton from "$lib/components/BackButton.svelte";
     import MainButton from "$lib/components/MainButton.svelte";
     import Status from "$lib/components/Status.svelte";
     import { pageSize } from "$lib/consts";
     import { handleError, handleUpdated } from "$lib/utils/form";
-    import BackButton from "$lib/components/BackButton.svelte";
 
     export let data: PageData;
 

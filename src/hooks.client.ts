@@ -2,8 +2,9 @@ import type { HandleClientError } from "@sveltejs/kit";
 import dayjs from "dayjs";
 import "dayjs/locale/ru";
 
-import { hslToHex } from "$lib/utils/color";
 import { goto } from "$app/navigation";
+
+import { hslToHex } from "$lib/utils/color";
 
 export const handleError: HandleClientError = ({ error }) => {
     console.error(error);

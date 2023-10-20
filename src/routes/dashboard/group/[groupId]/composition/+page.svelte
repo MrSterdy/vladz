@@ -3,11 +3,11 @@
 
     import { goto } from "$app/navigation";
 
+    import BackButton from "$lib/components/BackButton.svelte";
     import MainButton from "$lib/components/MainButton.svelte";
     import Status from "$lib/components/Status.svelte";
     import { groupUserRoles } from "$lib/consts";
     import { capitalize } from "$lib/utils/string";
-    import BackButton from "$lib/components/BackButton.svelte";
 
     export let data: PageData;
 </script>
@@ -24,7 +24,7 @@
             </tr>
         </thead>
         <tbody>
-            {#each data.group.users.sort((a, b) => `${a.lastName} ${a.firstName}`.localeCompare(`${b.lastName} ${b.firstName}`)) as user, i}
+            {#each data.group.users.sort( (a, b) => `${a.lastName} ${a.firstName}`.localeCompare(`${b.lastName} ${b.firstName}`) ) as user, i}
                 <tr>
                     <th>{i + 1}</th>
                     <td class="word-break">{user.lastName} {user.firstName}</td>

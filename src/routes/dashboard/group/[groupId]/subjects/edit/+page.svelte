@@ -3,9 +3,9 @@
 
     import type { PageData } from "./$types";
 
+    import BackButton from "$lib/components/BackButton.svelte";
     import MainButton from "$lib/components/MainButton.svelte";
     import { handleError, handleUpdated } from "$lib/utils/form";
-    import BackButton from "$lib/components/BackButton.svelte";
 
     export let data: PageData;
 
@@ -34,7 +34,9 @@
 <form method="post" class="flex flex-col gap-2" bind:this={formEl} use:enhance>
     <div class="join join-vertical word-break w-full">
         {#each $form.subjects as _, i}
-            <div class="collapse collapse-arrow join-item border bg-base-100 rounded-box">
+            <div
+                class="collapse collapse-arrow join-item border bg-base-100 rounded-box"
+            >
                 <input type="radio" name="accordion-subjects" />
                 <div class="collapse-title text-xl font-medium">
                     {$form.subjects[i].name}

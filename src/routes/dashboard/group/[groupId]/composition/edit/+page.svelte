@@ -6,11 +6,11 @@
     import { goto } from "$app/navigation";
     import { page } from "$app/stores";
 
+    import BackButton from "$lib/components/BackButton.svelte";
     import Icon from "$lib/components/Icon.svelte";
     import Status from "$lib/components/Status.svelte";
     import { groupUserRoles } from "$lib/consts";
     import { capitalize } from "$lib/utils/string";
-    import BackButton from "$lib/components/BackButton.svelte";
 
     export let data: PageData;
 
