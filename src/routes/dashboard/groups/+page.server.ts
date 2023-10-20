@@ -14,10 +14,7 @@ import {
     createApplication,
     getUserApplications
 } from "$lib/server/services/groupService";
-import {
-    sendApplicationNotifications,
-    sendApplicationStateNotification
-} from "$lib/server/services/notificationService";
+import { sendApplicationNotifications } from "$lib/server/services/notificationService";
 import type { Group, List } from "$lib/types";
 
 export const load: PageServerLoad = async event => {
@@ -70,10 +67,7 @@ export const actions: Actions = {
 
         await createApplication(group.id, userId);
 
-        await Promise.all([
-            sendApplicationStateNotification(userId, "sent", group.name),
-            sendApplicationNotifications(group.id, group.name)
-        ]);
+        await sendApplicationNotifications(group.id, group.name);
 
         setFlash(
             { type: "success", message: "Заявка была успешно отправлена" },

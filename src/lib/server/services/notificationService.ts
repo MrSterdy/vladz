@@ -18,14 +18,12 @@ export async function sendPromotionNotification(
 
 export async function sendApplicationStateNotification(
     userId: bigint,
-    state: "sent" | "accepted" | "denied",
+    state: "accepted" | "denied",
     groupName: string
 ) {
     let notification = `⚡️ | Ваша заявка в группу "${groupName}" была `;
     notification +=
-        state === "sent"
-            ? "отправлена"
-            : state === "accepted"
+        state === "accepted"
             ? "принята"
             : "отклонена";
 
