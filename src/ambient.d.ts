@@ -84,6 +84,7 @@ declare global {
         ready: () => void;
         expand: () => void;
         close: () => void;
+        openLink: (url: string) => void;
     }
 
     interface Window {
