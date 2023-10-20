@@ -59,13 +59,13 @@
                     </div>
                     <div class="w-full">
                         <label for="teacher-{i}" class="label">
-                            <span class="label-text">Учитель</span>
+                            <span class="label-text">Преподаватель</span>
                         </label>
 
                         <input
                             id="teacher-{i}"
                             type="text"
-                            placeholder="Учитель"
+                            placeholder="Преподаватель"
                             aria-invalid={$errors.subjects?.[i].teacher
                                 ? true
                                 : undefined}
