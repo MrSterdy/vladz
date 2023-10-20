@@ -50,7 +50,7 @@ export async function sendApplicationNotifications(
         }
     });
 
-    await Promise.all(
+    await Promise.allSettled(
         users.map(u =>
             bot.telegram.sendMessage(
                 u.userId.toString(),
@@ -82,7 +82,7 @@ export async function sendTimetableNotifications(
         }
     });
 
-    await Promise.all(
+    await Promise.allSettled(
         users.map(u =>
             bot.telegram.sendMessage(
                 u.id.toString(),
