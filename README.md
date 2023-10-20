@@ -60,10 +60,10 @@
 ngrok http 5173
 ```
 
-Постройте и запустите проект, указав на получившуюся https ссылку ngrok
+Постройте и запустите проект, указав токен бота в Телеграм, Телеграм ID администратора и получившуюся https ссылку ngrok
 
 ```bash
-ORIGIN=<NGROK_HTTPS_URL> docker compose build --build-arg TELEGRAM_BOT_TOKEN=<TOKEN> --build-arg ADMIN_ID=<ID>
+docker compose build --build-arg TELEGRAM_BOT_TOKEN=<TOKEN> --build-arg ADMIN_ID=<ID> --build-arg ORIGIN=<NGROK_HTTPS_URL>
 docker compose up
 ```
 
