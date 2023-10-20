@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { twMerge } from "tailwind-merge";
+
     interface $$Props {
         name: keyof typeof icons;
         class: string;
@@ -112,7 +114,7 @@
     const icon = icons[name];
 </script>
 
-<svg viewBox="0 0 {icon.viewBox} {icon.viewBox}" class={$$props["class"]}>
+<svg viewBox="0 0 {icon.viewBox} {icon.viewBox}" class={twMerge("rounded-none", $$props["class"])}>
     <!--eslint-disable-next-line svelte/no-at-html-tags-->
     {@html icon.src}
 </svg>
