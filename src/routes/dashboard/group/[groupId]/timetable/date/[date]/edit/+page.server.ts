@@ -7,7 +7,7 @@ import type { Actions, PageServerLoad } from "./$types";
 
 import { maxFiles, maxFileSize } from "$lib/consts";
 import { dateTimetableSchema } from "$lib/server/schemas/timetable";
-import { uploadFile } from "$lib/server/services/fileService";
+import { deleteFiles, uploadFile } from "$lib/server/services/fileService";
 import { getHolidays } from "$lib/server/services/holidayService";
 import { sendTimetableNotifications } from "$lib/server/services/notificationService";
 import { getSubjects } from "$lib/server/services/subjectService";
@@ -162,13 +162,33 @@ export const actions: Actions = {
             }))
         };
 
-        if (!date.isBefore(dayjs(dateToString(dayjs())))) {
-            const oldTimetable = await getDateTimetable(
-                date.toISOString(),
-                group.id
-            );
+        const oldTimetable = await getDateTimetable(
+            date.toISOString(),
+            group.id
+        );
 
-            if (oldTimetable) {
+        if (oldTimetable) {
+            const oldFiles = oldTimetable.subjects
+                .filter(s => s.homework.files.length)
+                .reduce(
+                    (acc, s) => [...acc, ...s.homework.files.map(f => f.url)],
+                    [] as string[]
+                );
+
+            if (oldFiles) {
+                const newFiles = newTimetable.subjects
+                    .filter(s => s.homework.files.length)
+                    .reduce(
+                        (acc, s) => [...acc, ...s.homework.files.map(f => f.url)],
+                        [] as string[]
+                    );
+
+                const removedFiles = oldFiles.filter(f => !newFiles.includes(f));
+
+                await deleteFiles(removedFiles);
+            }
+
+            if (!date.isBefore(dayjs(dateToString(dayjs())))) {
                 const removedSubjects: DateSubject[] = [];
 
                 remove: for (const oldSubject of oldTimetable.subjects) {

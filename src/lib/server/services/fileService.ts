@@ -84,3 +84,25 @@ export async function uploadFile(groupCode: string, file: File) {
         MINIO_SSL === "true" ? "https://" : "http://"
     }${MINIO_ENDPOINT}/${bucket}/${fullName}`;
 }
+
+export async function deleteFiles(urls: string[]) {
+    if (!urls.length) {
+        return;
+    }
+
+    let bucket: string;
+
+    const names = urls.map(u => {
+        const [, bucketName, name] = new URL(u).pathname.split("/");
+
+        bucket = bucketName;
+
+        return name;
+    });
+
+    if (!(await minio.bucketExists(bucket!))) {
+        return;
+    }
+
+    await minio.removeObjects(bucket!, names);
+}
