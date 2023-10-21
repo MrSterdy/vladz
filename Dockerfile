@@ -26,9 +26,11 @@ ENV ORIGIN=$ORIGIN
 
 WORKDIR /app
 
-COPY . .
+COPY package*.json ./
 
-RUN npm install
+RUN npm ci
+
+COPY . .
 
 RUN npm run check
 RUN npm run build
@@ -43,7 +45,7 @@ COPY --from=build /app/package*.json ./
 COPY --from=build /app/prisma ./prisma
 COPY --from=build /app/build .
 
-RUN npm install --omit=dev
+RUN npm ci --omit=dev
 
 EXPOSE 3000
 
