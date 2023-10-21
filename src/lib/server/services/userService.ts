@@ -1,8 +1,10 @@
+import type { User as RawUser } from "@prisma/client";
 import * as crypto from "crypto";
 import jwt from "jsonwebtoken";
 
+import { pageSize } from "$lib/consts";
 import prisma from "$lib/server/db/prisma";
-import type { User, UserSettings } from "$lib/types";
+import type { List, User, UserSettings } from "$lib/types";
 
 export async function getUserById(id: bigint): Promise<User | null> {
     const result = await prisma.user.findFirst({
@@ -64,6 +66,36 @@ export async function updateUser(user: Partial<User> & Pick<User, "id">) {
     });
 
     await prisma.$transaction([removeSecret, updateUser]);
+}
+
+export async function searchUsers(name: string, page = 1): Promise<List<User>> {
+    const like = `%${name
+        .split(" ")
+        .map(s => s.toLowerCase())
+        .join("")}%`;
+
+    const [count, users] = await prisma.$transaction([
+        prisma.$queryRaw<
+            [{ count: number }]
+        >`SELECT COUNT(U.*) FROM public."User" U WHERE (lower(concat(U."firstName", U."lastName")) LIKE ${like})`,
+        prisma.$queryRaw<
+            RawUser[]
+        >`SELECT U.* FROM public."User" U WHERE (lower(concat(U."firstName", U."lastName")) LIKE ${like}) OFFSET ${
+            (page - 1) * pageSize
+        } LIMIT ${pageSize}`
+    ]);
+
+    return {
+        items: users.map(u => ({
+            id: u.id,
+            firstName: u.firstName,
+            lastName: u.lastName,
+            role: u.role,
+            settings: null
+        })),
+        page,
+        total: Number(count[0].count)
+    };
 }
 
 export async function getUserSecretById(

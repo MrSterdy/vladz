@@ -7,13 +7,26 @@ import type { Actions, PageServerLoad } from "./$types";
 import { userRoles } from "$lib/consts";
 import idSchema from "$lib/server/schemas/id";
 import { sendPromotionNotification } from "$lib/server/services/notificationService";
-import { getUserById, updateUser } from "$lib/server/services/userService";
+import {
+    getUserById,
+    searchUsers,
+    updateUser
+} from "$lib/server/services/userService";
+import type { List, User } from "$lib/types";
 import { capitalize } from "$lib/utils/string";
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async event => {
     const form = await superValidate(idSchema);
 
-    return { form };
+    let search: List<User> | null = null;
+    const searchInput = event.url.searchParams.get("search");
+    if (searchInput) {
+        const page = parseInt(event.url.searchParams.get("page") || "1") || 1;
+
+        search = await searchUsers(searchInput, page);
+    }
+
+    return { form, search: search ?? { items: [], page: 1, total: 0 } };
 };
 
 export const actions: Actions = {
