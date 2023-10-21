@@ -26,7 +26,6 @@
     }
 
     const { enhance } = superForm(data.form, {
-        onUpdated: handleUpdated,
         onError: handleError
     });
 </script>
