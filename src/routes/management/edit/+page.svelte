@@ -8,8 +8,9 @@
 
     import BackButton from "$lib/components/BackButton.svelte";
     import Icon from "$lib/components/Icon.svelte";
+    import Pagination from "$lib/components/Pagination.svelte";
     import Status from "$lib/components/Status.svelte";
-    import { pageSize, userRoles } from "$lib/consts";
+    import { userRoles } from "$lib/consts";
     import { handleError, handleUpdated } from "$lib/utils/form";
     import { capitalize } from "$lib/utils/string";
 
@@ -21,30 +22,6 @@
         const query = new URLSearchParams($page.url.searchParams.toString());
         query.set("page", "1");
         query.set("search", searchInput);
-        goto(`?${query.toString()}`);
-    }
-
-    const totalPages = Math.floor(data.search.total / pageSize);
-
-    function prevPage() {
-        const query = new URLSearchParams($page.url.searchParams.toString());
-        query.set(
-            "page",
-            (
-                (parseInt($page.url.searchParams.get("page") || "2") || 2) - 1
-            ).toString()
-        );
-        goto(`?${query.toString()}`);
-    }
-
-    function nextPage() {
-        const query = new URLSearchParams($page.url.searchParams.toString());
-        query.set(
-            "page",
-            (
-                (parseInt($page.url.searchParams.get("page") || "1") || 1) + 1
-            ).toString()
-        );
         goto(`?${query.toString()}`);
     }
 
@@ -140,25 +117,10 @@
                 {/each}
             </div>
 
-            {#if totalPages > 1}
-                <div class="join self-center">
-                    {#if data.search.page > 1}
-                        <button
-                            class="join-item btn text-lg"
-                            on:click={prevPage}>«</button
-                        >
-                    {/if}
-                    <button class="join-item btn text-lg"
-                        >{data.search.page}</button
-                    >
-                    {#if totalPages > data.search.page}
-                        <button
-                            class="join-item btn text-lg"
-                            on:click={nextPage}>»</button
-                        >
-                    {/if}
-                </div>
-            {/if}
+            <Pagination
+                currentPage={data.search.page}
+                totalItems={data.search.total}
+            />
         {:else}
             <Status icon="sad" message="Никого нет" />
         {/if}

@@ -9,8 +9,8 @@
 
     import BackButton from "$lib/components/BackButton.svelte";
     import MainButton from "$lib/components/MainButton.svelte";
+    import Pagination from "$lib/components/Pagination.svelte";
     import Status from "$lib/components/Status.svelte";
-    import { pageSize } from "$lib/consts";
     import { handleError, handleUpdated } from "$lib/utils/form";
 
     export let data: PageData;
@@ -27,30 +27,6 @@
     $: currentType = $page.url.searchParams.get("type");
     $: if (currentType !== "applications" && currentType !== "groups") {
         currentType = "groups";
-    }
-
-    const totalPages = Math.floor(data.groups.total / pageSize);
-
-    function prevPage() {
-        const query = new URLSearchParams($page.url.searchParams.toString());
-        query.set(
-            "page",
-            (
-                (parseInt($page.url.searchParams.get("page") || "2") || 2) - 1
-            ).toString()
-        );
-        goto(`?${query.toString()}`);
-    }
-
-    function nextPage() {
-        const query = new URLSearchParams($page.url.searchParams.toString());
-        query.set(
-            "page",
-            (
-                (parseInt($page.url.searchParams.get("page") || "1") || 1) + 1
-            ).toString()
-        );
-        goto(`?${query.toString()}`);
     }
 
     function switchType(newType: "applications" | "groups") {
@@ -129,25 +105,10 @@
                     {/each}
                 </ul>
 
-                {#if totalPages > 1}
-                    <div class="join self-center">
-                        {#if data.groups.page > 1}
-                            <button
-                                class="join-item btn text-lg"
-                                on:click={prevPage}>«</button
-                            >
-                        {/if}
-                        <button class="join-item btn text-lg"
-                            >{data.groups.page}</button
-                        >
-                        {#if totalPages > data.groups.page}
-                            <button
-                                class="join-item btn text-lg"
-                                on:click={nextPage}>»</button
-                            >
-                        {/if}
-                    </div>
-                {/if}
+                <Pagination
+                    currentPage={data.groups.page}
+                    totalItems={data.groups.total}
+                />
             </div>
         {:else}
             <Status icon="sad" message="Нет групп" />
