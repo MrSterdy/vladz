@@ -38,7 +38,7 @@ export const actions: Actions = {
         });
 
         throw redirect(
-            "/dashboard",
+            "/",
             { type: "success", message: "Вы успешно зарегистрировались" },
             event
         );
