@@ -27,6 +27,10 @@
         $form.offset = timeToNumber(this.value);
     }
 
+    $: positions = $form.subjects.map(s => s.position).sort((a, b) => a - b);
+    $: minPos = positions[0] ?? 0;
+    $: maxPos = positions.length ? positions[positions.length - 1] : 0;
+
     function addSubject() {
         $form.subjects = [
             ...$form.subjects,
@@ -135,11 +139,6 @@
     </div>
 
     {#if $form.subjects.length}
-        {@const positions = $form.subjects.map(s => s.position).sort()}
-        {@const [minPos, maxPos] = [
-            positions[0],
-            positions[positions.length - 1]
-        ]}
         <div class="join join-vertical word-break w-full">
             {#each $form.subjects.sort((a, b) => a.position - b.position) as subject, i}
                 <div
