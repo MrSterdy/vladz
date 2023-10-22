@@ -379,9 +379,11 @@
         </div>
     {/if}
 
-    <button type="button" class="btn btn-primary" on:click={addSubject}
-        >Добавить предмет</button
-    >
+    {#if $form.subjects.length < 32}
+        <button type="button" class="btn btn-primary" on:click={addSubject}
+            >Добавить предмет</button
+        >
+    {/if}
 
     <MainButton onClick={() => formEl.requestSubmit()} text="СОХРАНИТЬ" />
 </form>

@@ -108,9 +108,13 @@
         {/each}
     </div>
 
-    <button type="button" class="btn btn-primary w-full" on:click={addSubject}
-        >Создать предмет</button
-    >
+    {#if $form.subjects.length < 64}
+        <button
+            type="button"
+            class="btn btn-primary w-full"
+            on:click={addSubject}>Создать предмет</button
+        >
+    {/if}
 
     <MainButton onClick={() => formEl.requestSubmit()} text="СОХРАНИТЬ" />
 </form>

@@ -68,9 +68,13 @@
         {/each}
     </ul>
 
-    <button type="button" class="btn btn-primary w-full" on:click={addHoliday}
-        >Создать выходной</button
-    >
+    {#if $form.holidays.length < 128}
+        <button
+            type="button"
+            class="btn btn-primary w-full"
+            on:click={addHoliday}>Создать выходной</button
+        >
+    {/if}
 
     <MainButton onClick={() => formEl.requestSubmit()} text="СОХРАНИТЬ" />
 </form>
