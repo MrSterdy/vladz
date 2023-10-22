@@ -1,5 +1,3 @@
-import { PUBLIC_MAX_FILE_SIZE, PUBLIC_MAX_FILES } from "$env/static/public";
-
 export const AUTH_ACCESS_COOKIE_NAME = "vlad-pechenie";
 export const AUTH_REFRESH_COOKIE_NAME = "vlad-obnova";
 export const AUTH_TELEGRAM_COOKIE_NAME = "vlad-telega";
@@ -32,7 +30,7 @@ export const imageTypes = ["image/png", "image/jpg", "image/jpeg"];
 
 export const pageSize = 10;
 
-export const maxFileSize = parseInt(PUBLIC_MAX_FILE_SIZE);
-export const maxFiles = parseInt(PUBLIC_MAX_FILES);
+export const maxFileSize = 5242880;
+export const maxFiles = 10;
 
 export const notifications = ["timetable", "application_new"] as const;

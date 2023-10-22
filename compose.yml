@@ -14,8 +14,6 @@ services:
                 MINIO_SSL: "false"
                 MINIO_ACCESS_KEY: "minio_user"
                 MINIO_SECRET_KEY: "minio_password"
-                PUBLIC_MAX_FILES: "10"
-                PUBLIC_MAX_FILE_SIZE: "5242880"
                 BODY_SIZE_LIMIT: "0"
         restart: always
         ports:

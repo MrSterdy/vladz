@@ -44,10 +44,6 @@
 
 `MINIO_SECRET_KEY` - секрет MinIO
 
-`PUBLIC_MAX_FILES` - максимальное кол-во файлов за 1 ДЗ
-
-`PUBLIC_MAX_FILE_SIZE` - максимальный размер файла _(в байтах)_
-
 `ORIGIN` - ссылка будущего сайта
 
 ### Docker
