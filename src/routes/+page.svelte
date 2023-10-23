@@ -47,8 +47,7 @@
     #donate {
         background: linear-gradient(90deg, #fcd34d, #f59e0b, #fcd34d);
         background-size: 400%;
-        animation: glowing 20s linear infinite;
-        transition: opacity 0.3s ease-in-out;
+        animation: glowing 15s linear infinite;
         box-shadow: 0 0 30px 10px rgba(255, 253, 221, 0.25);
     }
     @keyframes glowing {
