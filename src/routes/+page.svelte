@@ -12,7 +12,7 @@
         день. Просто войдите в свою группу и начните пользоваться прямо сейчас.
     </p>
 
-    <div class="flex flex-col gap-2 w-1/2 justify-center mx-auto">
+    <div class="flex flex-col gap-2 max-w-xs mx-auto">
         <a href="/dashboard/groups" role="button" class="btn btn-primary">
             <Icon name="arrow" class="fill-primary-content icon-medium " />
             Мои группы
@@ -28,5 +28,38 @@
             <Icon name="github" class="fill-neutral-content icon-medium" />
             GitHub
         </button>
+
+        <button
+            class="btn btn-ghost text-neutral"
+            id="donate"
+            on:click={() =>
+                window.Telegram.WebApp.openLink(
+                    "https://donate.qiwi.com/payin/MrSterdy"
+                )}
+        >
+            <Icon name="coins" class="fill-neutral icon-medium" />
+            Пожертвовать
+        </button>
     </div>
 </div>
+
+<style lang="postcss">
+    #donate {
+        background: linear-gradient(90deg, #fcd34d, #f59e0b, #fcd34d);
+        background-size: 400%;
+        animation: glowing 20s linear infinite;
+        transition: opacity 0.3s ease-in-out;
+        box-shadow: 0 0 30px 10px rgba(255, 253, 221, 0.25);
+    }
+    @keyframes glowing {
+        0% {
+            background-position: 0 0;
+        }
+        50% {
+            background-position: 400% 0;
+        }
+        100% {
+            background-position: 0 0;
+        }
+    }
+</style>
