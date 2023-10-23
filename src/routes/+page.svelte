@@ -38,7 +38,7 @@
                 )}
         >
             <Icon name="coins" class="fill-neutral icon-medium" />
-            Пожертвовать
+            Поддержать
         </button>
     </div>
 </div>
