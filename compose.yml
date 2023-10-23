@@ -14,7 +14,6 @@ services:
                 MINIO_SSL: "false"
                 MINIO_ACCESS_KEY: "minio_user"
                 MINIO_SECRET_KEY: "minio_password"
-                BODY_SIZE_LIMIT: "0"
         restart: always
         ports:
             - "5173:3000"
