@@ -75,6 +75,33 @@
             />
         </form>
 
+        {#if data.groups.items.length}
+            <div class="flex flex-col gap-4">
+                <ul class="list-none m-0 p-0 flex flex-col gap-4">
+                    {#each data.groups.items as group}
+                        <li class="m-0 p-0">
+                            <div
+                                class="card card-compact card-body bg-base-100"
+                            >
+                                <h2
+                                    class="card-title m-0 flex gap-2 items-center"
+                                >
+                                    {group.name}
+                                </h2>
+                            </div>
+                        </li>
+                    {/each}
+                </ul>
+
+                <Pagination
+                    currentPage={data.groups.page}
+                    totalItems={data.groups.total}
+                />
+            </div>
+        {:else}
+            <Status icon="sad" message="Нет заявок" />
+        {/if}
+
         {#if $form.invite_code.length === 16}
             <MainButton
                 text="ПОДАТЬ ЗАЯВКУ"
