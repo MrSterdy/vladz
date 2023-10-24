@@ -12,6 +12,7 @@
     import { groupUserRoles } from "$lib/consts";
     import { handleError } from "$lib/utils/form";
     import { capitalize } from "$lib/utils/string";
+    import { showConfirm } from "$lib/utils/telegram";
 
     export let data: PageData;
 
@@ -34,6 +35,12 @@
         params.set("type", newType);
 
         goto(`?${params.toString()}`);
+    }
+
+    function confirmKick(this: HTMLFormElement) {
+        showConfirm("Вы действительно хотите выгнать этого участника?", () =>
+            this.submit()
+        );
     }
 </script>
 
@@ -137,6 +144,7 @@
                                     <form
                                         method="post"
                                         action="?/remove"
+                                        on:submit|preventDefault={confirmKick}
                                         use:enhance
                                     >
                                         <input
