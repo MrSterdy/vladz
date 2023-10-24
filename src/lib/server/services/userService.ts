@@ -70,17 +70,17 @@ export async function updateUser(user: Partial<User> & Pick<User, "id">) {
 
 export async function searchUsers(name: string, page = 1): Promise<List<User>> {
     const like = `%${name
+        .toLowerCase()
         .split(" ")
-        .map(s => s.toLowerCase())
         .join("")}%`;
 
     const [count, users] = await prisma.$transaction([
         prisma.$queryRaw<
             [{ count: number }]
-        >`SELECT COUNT(U.*) FROM public."User" U WHERE (lower(concat(U."firstName", U."lastName")) LIKE ${like})`,
+        >`SELECT COUNT(U.*) FROM public."User" U WHERE lower(concat(U."firstName", U."lastName")) LIKE ${like}`,
         prisma.$queryRaw<
             RawUser[]
-        >`SELECT U.* FROM public."User" U WHERE (lower(concat(U."firstName", U."lastName")) LIKE ${like}) OFFSET ${
+        >`SELECT U.* FROM public."User" U WHERE lower(concat(U."firstName", U."lastName")) LIKE ${like} OFFSET ${
             (page - 1) * pageSize
         } LIMIT ${pageSize}`
     ]);

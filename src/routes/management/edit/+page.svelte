@@ -28,8 +28,6 @@
 
 <section class="flex flex-col gap-4">
     <form class="flex gap-2">
-        <input name="page" type="hidden" value="1" />
-
         <input
             type="text"
             name="search"
