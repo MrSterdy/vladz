@@ -3,7 +3,6 @@
 
     import type { PageData } from "./$types";
 
-    import { goto } from "$app/navigation";
     import { page } from "$app/stores";
 
     import BackButton from "$lib/components/BackButton.svelte";
@@ -11,19 +10,12 @@
     import Pagination from "$lib/components/Pagination.svelte";
     import Status from "$lib/components/Status.svelte";
     import { userRoles } from "$lib/consts";
-    import { handleError, handleUpdated } from "$lib/utils/form";
+    import { handleError } from "$lib/utils/form";
     import { capitalize } from "$lib/utils/string";
 
     export let data: PageData;
 
-    let searchInput = $page.url.searchParams.get("search") ?? "";
-
-    async function search() {
-        const query = new URLSearchParams($page.url.searchParams.toString());
-        query.set("page", "1");
-        query.set("search", searchInput);
-        goto(`?${query.toString()}`);
-    }
+    $: search = $page.url.searchParams.get("search");
 
     const { enhance } = superForm(data.form, {
         onError: handleError
@@ -35,15 +27,22 @@
 <h1 class="text-center">Редактирование руководства</h1>
 
 <section class="flex flex-col gap-4">
-    <input
-        type="text"
-        class="w-full input input-primary input-bordered"
-        placeholder="Имя"
-        bind:value={searchInput}
-        on:change={search}
-    />
+    <form class="flex gap-2">
+        <input name="page" type="hidden" value="1" />
 
-    {#if $page.url.searchParams.get("search")}
+        <input
+            type="text"
+            name="search"
+            class="w-full input input-primary input-bordered"
+            placeholder="Имя"
+        />
+
+        <button type="submit" class="btn btn-primary">
+            <Icon name="search" class="fill-primary-content icon-medium" />
+        </button>
+    </form>
+
+    {#if search}
         {#if data.search.items.length}
             <div class="space-y-4">
                 {#each data.search.items as user}
