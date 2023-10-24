@@ -31,9 +31,11 @@ export const load: PageServerLoad = async event => {
     if (type === "applications") {
         groups = await getUserApplications(event.locals.user!.id, page);
     } else {
+        const search = event.url.searchParams.get("search") ?? "";
+
         groups = await (getAll
-            ? getGroups(page)
-            : getUserGroups(event.locals.user!.id, page));
+            ? getGroups(page, search)
+            : getUserGroups(event.locals.user!.id, page, search));
     }
 
     return { groups, inviteForm };

@@ -12,6 +12,7 @@
     import Pagination from "$lib/components/Pagination.svelte";
     import Status from "$lib/components/Status.svelte";
     import { handleError, handleUpdated } from "$lib/utils/form";
+    import Icon from "$lib/components/Icon.svelte";
 
     export let data: PageData;
 
@@ -29,13 +30,14 @@
         currentType = "groups";
     }
 
+    $: search = $page.url.searchParams.get("search");
+
     function switchType(newType: "applications" | "groups") {
         if (newType === currentType) {
             return;
         }
 
         const params = new URLSearchParams();
-        params.set("page", "1");
         params.set("type", newType);
 
         goto(`?${params.toString()}`);
@@ -109,6 +111,19 @@
             />
         {/if}
     {:else}
+        <form class="flex gap-2">
+            <input
+                type="text"
+                name="search"
+                class="w-full input input-primary input-bordered"
+                placeholder="Имя"
+            />
+
+            <button type="submit" class="btn btn-primary">
+                <Icon name="search" class="fill-primary-content icon-medium" />
+            </button>
+        </form>
+
         {#if data.groups.items.length}
             <div class="flex flex-col gap-4">
                 <ul class="list-none m-0 p-0 flex flex-col gap-4">

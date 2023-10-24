@@ -1,3 +1,4 @@
+import type { Group as RawGroup } from "@prisma/client";
 import * as crypto from "crypto";
 
 import { pageSize } from "$lib/consts";
@@ -36,12 +37,17 @@ export async function getGroupByInviteCode(
         : null;
 }
 
-export async function getGroups(page = 1): Promise<List<Group>> {
+export async function getGroups(page = 1, search = ""): Promise<List<Group>> {
+    const like = search.toLowerCase().split(" ").join("");
+
     const [count, groups] = await prisma.$transaction([
-        prisma.group.count(),
+        prisma.group.count({
+            where: { name: { contains: like, mode: "insensitive" } }
+        }),
         prisma.group.findMany({
             take: pageSize,
             skip: (page - 1) * pageSize,
+            where: { name: { contains: like, mode: "insensitive" } },
             include: {
                 users: { include: { user: true } },
                 applications: { include: { user: true } }
@@ -102,14 +108,25 @@ export async function getGroupById(groupId: number): Promise<Group | null> {
 
 export async function getUserGroups(
     userId: bigint,
-    page = 1
+    page = 1,
+    search = ""
 ): Promise<List<Group>> {
+    const like = search.toLowerCase().split(" ").join("");
+
     const [count, groups] = await prisma.$transaction([
-        prisma.group.count({ where: { users: { some: { userId } } } }),
+        prisma.group.count({
+            where: {
+                users: { some: { userId } },
+                name: { contains: like, mode: "insensitive" }
+            }
+        }),
         prisma.group.findMany({
             take: pageSize,
             skip: (page - 1) * pageSize,
-            where: { users: { some: { userId } } },
+            where: {
+                users: { some: { userId } },
+                name: { contains: like, mode: "insensitive" }
+            },
             include: {
                 users: { include: { user: true } },
                 applications: { include: { user: true } }
