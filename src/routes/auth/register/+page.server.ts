@@ -4,7 +4,6 @@ import { superValidate } from "sveltekit-superforms/server";
 
 import type { PageServerLoad, Actions } from "./$types";
 
-import { defaultSettings } from "$lib/defaults";
 import registerSchema from "$lib/server/schemas/register";
 import { createUser } from "$lib/server/services/userService";
 
@@ -33,8 +32,7 @@ export const actions: Actions = {
             id: event.locals.telegramId!,
             firstName: form.data.first_name,
             lastName: form.data.last_name,
-            role: "USER",
-            settings: defaultSettings
+            role: "USER"
         });
 
         throw redirect(

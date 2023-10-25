@@ -206,9 +206,6 @@ export async function createGroup(name: string): Promise<Group> {
     return {
         id: result.id,
         name: result.name,
-        inviteCode: result.inviteCode,
-        users: [],
-        applications: []
         inviteCode: result.inviteCode
     };
 }

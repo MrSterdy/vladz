@@ -6,8 +6,8 @@ import { z } from "zod";
 import type { Actions, PageServerLoad } from "./$types";
 
 import { notifications } from "$lib/consts";
-import { getUserById, updateUser } from "$lib/server/services/userService";
-import type { UserSettings } from "$lib/types";
+import { updateUser } from "$lib/server/services/userService";
+import type { Account } from "$lib/types";
 
 const updateAccountSchema = z.object({
     first_name: z
@@ -43,9 +43,9 @@ export const load: PageServerLoad = async event => {
         ? (Object.keys(user.settings.notifications).filter(
               key =>
                   user.settings!.notifications[
-                      key as keyof UserSettings["notifications"]
+                      key as keyof NonNullable<Account["settings"]>["notifications"]
                   ]
-          ) as (keyof UserSettings["notifications"])[])
+          ) as (keyof NonNullable<Account["settings"]>["notifications"])[])
         : [];
 
     return { form };
@@ -58,7 +58,7 @@ export const actions: Actions = {
             return fail(400, { form });
         }
 
-        const user = await getUserById(event.locals.user!.id);
+        const user = event.locals.user!;
         user!.firstName = form.data.first_name;
         user!.lastName = form.data.last_name;
         if (!user!.settings) {
