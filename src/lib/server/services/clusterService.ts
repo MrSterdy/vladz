@@ -123,3 +123,14 @@ export async function getClusterById(
           }
         : null;
 }
+
+export async function deleteCluster(clusterId: number) {
+    await prisma.groupCluster.delete({ where: { id: clusterId } });
+}
+
+export async function updateClusterName(clusterId: number, clusterName: string) {
+    await prisma.groupCluster.update({
+        where: { id: clusterId },
+        data: { name: clusterName }
+    });
+}
