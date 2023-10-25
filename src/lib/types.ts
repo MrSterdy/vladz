@@ -9,14 +9,15 @@ type BaseUser = {
 
 export type User = BaseUser & {
     role: keyof typeof userRoles;
-    settings: UserSettings | null;
 };
 
-export type UserSettings = {
-    notifications: {
-        timetable?: boolean;
-        application_new?: boolean;
-    };
+export type Account = User & {
+    settings: {
+        notifications: {
+            timetable?: boolean;
+            application_new?: boolean;
+        };
+    } | null;
 };
 
 export type GroupUser = BaseUser & {
@@ -72,7 +73,9 @@ export type Group = {
     name: string;
 
     inviteCode: string;
+};
 
+export type DetailedGroup = Group & {
     users: GroupUser[];
 
     applications: BaseUser[];
@@ -83,9 +86,9 @@ export type GroupCluster = {
 
     name: string;
 
-    manager: BaseUser;
+    manager: User;
 
-    groups: Omit<Group, "users" | "applications">[];
+    groups: Group[];
 };
 
 export type List<T> = {

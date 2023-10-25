@@ -30,7 +30,8 @@ export async function getClusters(
             manager: {
                 id: cluster.manager.id,
                 firstName: cluster.manager.firstName,
-                lastName: cluster.manager.lastName
+                lastName: cluster.manager.lastName,
+                role: cluster.manager.role
             },
             groups: cluster.groups.map(group => ({
                 id: group.id,
@@ -78,7 +79,8 @@ export async function getUserClusters(
             manager: {
                 id: cluster.manager.id,
                 firstName: cluster.manager.firstName,
-                lastName: cluster.manager.lastName
+                lastName: cluster.manager.lastName,
+                role: cluster.manager.role
             },
             groups: cluster.groups.map(group => ({
                 id: group.id,
@@ -113,7 +115,8 @@ export async function getClusterById(
               manager: {
                   id: result.manager.id,
                   firstName: result.manager.firstName,
-                  lastName: result.manager.lastName
+                  lastName: result.manager.lastName,
+                  role: result.manager.role
               },
               groups: result.groups.map(group => ({
                   id: group.id,

@@ -4,7 +4,23 @@ import jwt from "jsonwebtoken";
 
 import { pageSize } from "$lib/consts";
 import prisma from "$lib/server/db/prisma";
-import type { List, User, UserSettings } from "$lib/types";
+import type { Account, List, User } from "$lib/types";
+
+export async function getAccountById(id: bigint): Promise<Account | null> {
+    const result = await prisma.user.findFirst({
+        where: { id }
+    });
+
+    return result
+        ? {
+            id: result.id,
+            firstName: result.firstName,
+            lastName: result.lastName,
+            role: result.role,
+            settings: (result.settings as Account["settings"] | undefined) ?? null
+        }
+        : null;
+}
 
 export async function getUserById(id: bigint): Promise<User | null> {
     const result = await prisma.user.findFirst({
@@ -16,8 +32,7 @@ export async function getUserById(id: bigint): Promise<User | null> {
               id: result.id,
               firstName: result.firstName,
               lastName: result.lastName,
-              role: result.role,
-              settings: result.settings as UserSettings | null
+              role: result.role
           }
         : null;
 }
@@ -31,8 +46,7 @@ export async function getManagement(): Promise<User[]> {
         id: user.id,
         firstName: user.firstName,
         lastName: user.lastName,
-        role: user.role,
-        settings: null
+        role: user.role
     }));
 }
 
@@ -42,8 +56,7 @@ export async function createUser(user: User) {
             id: user.id,
             firstName: user.firstName,
             lastName: user.lastName,
-            role: user.role,
-            settings: user.settings ?? undefined
+            role: user.role
         },
         update: { role: user.role },
         where: { id: user.id }
@@ -60,8 +73,7 @@ export async function updateUser(user: Partial<User> & Pick<User, "id">) {
             id: user.id,
             firstName: user.firstName,
             lastName: user.lastName,
-            role: user.role,
-            settings: user.settings ?? undefined
+            role: user.role
         }
     });
 
@@ -90,8 +102,7 @@ export async function searchUsers(name: string, page = 1): Promise<List<User>> {
             id: u.id,
             firstName: u.firstName,
             lastName: u.lastName,
-            role: u.role,
-            settings: null
+            role: u.role
         })),
         page,
         total: Number(count[0].count)
@@ -114,10 +125,10 @@ export async function setUserSecretById(userId: bigint, secret: string) {
     });
 }
 
-export function parseJwt(token: string, secret: string): User | null {
+export function parseJwt(token: string, secret: string): Account | null {
     try {
         const payload = jwt.verify(token, secret) as { userInfo: string };
-        const user = JSON.parse(payload.userInfo) as User;
+        const user = JSON.parse(payload.userInfo) as Account;
         user.id = BigInt(user.id);
 
         return user;
@@ -126,7 +137,7 @@ export function parseJwt(token: string, secret: string): User | null {
     }
 }
 
-export function generateJwt(user: User): {
+export function generateJwt(user: Account): {
     accessToken: string;
     refreshToken: string;
     secret: string;

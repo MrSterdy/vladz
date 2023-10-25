@@ -1,14 +1,13 @@
-import type { Group as RawGroup } from "@prisma/client";
 import * as crypto from "crypto";
 
 import { pageSize } from "$lib/consts";
 import prisma from "$lib/server/db/prisma";
-import type { Group, List } from "$lib/types";
+import type { DetailedGroup, Group, List } from "$lib/types";
 import type { GroupUser } from "$lib/types";
 
 export async function getGroupByInviteCode(
     inviteCode: string
-): Promise<Group | null> {
+): Promise<DetailedGroup | null> {
     const result = await prisma.group.findFirst({
         where: { inviteCode },
         include: {
@@ -47,11 +46,7 @@ export async function getGroups(page = 1, search = ""): Promise<List<Group>> {
         prisma.group.findMany({
             take: pageSize,
             skip: (page - 1) * pageSize,
-            where: { name: { contains: like, mode: "insensitive" } },
-            include: {
-                users: { include: { user: true } },
-                applications: { include: { user: true } }
-            }
+            where: { name: { contains: like, mode: "insensitive" } }
         })
     ]);
 
@@ -59,25 +54,14 @@ export async function getGroups(page = 1, search = ""): Promise<List<Group>> {
         items: groups.map(group => ({
             id: group.id,
             inviteCode: group.inviteCode,
-            name: group.name,
-            users: group.users.map(ug => ({
-                id: ug.userId,
-                firstName: ug.user.firstName,
-                lastName: ug.user.lastName,
-                role: ug.role
-            })),
-            applications: group.applications.map(a => ({
-                id: a.userId,
-                firstName: a.user.firstName,
-                lastName: a.user.lastName
-            }))
+            name: group.name
         })),
         page,
         total: count
     };
 }
 
-export async function getGroupById(groupId: number): Promise<Group | null> {
+export async function getGroupById(groupId: number): Promise<DetailedGroup | null> {
     const result = await prisma.group.findFirst({
         where: { id: groupId },
         include: {
@@ -126,10 +110,6 @@ export async function getUserGroups(
             where: {
                 users: { some: { userId } },
                 name: { contains: like, mode: "insensitive" }
-            },
-            include: {
-                users: { include: { user: true } },
-                applications: { include: { user: true } }
             }
         })
     ]);
@@ -138,18 +118,7 @@ export async function getUserGroups(
         items: groups.map(group => ({
             id: group.id,
             inviteCode: group.inviteCode,
-            name: group.name,
-            users: group.users.map(ug => ({
-                id: ug.userId,
-                firstName: ug.user.firstName,
-                lastName: ug.user.lastName,
-                role: ug.role
-            })),
-            applications: group.applications.map(a => ({
-                id: a.userId,
-                firstName: a.user.firstName,
-                lastName: a.user.lastName
-            }))
+            name: group.name
         })),
         page,
         total: count
@@ -240,5 +209,8 @@ export async function createGroup(name: string): Promise<Group> {
         inviteCode: result.inviteCode,
         users: [],
         applications: []
+        inviteCode: result.inviteCode
+    };
+}
     };
 }

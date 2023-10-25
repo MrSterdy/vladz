@@ -27,7 +27,7 @@ export const load: PageServerLoad = async event => {
         event.locals.user!.role === "ADMIN" ||
         event.locals.user!.role === "HELPER";
 
-    let groups: List<Omit<Group, "users" | "applications">>;
+    let groups: List<Group>;
     if (type === "applications") {
         groups = await getUserApplications(event.locals.user!.id, page);
     } else {

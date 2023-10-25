@@ -16,7 +16,6 @@ import {
     AUTH_TELEGRAM_COOKIE_NAME,
     REDIRECT_PARAM_NAME
 } from "$lib/consts";
-import { defaultSettings } from "$lib/defaults";
 import bot from "$lib/server/bot";
 import { getClusterById } from "$lib/server/services/clusterService";
 import { getGroupById } from "$lib/server/services/groupService";
@@ -27,7 +26,7 @@ import {
     getManagement,
     updateUser
 } from "$lib/server/services/userService";
-import type { User } from "$lib/types";
+import type { Account } from "$lib/types";
 
 export const authenticationHandler: Handle = async ({ event, resolve }) => {
     if (
@@ -37,7 +36,7 @@ export const authenticationHandler: Handle = async ({ event, resolve }) => {
         return resolve(event);
     }
 
-    let user: User | null = null;
+    let user: Account | null = null;
     let telegramId: bigint | null = null;
 
     const telegramCookie = event.cookies.get(AUTH_TELEGRAM_COOKIE_NAME);
@@ -64,7 +63,7 @@ export const authenticationHandler: Handle = async ({ event, resolve }) => {
     let updateTokens = false;
 
     if (!tokens.accessToken && !tokens.refreshToken) {
-        user = await userService.getUserById(telegramId);
+        user = await userService.getAccountById(telegramId);
         if (user) {
             updateTokens = true;
         }
@@ -73,7 +72,7 @@ export const authenticationHandler: Handle = async ({ event, resolve }) => {
     if (!user && !updateTokens) {
         tokens.secret = await userService.getUserSecretById(telegramId);
         if (!tokens.secret) {
-            user = await userService.getUserById(telegramId);
+            user = await userService.getAccountById(telegramId);
             if (user) {
                 updateTokens = true;
             }
@@ -91,7 +90,7 @@ export const authenticationHandler: Handle = async ({ event, resolve }) => {
                     tokens.secret!
                 ))
             ) {
-                user = await userService.getUserById(telegramId);
+                user = await userService.getAccountById(telegramId);
             }
 
             if (user) {
@@ -101,7 +100,7 @@ export const authenticationHandler: Handle = async ({ event, resolve }) => {
     } else if (!updateTokens) {
         user =
             userService.parseJwt(tokens.refreshToken!, tokens.secret!) ??
-            (await userService.getUserById(telegramId));
+            (await userService.getAccountById(telegramId));
 
         if (user) {
             updateTokens = true;
@@ -225,8 +224,7 @@ const managementPromise = (async function () {
             id: adminId,
             firstName: "Влад",
             lastName: "Король",
-            role: "ADMIN",
-            settings: defaultSettings
+            role: "ADMIN"
         })
     ]);
 })();
