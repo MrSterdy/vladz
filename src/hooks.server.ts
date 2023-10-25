@@ -18,6 +18,7 @@ import {
 } from "$lib/consts";
 import { defaultSettings } from "$lib/defaults";
 import bot from "$lib/server/bot";
+import { getClusterById } from "$lib/server/services/clusterService";
 import { getGroupById } from "$lib/server/services/groupService";
 import * as telegramService from "$lib/server/services/telegramService";
 import * as userService from "$lib/server/services/userService";
@@ -147,37 +148,47 @@ export const authorizationHandler: Handle = async ({ event, resolve }) => {
     }
 
     const groupId = Number(event.params["groupId"]);
+    const clusterId = Number(event.params["clusterId"]);
 
-    if (!path.startsWith("/dashboard/group") || isNaN(groupId)) {
-        return resolve(event);
+    if (path.startsWith("/dashboard/cluster") && !isNaN(clusterId)) {
+        const cluster = await getClusterById(clusterId);
+        if (!cluster) {
+            throw error(400, { message: "Кластер не найден" });
+        }
+
+        if (cluster.manager.id !== user.id && user.role === "USER") {
+            throw error(403, { message: "Доступ запрещен" });
+        }
+
+        event.locals.groupCluster = cluster;
+    } else if (path.startsWith("/dashboard/group") && !isNaN(groupId)) {
+        const group = await getGroupById(groupId);
+        if (!group) {
+            throw error(400, { message: "Группа не найдена" });
+        }
+
+        const groupUser = group.users.find(gu => gu.id === user.id);
+        if (!groupUser && user.role === "USER") {
+            throw error(403, { message: "Доступ запрещен" });
+        }
+
+        const groupPath = path.split(/^\/dashboard\/group\/\d+/)[1];
+
+        if (
+            (groupPath.startsWith("/edit") && user.role === "USER") ||
+            (groupPath.startsWith("/composition/edit") &&
+                user.role === "USER" &&
+                groupUser!.role !== "CURATOR") ||
+            (path.includes("/edit") &&
+                user.role === "USER" &&
+                groupUser!.role === "MEMBER")
+        ) {
+            throw error(403, { message: "Доступ запрещен" });
+        }
+
+        event.locals.group = group;
+        event.locals.groupUser = groupUser;
     }
-
-    const group = await getGroupById(groupId);
-    if (!group) {
-        throw error(400, { message: "Группа не найдена" });
-    }
-
-    const groupUser = group.users.find(gu => gu.id === user.id);
-    if (!groupUser && user.role === "USER") {
-        throw error(403, { message: "Доступ запрещен" });
-    }
-
-    const groupPath = path.split(/^\/dashboard\/group\/\d+/)[1];
-
-    if (
-        (groupPath.startsWith("/edit") && user.role === "USER") ||
-        (groupPath.startsWith("/composition/edit") &&
-            user.role === "USER" &&
-            groupUser!.role !== "CURATOR") ||
-        (path.includes("/edit") &&
-            user.role === "USER" &&
-            groupUser!.role === "MEMBER")
-    ) {
-        throw error(403, { message: "Доступ запрещен" });
-    }
-
-    event.locals.group = group;
-    event.locals.groupUser = groupUser;
 
     return resolve(event);
 };

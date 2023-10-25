@@ -83,8 +83,10 @@ export type GroupCluster = {
 
     name: string;
 
+    manager: BaseUser;
+
     groups: Omit<Group, "users" | "applications">[];
-}
+};
 
 export type List<T> = {
     items: T[];

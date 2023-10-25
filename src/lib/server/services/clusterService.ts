@@ -17,7 +17,8 @@ export async function getClusters(
             skip: (page - 1) * pageSize,
             where: { name: { contains: like, mode: "insensitive" } },
             include: {
-                groups: true
+                groups: true,
+                manager: true
             }
         })
     ]);
@@ -26,6 +27,11 @@ export async function getClusters(
         items: clusters.map(cluster => ({
             id: cluster.id,
             name: cluster.name,
+            manager: {
+                id: cluster.manager.id,
+                firstName: cluster.manager.firstName,
+                lastName: cluster.manager.lastName
+            },
             groups: cluster.groups.map(group => ({
                 id: group.id,
                 name: group.name,
@@ -59,7 +65,8 @@ export async function getUserClusters(
                 managerId: userId
             },
             include: {
-                groups: true
+                groups: true,
+                manager: true
             }
         })
     ]);
@@ -68,6 +75,11 @@ export async function getUserClusters(
         items: clusters.map(cluster => ({
             id: cluster.id,
             name: cluster.name,
+            manager: {
+                id: cluster.manager.id,
+                firstName: cluster.manager.firstName,
+                lastName: cluster.manager.lastName
+            },
             groups: cluster.groups.map(group => ({
                 id: group.id,
                 name: group.name,
@@ -81,4 +93,33 @@ export async function getUserClusters(
 
 export async function createCluster(name: string, userId: bigint) {
     await prisma.groupCluster.create({ data: { name, managerId: userId } });
+}
+
+export async function getClusterById(
+    clusterId: number
+): Promise<GroupCluster | null> {
+    const result = await prisma.groupCluster.findFirst({
+        where: { id: clusterId },
+        include: {
+            groups: true,
+            manager: true
+        }
+    });
+
+    return result
+        ? {
+              id: result.id,
+              name: result.name,
+              manager: {
+                  id: result.manager.id,
+                  firstName: result.manager.firstName,
+                  lastName: result.manager.lastName
+              },
+              groups: result.groups.map(group => ({
+                  id: group.id,
+                  name: group.name,
+                  inviteCode: group.inviteCode
+              }))
+          }
+        : null;
 }

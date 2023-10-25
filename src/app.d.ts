@@ -1,4 +1,4 @@
-import type { Group, GroupUser, User } from "$lib/types";
+import type { Group, GroupCluster, GroupUser, User } from "$lib/types";
 
 declare global {
     namespace App {
@@ -10,6 +10,7 @@ declare global {
             telegramId?: bigint;
             group?: Group;
             groupUser?: GroupUser;
+            groupCluster?: GroupCluster;
         }
         interface PageData {
             flash?: { type: "success" | "error"; message: string };
