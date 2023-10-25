@@ -78,6 +78,14 @@ export type Group = {
     applications: BaseUser[];
 };
 
+export type GroupCluster = {
+    id: number;
+
+    name: string;
+
+    groups: Omit<Group, "users" | "applications">[];
+}
+
 export type List<T> = {
     items: T[];
     page: number;

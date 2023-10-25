@@ -148,6 +148,9 @@ model Group {
 
   inviteCode String @db.VarChar(16)
 
+  cluster   GroupCluster? @relation(fields: [clusterId], references: [id], onDelete: Cascade)
+  clusterId Int?
+
   users GroupUser[]
 
   applications GroupApplication[]
@@ -166,6 +169,17 @@ model Group {
   holidays Holiday[]
 }
 
+model GroupCluster {
+  id Int @id @default(autoincrement())
+
+  name String @db.VarChar(64)
+
+  manager   User @relation(fields: [managerId], references: [id])
+  managerId BigInt
+
+  groups Group[]
+}
+
 model User {
   id BigInt @id
 
@@ -176,6 +190,7 @@ model User {
 
   role UserRole @default(USER)
 
+  clusters     GroupCluster[]
   groups       GroupUser[]
   applications GroupApplication[]
 
