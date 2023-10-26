@@ -5,6 +5,10 @@ import prisma from "$lib/server/db/prisma";
 import type { DetailedGroup, Group, List } from "$lib/types";
 import type { GroupUser } from "$lib/types";
 
+function generateInviteCode() {
+    return crypto.randomBytes(8).toString("hex");
+}
+
 export async function getGroupByInviteCode(
     inviteCode: string
 ): Promise<DetailedGroup | null> {
@@ -61,7 +65,9 @@ export async function getGroups(page = 1, search = ""): Promise<List<Group>> {
     };
 }
 
-export async function getGroupById(groupId: number): Promise<DetailedGroup | null> {
+export async function getGroupById(
+    groupId: number
+): Promise<DetailedGroup | null> {
     const result = await prisma.group.findFirst({
         where: { id: groupId },
         include: {
@@ -198,10 +204,16 @@ export async function deleteGroup(groupId: number) {
     await prisma.group.delete({ where: { id: groupId } });
 }
 
-export async function createGroup(name: string): Promise<Group> {
-    const result = await prisma.group.create({
-        data: { name, inviteCode: crypto.randomBytes(8).toString("hex") }
+export async function createGroup(name: string) {
+    const inviteCode = generateInviteCode();
+
+    await prisma.group.create({
+        data: { name, inviteCode }
     });
+
+    return inviteCode;
+}
+
 
     return {
         id: result.id,

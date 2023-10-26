@@ -84,8 +84,8 @@ export const actions: Actions = {
             throw error(403);
         }
 
-        const group = await createGroup("Новая группа");
-        await createBucket(group.inviteCode);
+        const inviteCode = await createGroup("Новая группа");
+        await createBucket(inviteCode);
 
         setFlash(
             { type: "success", message: "Новая группа была успешно создана" },
