@@ -149,17 +149,19 @@ export const authorizationHandler: Handle = async ({ event, resolve }) => {
     const groupId = Number(event.params["groupId"]);
     const clusterId = Number(event.params["clusterId"]);
 
-    if (path.startsWith("/dashboard/cluster") && !isNaN(clusterId)) {
-        const cluster = await getClusterById(clusterId);
-        if (!cluster) {
-            throw error(400, { message: "Кластер не найден" });
-        }
+    if (path.startsWith("/dashboard/cluster")) {
+        throw error(403);
 
-        if (cluster.manager.id !== user.id && user.role === "USER") {
-            throw error(403, { message: "Доступ запрещен" });
-        }
-
-        event.locals.groupCluster = cluster;
+        // const cluster = await getClusterById(clusterId);
+        // if (!cluster) {
+        //     throw error(400, { message: "Кластер не найден" });
+        // }
+        //
+        // if (cluster.manager.id !== user.id && user.role === "USER") {
+        //     throw error(403, { message: "Доступ запрещен" });
+        // }
+        //
+        // event.locals.groupCluster = cluster;
     } else if (path.startsWith("/dashboard/group") && !isNaN(groupId)) {
         const group = await getGroupById(groupId);
         if (!group) {
