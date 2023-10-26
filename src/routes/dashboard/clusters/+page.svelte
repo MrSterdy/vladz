@@ -4,10 +4,10 @@
     import { enhance } from "$app/forms";
 
     import BackButton from "$lib/components/BackButton.svelte";
-    import Icon from "$lib/components/Icon.svelte";
     import MainButton from "$lib/components/MainButton.svelte";
     import Pagination from "$lib/components/Pagination.svelte";
     import Status from "$lib/components/Status.svelte";
+    import Search from "$lib/components/Search.svelte";
 
     export let data: PageData;
 
@@ -17,18 +17,7 @@
 <BackButton newPage="/" />
 
 <div class="flex flex-col gap-4 h-full">
-    <form class="flex gap-2">
-        <input
-            type="text"
-            name="search"
-            class="w-full input input-primary input-bordered"
-            placeholder="Имя"
-        />
-
-        <button type="submit" class="btn btn-primary">
-            <Icon name="search" class="fill-primary-content icon-medium" />
-        </button>
-    </form>
+    <Search />
 
     {#if data.clusters.items.length}
         <div class="flex flex-col gap-4">

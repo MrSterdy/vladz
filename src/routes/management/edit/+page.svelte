@@ -8,6 +8,7 @@
     import BackButton from "$lib/components/BackButton.svelte";
     import Icon from "$lib/components/Icon.svelte";
     import Pagination from "$lib/components/Pagination.svelte";
+    import Search from "$lib/components/Search.svelte";
     import Status from "$lib/components/Status.svelte";
     import { userRoles } from "$lib/consts";
     import { handleError } from "$lib/utils/form";
@@ -27,18 +28,7 @@
 <h1 class="text-center">Редактирование руководства</h1>
 
 <section class="flex flex-col gap-4">
-    <form class="flex gap-2">
-        <input
-            type="text"
-            name="search"
-            class="w-full input input-primary input-bordered"
-            placeholder="Имя"
-        />
-
-        <button type="submit" class="btn btn-primary">
-            <Icon name="search" class="fill-primary-content icon-medium" />
-        </button>
-    </form>
+    <Search />
 
     {#if search}
         {#if data.search.items.length}

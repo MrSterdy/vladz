@@ -4,9 +4,9 @@
     import type { PageData } from "./$types";
 
     import BackButton from "$lib/components/BackButton.svelte";
-    import Icon from "$lib/components/Icon.svelte";
     import MainButton from "$lib/components/MainButton.svelte";
     import Pagination from "$lib/components/Pagination.svelte";
+    import Search from "$lib/components/Search.svelte";
     import Status from "$lib/components/Status.svelte";
     import { handleError, handleUpdated } from "$lib/utils/form";
 
@@ -28,18 +28,7 @@
 <BackButton newPage="../" />
 
 <div class="flex flex-col gap-4 h-full">
-    <form class="flex gap-2">
-        <input
-            type="text"
-            name="search"
-            class="w-full input input-primary input-bordered"
-            placeholder="Имя"
-        />
-
-        <button type="submit" class="btn btn-primary">
-            <Icon name="search" class="fill-primary-content icon-medium" />
-        </button>
-    </form>
+    <Search />
 
     {#if data.groups.items.length}
         <div class="flex flex-col gap-4">
