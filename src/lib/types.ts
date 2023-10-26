@@ -87,8 +87,6 @@ export type GroupCluster = {
     name: string;
 
     manager: User;
-
-    groups: Group[];
 };
 
 export type List<T> = {

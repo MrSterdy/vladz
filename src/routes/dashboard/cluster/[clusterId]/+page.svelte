@@ -4,7 +4,6 @@
     import { goto } from "$app/navigation";
 
     import BackButton from "$lib/components/BackButton.svelte";
-    import Icon from "$lib/components/Icon.svelte";
     import MainButton from "$lib/components/MainButton.svelte";
 
     export let data: PageData;
@@ -17,11 +16,6 @@
         <h1 class="card-title m-0">
             {data.groupCluster.name}
         </h1>
-
-        <div class="text-accent-content flex items-center gap-2">
-            <Icon name="cluster" class="icon-medium fill-base-content" />
-            {data.groupCluster.groups.length}
-        </div>
     </div>
 
     <div class="flex flex-wrap gap-2">

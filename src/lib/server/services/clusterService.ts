@@ -17,7 +17,6 @@ export async function getClusters(
             skip: (page - 1) * pageSize,
             where: { name: { contains: like, mode: "insensitive" } },
             include: {
-                groups: true,
                 manager: true
             }
         })
@@ -32,12 +31,7 @@ export async function getClusters(
                 firstName: cluster.manager.firstName,
                 lastName: cluster.manager.lastName,
                 role: cluster.manager.role
-            },
-            groups: cluster.groups.map(group => ({
-                id: group.id,
-                name: group.name,
-                inviteCode: group.inviteCode
-            }))
+            }
         })),
         page,
         total: count
@@ -66,7 +60,6 @@ export async function getUserClusters(
                 managerId: userId
             },
             include: {
-                groups: true,
                 manager: true
             }
         })
@@ -81,12 +74,7 @@ export async function getUserClusters(
                 firstName: cluster.manager.firstName,
                 lastName: cluster.manager.lastName,
                 role: cluster.manager.role
-            },
-            groups: cluster.groups.map(group => ({
-                id: group.id,
-                name: group.name,
-                inviteCode: group.inviteCode
-            }))
+            }
         })),
         page,
         total: count
@@ -117,12 +105,7 @@ export async function getClusterById(
                   firstName: result.manager.firstName,
                   lastName: result.manager.lastName,
                   role: result.manager.role
-              },
-              groups: result.groups.map(group => ({
-                  id: group.id,
-                  name: group.name,
-                  inviteCode: group.inviteCode
-              }))
+              }
           }
         : null;
 }
@@ -131,7 +114,10 @@ export async function deleteCluster(clusterId: number) {
     await prisma.groupCluster.delete({ where: { id: clusterId } });
 }
 
-export async function updateClusterName(clusterId: number, clusterName: string) {
+export async function updateClusterName(
+    clusterId: number,
+    clusterName: string
+) {
     await prisma.groupCluster.update({
         where: { id: clusterId },
         data: { name: clusterName }
