@@ -27,6 +27,20 @@
                     {data.groupCluster.name}
                 </a>
             </li>
+            {#if clusterPath.startsWith("/groups")}
+                <li class="m-0 p-0">
+                    <a
+                        href="/dashboard/cluster/{data.groupCluster.id}/groups"
+                        class:disabled={clusterPath === "/groups/"}
+                    >
+                        <Icon
+                            name="cluster"
+                            class="fill-base-content icon-small mr-2"
+                        />
+                        Группы
+                    </a>
+                </li>
+            {/if}
             {#if clusterPath.includes("/edit")}
                 <li class="m-0 p-0">
                     <Icon

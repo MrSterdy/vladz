@@ -214,12 +214,47 @@ export async function createGroup(name: string) {
     return inviteCode;
 }
 
+export async function createGroups(name: string, amount: number, clusterId: number) {
+    const inviteCodes = Array.from({ length: amount }).map(() => generateInviteCode());
+
+    await prisma.group.createMany({
+        data: inviteCodes.map(inviteCode => ({ name, inviteCode, clusterId }))
+    });
+
+    return inviteCodes;
+}
+
+export async function getClusterGroups(
+    clusterId: number,
+    page = 1,
+    search = ""
+): Promise<List<Group>> {
+    const like = search.toLowerCase().split(" ").join("");
+
+    const [count, groups] = await prisma.$transaction([
+        prisma.group.count({
+            where: {
+                clusterId,
+                name: { contains: like, mode: "insensitive" }
+            }
+        }),
+        prisma.group.findMany({
+            take: pageSize,
+            skip: (page - 1) * pageSize,
+            where: {
+                clusterId,
+                name: { contains: like, mode: "insensitive" }
+            }
+        })
+    ]);
 
     return {
-        id: result.id,
-        name: result.name,
-        inviteCode: result.inviteCode
-    };
-}
+        items: groups.map(group => ({
+            id: group.id,
+            inviteCode: group.inviteCode,
+            name: group.name
+        })),
+        page,
+        total: count
     };
 }
