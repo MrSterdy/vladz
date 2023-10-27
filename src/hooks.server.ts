@@ -154,12 +154,14 @@ export const authorizationHandler: Handle = async ({ event, resolve }) => {
             throw error(403, { message: "Доступ запрещен" });
         }
 
-        const cluster = await getClusterById(clusterId);
-        if (!cluster) {
-            throw error(400, { message: "Кластер не найден" });
-        }
+        if (!path.startsWith("/dashboard/clusters")) {
+            const cluster = await getClusterById(clusterId);
+            if (!cluster) {
+                throw error(400, { message: "Кластер не найден" });
+            }
 
-        event.locals.groupCluster = cluster;
+            event.locals.groupCluster = cluster;
+        }
     } else if (path.startsWith("/dashboard/group") && !isNaN(groupId)) {
         const group = await getGroupById(groupId);
         if (!group) {
