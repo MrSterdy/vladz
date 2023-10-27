@@ -2,7 +2,8 @@ import dayjs, { Dayjs } from "dayjs";
 
 export function formatISOString(dateInput: Date): string;
 export function formatISOString(stringInput: string): string;
-export function formatISOString(input: Date | string) {
+export function formatISOString(dayjsInput: Dayjs): string;
+export function formatISOString(input: Date | Dayjs | string) {
     return (typeof input === "string" ? new Date(input) : input)
         .toISOString()
         .split("T")[0];
@@ -10,10 +11,6 @@ export function formatISOString(input: Date | string) {
 
 export function parseDate(input: string) {
     return dayjs(input, "YYYY-MM-DD", true);
-}
-
-export function dateToString(input: Dayjs) {
-    return input.format("YYYY-MM-DD");
 }
 
 export function humanize(input: Dayjs) {

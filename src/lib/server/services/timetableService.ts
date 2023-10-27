@@ -2,6 +2,7 @@ import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 
 import prisma from "$lib/server/db/prisma";
+import { deleteFiles } from "$lib/server/services/fileService";
 import type { DateTimetable, Holiday, WeekdayTimetable } from "$lib/types";
 import { formatISOString } from "$lib/utils/time";
 
@@ -166,6 +167,7 @@ export async function updateDateTimetable(
             date: timetable.date,
             offset: timetable.offset,
             note: timetable.note,
+            expirationDate: dayjs().add(7, "days").toISOString(),
             subjects: {
                 create: timetable.subjects.map(subject => ({
                     name: subject.name,
@@ -410,4 +412,27 @@ async function findNearestWeekdayTimetableWithSubject(
     }
 
     return result;
+}
+
+export async function clearExpired() {
+    const today = dayjs().toISOString();
+
+    const [timetables, _] = await prisma.$transaction([
+        prisma.dateTimetable.findMany({
+            where: {
+                expirationDate: { lte: today },
+                NOT: { homeworkFiles: { none: {} } }
+            },
+            include: {
+                homeworkFiles: true
+            }
+        }),
+        prisma.dateTimetable.deleteMany({
+            where: { expirationDate: { lte: today } }
+        })
+    ]);
+
+    await Promise.all(
+        timetables.map(t => deleteFiles(t.homeworkFiles.map(f => f.url)))
+    );
 }

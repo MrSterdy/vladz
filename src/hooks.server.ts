@@ -27,6 +27,7 @@ import {
     updateUser
 } from "$lib/server/services/userService";
 import type { Account } from "$lib/types";
+import { scheduleJobs } from "$lib/server/services/cronService";
 
 export const authenticationHandler: Handle = async ({ event, resolve }) => {
     if (
@@ -237,5 +238,7 @@ if (import.meta.env.DEV) {
     managementPromise.catch(console.error);
     botPromise.catch(console.error);
 }
+
+scheduleJobs();
 
 dayjs.locale("ru");

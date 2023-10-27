@@ -17,7 +17,7 @@ import {
     updateDateTimetable
 } from "$lib/server/services/timetableService";
 import type { DateSubject, DateTimetable } from "$lib/types";
-import { dateToString, parseDate } from "$lib/utils/time";
+import { formatISOString, parseDate } from "$lib/utils/time";
 
 export const load: PageServerLoad = async event => {
     const { dateTimetable, weekdayTimetable } = await event.parent();
@@ -193,7 +193,7 @@ export const actions: Actions = {
                 await deleteFiles(removedFiles);
             }
 
-            if (!date.isBefore(dayjs(dateToString(dayjs())))) {
+            if (!date.isBefore(dayjs(formatISOString(dayjs())))) {
                 const removedSubjects: DateSubject[] = [];
 
                 remove: for (const oldSubject of oldTimetable.subjects) {

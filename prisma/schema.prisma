@@ -59,6 +59,8 @@ model DateTimetable {
   homeworkTexts HomeworkText[]
   homeworkFiles HomeworkFile[]
 
+  expirationDate DateTime @db.Date @default(now())
+
   @@unique([groupId, date])
 }
 
