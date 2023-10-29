@@ -1,4 +1,4 @@
-[![MIT License](https://img.shields.io/badge/license-MIT-green.svg?color=3F51B5&style=for-the-badge&label=License&logoColor=000000&labelColor=ececec)](https://opensource.org/licenses/MIT)
+[![GPLv3 License](https://img.shields.io/badge/license-GPLv3-green.svg?color=3F51B5&style=for-the-badge&label=License&logoColor=000000&labelColor=ececec)](https://www.gnu.org/licenses/gpl-3.0)
 
 # Владз
 
