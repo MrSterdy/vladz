@@ -106,12 +106,15 @@ export async function updateDateTimetable(
     groupId: number,
     timetable: DateTimetable
 ) {
+    const expirationDate = dayjs().add(7, "days").toISOString();
+
     await prisma.dateTimetable.upsert({
         where: { groupId_date: { date: timetable.date, groupId } },
         update: {
             date: timetable.date,
             note: timetable.note,
             offset: timetable.offset,
+            expirationDate,
             subjects: {
                 deleteMany: { timetableDate: timetable.date, groupId },
                 create: timetable.subjects.map(subject => ({
@@ -167,7 +170,7 @@ export async function updateDateTimetable(
             date: timetable.date,
             offset: timetable.offset,
             note: timetable.note,
-            expirationDate: dayjs().add(7, "days").toISOString(),
+            expirationDate,
             subjects: {
                 create: timetable.subjects.map(subject => ({
                     name: subject.name,
