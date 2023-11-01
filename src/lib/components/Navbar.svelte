@@ -78,13 +78,6 @@
                 Группы
             </a>
             <a
-                href="/dashboard/clusters"
-                class="flex gap-2 items-center text-accent-content font-bold"
-            >
-                <Icon name="cluster" class="h-7 w-auto fill-accent-content" />
-                Кластеры
-            </a>
-            <a
                 href="/management"
                 class="flex gap-2 items-center text-accent-content font-bold"
             >
