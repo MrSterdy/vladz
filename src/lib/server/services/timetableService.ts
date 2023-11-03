@@ -106,7 +106,7 @@ export async function updateDateTimetable(
     groupId: number,
     timetable: DateTimetable
 ) {
-    const expirationDate = dayjs().add(7, "days").toISOString();
+    const expirationDate = dayjs().add(14, "days").toISOString();
 
     await prisma.dateTimetable.upsert({
         where: { groupId_date: { date: timetable.date, groupId } },
