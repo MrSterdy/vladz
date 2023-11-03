@@ -12,7 +12,7 @@
     export let currentPage: number;
     export let totalItems: number;
 
-    const totalPages = Math.ceil(totalItems / pageSize);
+    $: totalPages = Math.ceil(totalItems / pageSize);
 
     function prevPage() {
         const query = new URLSearchParams($page.url.searchParams.toString());
