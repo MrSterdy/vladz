@@ -59,19 +59,19 @@ export const actions: Actions = {
         }
 
         const user = event.locals.user!;
-        user!.firstName = form.data.first_name;
-        user!.lastName = form.data.last_name;
-        if (!user!.settings) {
-            user!.settings = { notifications: {} };
+        user.firstName = form.data.first_name;
+        user.lastName = form.data.last_name;
+        if (!user.settings) {
+            user.settings = { notifications: {} };
         }
 
         for (const notification of form.data.notifications) {
-            user!.settings.notifications[notification] = true;
+            user.settings.notifications[notification] = true;
         }
 
         for (const notification of notifications) {
             if (!form.data.notifications.includes(notification)) {
-                user!.settings.notifications[notification] = false;
+                user.settings.notifications[notification] = false;
             }
         }
 

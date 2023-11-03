@@ -63,7 +63,7 @@ export async function createUser(user: User) {
     });
 }
 
-export async function updateUser(user: Partial<User> & Pick<User, "id">) {
+export async function updateUser(user: Partial<User | Account> & Pick<User, "id">) {
     const removeSecret = prisma.userSecret.delete({
         where: { userId: user.id }
     });
@@ -73,7 +73,8 @@ export async function updateUser(user: Partial<User> & Pick<User, "id">) {
             id: user.id,
             firstName: user.firstName,
             lastName: user.lastName,
-            role: user.role
+            role: user.role,
+            settings: "settings" in user && user.settings ? user.settings : undefined
         }
     });
 
