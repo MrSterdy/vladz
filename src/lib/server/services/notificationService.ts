@@ -13,7 +13,11 @@ export async function sendPromotionNotification(
         notification += ` в группе "${groupName}"`;
     }
 
-    await bot.telegram.sendMessage(userId.toString(), notification);
+    await bot.telegram
+        .sendMessage(userId.toString(), notification)
+        .catch(() =>
+            console.error(`Couldn't send message to ${userId.toString()}`)
+        );
 }
 
 export async function sendApplicationStateNotification(
@@ -24,13 +28,21 @@ export async function sendApplicationStateNotification(
     let notification = `⚡️ | Ваша заявка в группу "${groupName}" была `;
     notification += state === "accepted" ? "принята" : "отклонена";
 
-    await bot.telegram.sendMessage(userId.toString(), notification);
+    await bot.telegram
+        .sendMessage(userId.toString(), notification)
+        .catch(() =>
+            console.error(`Couldn't send message to ${userId.toString()}`)
+        );
 }
 
 export async function sendKickNotification(userId: bigint, groupName: string) {
     const notification = `⚡️ | Вы были исключены из группы "${groupName}"`;
 
-    await bot.telegram.sendMessage(userId.toString(), notification);
+    await bot.telegram
+        .sendMessage(userId.toString(), notification)
+        .catch(() =>
+            console.error(`Couldn't send message to ${userId.toString()}`)
+        );
 }
 
 export async function sendApplicationNotifications(
@@ -62,12 +74,16 @@ export async function sendApplicationNotifications(
         }
     });
 
-    await Promise.allSettled(
+    await Promise.all(
         users.map(u =>
-            bot.telegram.sendMessage(
-                u.id.toString(),
-                `⚡️ | Новая заявка в группе "${groupName}"`
-            )
+            bot.telegram
+                .sendMessage(
+                    u.id.toString(),
+                    `⚡️ | Новая заявка в группе "${groupName}"`
+                )
+                .catch(() =>
+                    console.error(`Couldn't send message to ${u.id.toString()}`)
+                )
         )
     );
 }
@@ -94,14 +110,18 @@ export async function sendTimetableNotifications(
         }
     });
 
-    await Promise.allSettled(
+    await Promise.all(
         users.map(u =>
-            bot.telegram.sendMessage(
-                u.id.toString(),
-                `⚡️ | Произошли изменения в расписании в группе "${groupName}" на ${date.format(
-                    "DD.MM.YYYY"
-                )}`
-            )
+            bot.telegram
+                .sendMessage(
+                    u.id.toString(),
+                    `⚡️ | Произошли изменения в расписании в группе "${groupName}" на ${date.format(
+                        "DD.MM.YYYY"
+                    )}`
+                )
+                .catch(() =>
+                    console.error(`Couldn't send message to ${u.id.toString()}`)
+                )
         )
     );
 }
