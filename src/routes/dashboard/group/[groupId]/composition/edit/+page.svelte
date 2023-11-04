@@ -82,8 +82,8 @@
                                     {capitalize(groupUserRoles[user.role])}
                                 </span>
                             </td>
-                            {#if (user.id !== data.groupUser?.id || data.user.role !== "USER") && (data.user.role !== "USER" || data.groupUser?.role === "CURATOR")}
-                                {#if user.role !== "CURATOR"}
+                            {#if data.user.role !== "USER" || (user.id !== data.groupUser?.id && (data.groupUser?.role === "CURATOR" || (data.groupUser?.role === "MONITOR" && user.role !== "MONITOR" && user.role !== "CURATOR")))}
+                                {#if user.role !== "CURATOR" && ((user.role !== "MONITOR" && (user.role !== "HELPER" || data.groupUser?.role === "CURATOR")) || data.user.role !== "USER")}
                                     <td class="p-0">
                                         <form
                                             method="post"
@@ -108,7 +108,7 @@
                                     </td>
                                 {/if}
 
-                                {#if user.role !== "MEMBER" && (data.user.role !== "USER" || user.role !== "CURATOR")}
+                                {#if user.role !== "MEMBER"}
                                     <td class="p-0">
                                         <form
                                             method="post"

@@ -41,6 +41,6 @@
     <Status icon="sad" message="Никого нет" />
 {/if}
 
-{#if data.user.role !== "USER" || data.groupUser?.role === "CURATOR"}
+{#if data.user.role !== "USER" || data.groupUser?.role === "CURATOR" || data.groupUser?.role === "MONITOR"}
     <MainButton onClick={() => goto("edit")} text="РЕДАКТИРОВАТЬ" />
 {/if}

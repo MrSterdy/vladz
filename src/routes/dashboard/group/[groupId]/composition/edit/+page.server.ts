@@ -43,11 +43,19 @@ export const actions: Actions = {
             throw error(400, { message: "Не удалось повысить участника" });
         }
 
-        if (user.role === "EDITOR" && event.locals.user!.role === "USER") {
+        if (
+            (user.role === "MONITOR" || user.role === "HELPER") &&
+            event.locals.user!.role === "USER"
+        ) {
             throw error(403, { message: "Недостаточно прав" });
         }
 
-        const newRole = user.role === "EDITOR" ? "CURATOR" : "EDITOR";
+        const newRole =
+            user.role === "MONITOR"
+                ? "CURATOR"
+                : user.role === "HELPER"
+                ? "MONITOR"
+                : "HELPER";
 
         await updateGroupUserRole(user.id, group.id, newRole);
 
@@ -84,11 +92,19 @@ export const actions: Actions = {
             throw error(400, "Не удалось понизить участника");
         }
 
-        if (user.role === "CURATOR" && event.locals.user!.role === "USER") {
+        if (
+            (user.role === "CURATOR" || user.role === "MONITOR") &&
+            event.locals.user!.role === "USER"
+        ) {
             throw error(403, { message: "Недостаточно прав" });
         }
 
-        const newRole = user.role === "CURATOR" ? "EDITOR" : "MEMBER";
+        const newRole =
+            user.role === "CURATOR"
+                ? "MONITOR"
+                : user.role === "MONITOR"
+                ? "HELPER"
+                : "MEMBER";
 
         await updateGroupUserRole(user.id, group.id, newRole);
 
@@ -121,7 +137,10 @@ export const actions: Actions = {
             throw error(400, { message: "Пользователь не найден" });
         }
 
-        if (user.role === "CURATOR" && event.locals.user!.role === "USER") {
+        if (
+            (user.role === "CURATOR" || user.role === "MONITOR") &&
+            event.locals.user!.role === "USER"
+        ) {
             throw error(403, { message: "Недостаточно прав" });
         }
 

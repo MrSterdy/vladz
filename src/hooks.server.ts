@@ -18,6 +18,7 @@ import {
 } from "$lib/consts";
 import bot from "$lib/server/bot";
 import { getClusterById } from "$lib/server/services/clusterService";
+import { scheduleJobs } from "$lib/server/services/cronService";
 import { getGroupById } from "$lib/server/services/groupService";
 import * as telegramService from "$lib/server/services/telegramService";
 import * as userService from "$lib/server/services/userService";
@@ -27,7 +28,6 @@ import {
     updateUser
 } from "$lib/server/services/userService";
 import type { Account } from "$lib/types";
-import { scheduleJobs } from "$lib/server/services/cronService";
 
 export const authenticationHandler: Handle = async ({ event, resolve }) => {
     if (
@@ -180,7 +180,8 @@ export const authorizationHandler: Handle = async ({ event, resolve }) => {
             (groupPath.startsWith("/edit") && user.role === "USER") ||
             (groupPath.startsWith("/composition/edit") &&
                 user.role === "USER" &&
-                groupUser!.role !== "CURATOR") ||
+                groupUser!.role !== "CURATOR" &&
+                groupUser!.role !== "MONITOR") ||
             (path.includes("/edit") &&
                 user.role === "USER" &&
                 groupUser!.role === "MEMBER")

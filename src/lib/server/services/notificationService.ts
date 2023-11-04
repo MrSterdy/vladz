@@ -45,7 +45,14 @@ export async function sendApplicationNotifications(
             groups: {
                 some: {
                     groupId,
-                    role: "CURATOR"
+                    OR: [
+                        {
+                            role: "CURATOR"
+                        },
+                        {
+                            role: "MONITOR"
+                        }
+                    ]
                 }
             },
             settings: {

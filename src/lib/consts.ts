@@ -22,7 +22,8 @@ export const userRoles = {
 
 export const groupUserRoles = {
     "CURATOR": "куратор",
-    "EDITOR": "редактор",
+    "MONITOR": "староста",
+    "HELPER": "помощник",
     "MEMBER": "участник"
 } as const;
 
