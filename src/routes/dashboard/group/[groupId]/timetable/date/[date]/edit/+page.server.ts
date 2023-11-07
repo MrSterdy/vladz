@@ -28,6 +28,7 @@ export const load: PageServerLoad = async event => {
         ? {
               note: dateTimetable.note,
               offset: dateTimetable.offset,
+              sendNotifications: false,
               subjects: dateTimetable.subjects.map(subject => ({
                   name: subject.name,
                   length: subject.length,
@@ -43,6 +44,7 @@ export const load: PageServerLoad = async event => {
         ? {
               offset: weekdayTimetable.offset,
               note: null,
+              sendNotifications: false,
               subjects: weekdayTimetable.subjects.map(subject => ({
                   name: subject.name,
                   length: subject.length,
@@ -56,6 +58,7 @@ export const load: PageServerLoad = async event => {
           }
         : {
               offset: 0,
+              sendNotifications: false,
               note: null,
               subjects: []
           };
@@ -286,7 +289,9 @@ export const actions: Actions = {
 
         await updateDateTimetable(group.id, newTimetable);
 
-        await sendTimetableNotifications(group.id, group.name, date);
+        if (form.data.sendNotifications) {
+            await sendTimetableNotifications(group.id, group.name, date);
+        }
 
         throw redirect(
             "../",

@@ -140,7 +140,7 @@
         {/each}
     </datalist>
 
-    <div class="w-full">
+    <div class="w-full flex flex-col gap-2">
         <div class="w-full">
             <label class="label" for="offset">
                 <span class="label-text">Начало занятий</span>
@@ -168,6 +168,15 @@
                 placeholder="Примечание"
                 bind:value={$form.note}
                 {...$constraints.note}
+            />
+        </div>
+        <div class="flex gap-2 justify-between">
+            <span>Включить уведомления?</span>
+            <input
+                name="sendNotifications"
+                class="checkbox checkbox-primary"
+                type="checkbox"
+                bind:checked={$form.sendNotifications}
             />
         </div>
     </div>
@@ -275,15 +284,16 @@
                         {#if subject.name}
                             <div class="w-full">
                                 <label for="teacher-{i}" class="label">
-                                    <span class="label-text">Преподаватель</span>
+                                    <span class="label-text">Преподаватель</span
+                                    >
                                 </label>
 
                                 <input
                                     id="teacher-{i}"
                                     placeholder="Преподаватель"
                                     aria-invalid={$errors.subjects?.[i].teacher
-                                    ? true
-                                    : undefined}
+                                        ? true
+                                        : undefined}
                                     class="w-full input input-bordered input-secondary"
                                     type="text"
                                     bind:value={$form.subjects[i].teacher}
@@ -298,9 +308,10 @@
                                 <input
                                     id="classroom-{i}"
                                     placeholder="Кабинет"
-                                    aria-invalid={$errors.subjects?.[i].classroom
-                                    ? true
-                                    : undefined}
+                                    aria-invalid={$errors.subjects?.[i]
+                                        .classroom
+                                        ? true
+                                        : undefined}
                                     class="w-full input input-secondary input-bordered"
                                     type="text"
                                     bind:value={$form.subjects[i].classroom}
@@ -314,7 +325,7 @@
                                         class="label"
                                     >
                                         <span class="label-text"
-                                        >Домашнее задание</span
+                                            >Домашнее задание</span
                                         >
                                     </label>
 

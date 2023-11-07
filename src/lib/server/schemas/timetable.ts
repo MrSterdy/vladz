@@ -69,6 +69,7 @@ const dateTimetableSchema = z
             .string({ invalid_type_error: "Примечание должно быть строкой" })
             .max(1024, "Примечание не должно превышать 1024 символов")
             .nullable(),
+        sendNotifications: z.boolean(),
         subjects: z
             .array(
                 z
