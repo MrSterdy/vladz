@@ -199,7 +199,7 @@
         transition:fade={{ duration: 100 }}
         on:click={() => (selectedImage = null)}
         class:hidden={!selectedImage}
-        class="w-full h-full fixed inset-0 [&:not(.hidden)]:bg-base-100/90"
+        class="w-full h-full fixed inset-0 z-10 [&:not(.hidden)]:bg-base-100/90"
     >
         <img
             class="max-w-[90%] max-h-[90%] object-contain m-auto rounded"
