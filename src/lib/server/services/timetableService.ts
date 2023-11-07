@@ -234,6 +234,11 @@ export async function findNextTimetableWithSubject(
 } | null> {
     const day = startDate.day();
 
+    const isoHolidays = holidays.map(h => ({
+        startDate: new Date(h.startDate).toISOString(),
+        endDate: new Date(h.endDate).toISOString()
+    }));
+
     const weekdayTimetable = await findNearestWeekdayTimetableWithSubject(
         groupId,
         subjectName,
@@ -244,7 +249,7 @@ export async function findNextTimetableWithSubject(
             groupId,
             subjectName,
             startDate.toISOString(),
-            holidays
+            isoHolidays
         );
 
         return dateTimetable
@@ -280,7 +285,7 @@ export async function findNextTimetableWithSubject(
         subjectName,
         startDate.toISOString(),
         endDate.toISOString(),
-        holidays
+        isoHolidays
     );
 
     return dateTimetable
