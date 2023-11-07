@@ -101,9 +101,16 @@ export const actions: Actions = {
             const totalFiles =
                 newFiles.length + (subject.homeworkFiles?.length ?? 0);
 
-            if (!(subject.name ?? "") && (subject.homeworkText || totalFiles)) {
+            if (
+                !(subject.name ?? "") &&
+                (subject.teacher ||
+                    subject.classroom ||
+                    subject.homeworkText ||
+                    totalFiles)
+            ) {
                 throw error(400, {
-                    message: "У предмета с пустым названием не должно быть ДЗ"
+                    message:
+                        "У предмета с пустым названием не должно быть ДЗ, учителя и кабинета"
                 });
             }
 

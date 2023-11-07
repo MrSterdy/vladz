@@ -1,4 +1,4 @@
-import { fail, redirect } from "@sveltejs/kit";
+import { error, fail, redirect } from "@sveltejs/kit";
 import { superValidate } from "sveltekit-superforms/server";
 
 import type { Actions, PageServerLoad } from "./$types";
@@ -27,6 +27,15 @@ export const actions: Actions = {
         }
 
         const weekday = parseInt(event.params.weekday);
+
+        for (const subject of form.data.subjects) {
+            if (!subject.name && (subject.classroom || subject.teacher)) {
+                throw error(400, {
+                    message:
+                        "У предмета с пустым названием не должно быть учителя и кабинета"
+                });
+            }
+        }
 
         await updateWeekdayTimetable(event.locals.group!.id, {
             weekday,

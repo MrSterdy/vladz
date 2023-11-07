@@ -272,41 +272,41 @@
                                 />
                             </div>
                         </div>
-                        <div class="w-full">
-                            <label for="teacher-{i}" class="label">
-                                <span class="label-text">Преподаватель</span>
-                            </label>
-
-                            <input
-                                id="teacher-{i}"
-                                placeholder="Преподаватель"
-                                aria-invalid={$errors.subjects?.[i].teacher
-                                    ? true
-                                    : undefined}
-                                class="w-full input input-bordered input-secondary"
-                                type="text"
-                                bind:value={$form.subjects[i].teacher}
-                                {...$constraints.subjects?.teacher}
-                            />
-                        </div>
-                        <div class="w-full">
-                            <label for="classroom-{i}" class="label">
-                                <span class="label-text">Кабинет</span>
-                            </label>
-
-                            <input
-                                id="classroom-{i}"
-                                placeholder="Кабинет"
-                                aria-invalid={$errors.subjects?.[i].classroom
-                                    ? true
-                                    : undefined}
-                                class="w-full input input-secondary input-bordered"
-                                type="text"
-                                bind:value={$form.subjects[i].classroom}
-                                {...$constraints.subjects?.classroom}
-                            />
-                        </div>
                         {#if subject.name}
+                            <div class="w-full">
+                                <label for="teacher-{i}" class="label">
+                                    <span class="label-text">Преподаватель</span>
+                                </label>
+
+                                <input
+                                    id="teacher-{i}"
+                                    placeholder="Преподаватель"
+                                    aria-invalid={$errors.subjects?.[i].teacher
+                                    ? true
+                                    : undefined}
+                                    class="w-full input input-bordered input-secondary"
+                                    type="text"
+                                    bind:value={$form.subjects[i].teacher}
+                                    {...$constraints.subjects?.teacher}
+                                />
+                            </div>
+                            <div class="w-full">
+                                <label for="classroom-{i}" class="label">
+                                    <span class="label-text">Кабинет</span>
+                                </label>
+
+                                <input
+                                    id="classroom-{i}"
+                                    placeholder="Кабинет"
+                                    aria-invalid={$errors.subjects?.[i].classroom
+                                    ? true
+                                    : undefined}
+                                    class="w-full input input-secondary input-bordered"
+                                    type="text"
+                                    bind:value={$form.subjects[i].classroom}
+                                    {...$constraints.subjects?.classroom}
+                                />
+                            </div>
                             <div class="w-full flex flex-col gap-2">
                                 <div class="w-full">
                                     <label
@@ -314,7 +314,7 @@
                                         class="label"
                                     >
                                         <span class="label-text"
-                                            >Домашнее задание</span
+                                        >Домашнее задание</span
                                         >
                                     </label>
 

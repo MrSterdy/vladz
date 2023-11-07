@@ -229,34 +229,36 @@
                                 />
                             </div>
                         </div>
-                        <div class="w-full">
-                            <label for="teacher-{i}" class="label">
-                                <span class="label-text">Преподаватель</span>
-                            </label>
+                        {#if subject.name}
+                            <div class="w-full">
+                                <label for="teacher-{i}" class="label">
+                                    <span class="label-text">Преподаватель</span>
+                                </label>
 
-                            <input
-                                id="teacher-{i}"
-                                placeholder="Преподаватель"
-                                class="w-full input input-bordered input-secondary"
-                                type="text"
-                                bind:value={$form.subjects[i].teacher}
-                                {...$constraints.subjects?.teacher}
-                            />
-                        </div>
-                        <div class="w-full">
-                            <label for="classroom-{i}" class="label">
-                                <span class="label-text">Кабинет</span>
-                            </label>
+                                <input
+                                    id="teacher-{i}"
+                                    placeholder="Преподаватель"
+                                    class="w-full input input-bordered input-secondary"
+                                    type="text"
+                                    bind:value={$form.subjects[i].teacher}
+                                    {...$constraints.subjects?.teacher}
+                                />
+                            </div>
+                            <div class="w-full">
+                                <label for="classroom-{i}" class="label">
+                                    <span class="label-text">Кабинет</span>
+                                </label>
 
-                            <input
-                                id="classroom-{i}"
-                                placeholder="Кабинет"
-                                class="w-full input input-secondary input-bordered"
-                                type="text"
-                                bind:value={$form.subjects[i].classroom}
-                                {...$constraints.subjects?.classroom}
-                            />
-                        </div>
+                                <input
+                                    id="classroom-{i}"
+                                    placeholder="Кабинет"
+                                    class="w-full input input-secondary input-bordered"
+                                    type="text"
+                                    bind:value={$form.subjects[i].classroom}
+                                    {...$constraints.subjects?.classroom}
+                                />
+                            </div>
+                        {/if}
                         <button
                             type="button"
                             class="btn btn-error w-full mt-2"
