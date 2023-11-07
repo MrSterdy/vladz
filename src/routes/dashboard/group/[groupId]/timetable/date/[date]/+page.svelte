@@ -199,10 +199,10 @@
         transition:fade={{ duration: 100 }}
         on:click={() => (selectedImage = null)}
         class:hidden={!selectedImage}
-        class="grid place-items-center w-full h-full fixed inset-0 m-auto [&:not(.hidden)]:bg-base-100/90"
+        class="w-full h-full fixed inset-0 [&:not(.hidden)]:bg-base-100/90"
     >
         <img
-            class="max-w-[90%] max-h-[90%] object-contain m-0 rounded"
+            class="max-w-[90%] max-h-[90%] object-contain m-auto rounded"
             src={selectedImage}
             alt=""
         />
