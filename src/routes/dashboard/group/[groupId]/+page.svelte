@@ -47,7 +47,12 @@
         <h1 class="card-title m-0 gap-3 justify-between">
             {data.group.name}
             {#if data.groupUser}
-                <span class="badge badge-accent badge-outline">
+                <span class="badge"
+                      class:badge-primary={data.groupUser.role === "CURATOR"}
+                      class:badge-secondary={data.groupUser.role === "MONITOR"}
+                      class:badge-accent={data.groupUser.role === "HELPER"}
+                      class:badge-neutral={data.groupUser.role === "MEMBER"}
+                >
                     {groupUserRoles[data.groupUser.role].toUpperCase()}
                 </span>
             {/if}

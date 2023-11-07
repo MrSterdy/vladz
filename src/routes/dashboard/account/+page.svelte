@@ -20,7 +20,11 @@
         <h2 class="card-title m-0">
             {data.user.lastName}
             {data.user.firstName}
-            <span class="badge badge-accent badge-outline">
+            <span class="badge"
+                  class:badge-primary={data.user.role === "ADMIN"}
+                  class:badge-secondary={data.user.role === "HELPER"}
+                  class:badge-neutral={data.user.role === "USER"}
+            >
                 {capitalize(userRoles[data.user.role])}
             </span>
         </h2>

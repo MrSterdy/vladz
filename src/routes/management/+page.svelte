@@ -31,7 +31,11 @@
                     <th>{i + 1}</th>
                     <td class="word-break">{user.lastName} {user.firstName}</td>
                     <td>
-                        <span class="badge badge-accent badge-outline">
+                        <span
+                            class="badge"
+                            class:badge-primary={user.role === "ADMIN"}
+                            class:badge-secondary={user.role === "HELPER"}
+                        >
                             {capitalize(userRoles[user.role])}
                         </span>
                     </td>
