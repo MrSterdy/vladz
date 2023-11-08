@@ -38,6 +38,7 @@ declare global {
         expand: () => void;
 
         openLink: (url: string) => void;
+        openTelegramLink: (url: string) => void;
     }
 
     interface Window {
