@@ -36,7 +36,7 @@
             id="pautina"
             on:click={() =>
                 window.Telegram.WebApp.openTelegramLink(
-                    "https://t.me/pautina-club"
+                    "https://t.me/pautina_club"
                 )}
         >
             <svg
