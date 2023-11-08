@@ -65,6 +65,18 @@ export async function getGroups(page = 1, search = ""): Promise<List<Group>> {
     };
 }
 
+export async function getAllGroups() {
+    const result = await prisma.group.findMany({
+        include: {
+            weekdayTimetables: true,
+            subjects: true,
+            users: { include: { user: true } }
+        }
+    });
+
+    return result;
+}
+
 export async function getGroupById(
     groupId: number
 ): Promise<DetailedGroup | null> {
@@ -214,8 +226,14 @@ export async function createGroup(name: string) {
     return inviteCode;
 }
 
-export async function createGroups(name: string, amount: number, clusterId: number) {
-    const inviteCodes = Array.from({ length: amount }).map(() => generateInviteCode());
+export async function createGroups(
+    name: string,
+    amount: number,
+    clusterId: number
+) {
+    const inviteCodes = Array.from({ length: amount }).map(() =>
+        generateInviteCode()
+    );
 
     await prisma.group.createMany({
         data: inviteCodes.map(inviteCode => ({ name, inviteCode, clusterId }))
