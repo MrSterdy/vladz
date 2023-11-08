@@ -32,7 +32,7 @@
         <span class="divider after:bg-accent-content before:bg-accent-content my-2 text-accent-content">ПРИ ПОДДЕРЖКЕ КЛУБА</span>
 
         <button
-            class="btn btn-ghost text-white bg-gradient-to-r from-primary via-secondary to-primary"
+            class="btn btn-ghost text-white brightness-[1.3] bg-gradient-to-r from-primary via-secondary to-primary"
             id="pautina"
             on:click={() =>
                 window.Telegram.WebApp.openTelegramLink(
