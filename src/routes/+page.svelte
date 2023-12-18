@@ -18,17 +18,6 @@
             <Icon name="arrow" class="fill-primary-content icon-medium " />
         </a>
 
-        <button
-            class="btn btn-neutral"
-            on:click={() =>
-                window.Telegram.WebApp.openLink(
-                    "https://github.com/MrSterdy/vladz"
-                )}
-        >
-            GitHub
-            <Icon name="github" class="fill-neutral-content icon-medium" />
-        </button>
-
         <span class="divider after:bg-accent-content before:bg-accent-content my-2 text-accent-content">ПРИ ПОДДЕРЖКЕ КЛУБА</span>
 
         <button
